@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  { path: 'Register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'lobbies', loadChildren: './lobbies/lobbies.module#LobbiesModule' },
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyModule' },
   { path: 'home', component: HomeComponent },
