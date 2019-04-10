@@ -45,7 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         // headerName: 'Authorization',
         // authScheme: 'Bearer ',
         skipWhenExpired: true,
-        whitelistedDomains: ['api.designit.e-ce.uth.gr', 'localhost:5000'],
+        whitelistedDomains: ['api.codinggirls.spanagiot.gr', 'localhost:5000'],
         blacklistedRoutes: []
       }
     }),
