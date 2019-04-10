@@ -24,16 +24,6 @@
             ><span>{{ 'navbar.2' | translate }}</span></a
           >
         </li>
-        <li class="nav-item" [routerLinkActive]="['active']">
-          <a
-            class="nav-link"
-            href="#"
-            [routerLink]="['templates']"
-            [ngClass]="{ disabled: this.user == null }"
-            *ngIf="this.user != null && this.userService.getRole() == 'teacher'"
-            ><span>{{ 'navbar.5' | translate }}</span></a
-          >
-        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li
@@ -161,22 +151,6 @@
             [routerLink]="['lobbies']"
             [ngClass]="{ disabled: this.user == null }"
             ><span>{{ 'navbar.2' | translate }}</span></a
-          >
-        </li>
-        <!-- Templates -->
-        <li
-          class="nav-item"
-          [routerLinkActive]="['active']"
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-        >
-          <a
-            class="nav-link"
-            href="#"
-            [routerLink]="['templates']"
-            [ngClass]="{ disabled: this.user == null }"
-            *ngIf="this.user != null && this.userService.getRole() == 'teacher'"
-            ><span>{{ 'navbar.5' | translate }}</span></a
           >
         </li>
       </ul>
