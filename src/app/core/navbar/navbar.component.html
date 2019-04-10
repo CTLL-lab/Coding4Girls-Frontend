@@ -1,0 +1,253 @@
+<div class="hide-mobile">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" [routerLink]="['home']">Coding4Girls</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['lobbies']"
+            [ngClass]="{ disabled: this.user == null }"
+            ><span>{{ 'navbar.2' | translate }}</span></a
+          >
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['templates']"
+            [ngClass]="{ disabled: this.user == null }"
+            *ngIf="this.user != null && this.userService.getRole() == 'teacher'"
+            ><span>{{ 'navbar.5' | translate }}</span></a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li
+          class="nav-item"
+          *ngIf="this.user != null"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['profile']">
+            <i class="fas fa-user-circle"></i> {{ this.user?.username }}</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          *ngIf="this.userService.IsUserFullyPriviledged()"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['users']">
+            <i class="fas fa-user-circle"></i> Users
+          </a>
+        </li>
+        <li
+          class="nav-item"
+          *ngIf="this.user != null"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['feedback']">
+            <i class="fas fa-headset"></i
+            ><span>{{ 'navbar.6' | translate }}</span></a
+          >
+        </li>
+        <li class="nav-item" *ngIf="this.user != null">
+          <a class="nav-link" (click)="logout()"
+            ><span>{{ 'navbar.7' | translate }}</span></a
+          >
+        </li>
+        <li
+          *ngIf="this.user == null"
+          class="nav-item"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" href="#" [routerLink]="['login']"
+            ><span>{{ 'navbar.8' | translate }}</span></a
+          >
+        </li>
+        <li
+          *ngIf="this.user == null"
+          class="nav-item"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" href="#" [routerLink]="['register']"
+            ><span>{{ 'navbar.9' | translate }}</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="navbar-brand">
+            <img
+              [src]="imagePath"
+              class="img-fluid rounded mx-auto d-block pointer"
+              (click)="toggleNextFlag()"
+            />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<div class="show-mobile">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <span
+      class="nav-item"
+      data-toggle="collapse"
+      data-target=".navbar-collapse.show"
+    >
+      <a class="navbar-brand" href="#" [routerLink]="['home']">Coding4Girls</a>
+    </span>
+
+    <div class="navbar-brand dropdown">
+      <img
+        [src]="imagePath"
+        class="img-fluid rounded mx-auto d-block pointer dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      />
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a
+          *ngFor="let language of languages_available; let i = index"
+          class="dropdown-item"
+          (click)="changeLanguageTo(language)"
+        >
+          <img
+            [src]="languages_flags_assets[i]"
+            class="img-fluid rounded mx-auto d-block pointer"
+        /></a>
+      </div>
+    </div>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <!-- Lobbies -->
+        <li
+          class="nav-item"
+          [routerLinkActive]="['active']"
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+        >
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['lobbies']"
+            [ngClass]="{ disabled: this.user == null }"
+            ><span>{{ 'navbar.2' | translate }}</span></a
+          >
+        </li>
+        <!-- Templates -->
+        <li
+          class="nav-item"
+          [routerLinkActive]="['active']"
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+        >
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['templates']"
+            [ngClass]="{ disabled: this.user == null }"
+            *ngIf="this.user != null && this.userService.getRole() == 'teacher'"
+            ><span>{{ 'navbar.5' | translate }}</span></a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          class="nav-item"
+          *ngIf="this.user != null"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['profile']">
+            <i class="fas fa-user-circle"></i> {{ this.user?.username! }}</a
+          >
+        </li>
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          class="nav-item"
+          *ngIf="this.userService.IsUserFullyPriviledged()"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['users']">
+            <i class="fas fa-user-circle"></i> Users
+          </a>
+        </li>
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          class="nav-item"
+          *ngIf="this.user != null"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" [routerLink]="['feedback']">
+            <i class="fas fa-headset"></i
+            ><span>{{ 'navbar.6' | translate }}</span></a
+          >
+        </li>
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          class="nav-item"
+          *ngIf="this.user != null"
+        >
+          <a class="nav-link" (click)="logout()"
+            ><span>{{ 'navbar.7' | translate }}</span></a
+          >
+        </li>
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          *ngIf="this.user == null"
+          class="nav-item"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" href="#" [routerLink]="['login']"
+            ><span>{{ 'navbar.8' | translate }}</span></a
+          >
+        </li>
+        <li
+          data-toggle="collapse"
+          data-target=".navbar-collapse.show"
+          *ngIf="this.user == null"
+          class="nav-item"
+          [routerLinkActive]="['active']"
+        >
+          <a class="nav-link" href="#" [routerLink]="['register']"
+            ><span>{{ 'navbar.9' | translate }}</span></a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

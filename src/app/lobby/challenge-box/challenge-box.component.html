@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="card-header text-center bg-dark">
+    <div class="d-flex align-items-center">
+      <h4 class=" mx-auto card-title text-white w-100">
+        {{ TopText }}
+      </h4>
+      <!-- <button class="float-right" >Edit</button> -->
+      <i
+        class="fas fa-cog ml-auto hand-cursor mb-2"
+        style="color: white"
+        (click)="settingsClicked()"
+      ></i>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col">
+        <div class="font-weight-bold text-center">
+          <span i18n>{{ 'lobby-page.7' | translate }}</span>
+          <div class="card-text">
+            <small class="description">{{ MiddleText }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row  align-middle">
+      <div class="col-4 col-xs text-center">
+        <small class="text-muted hand-cursor" (click)="requestModal()">
+          <i
+            class="fas fa-user-circle "
+            title="{{ 'lobby-page.14' | translate }}"
+          ></i>
+        </small>
+      </div>
+      <div class="col-4 col-xs text-center">
+        <small class="text-muted">{{ BottomText }}</small>
+      </div>
+      <div class="col-4 col-xs text-center">
+        <small
+          class="text-danger hand-cursor"
+          id="{{ id }}"
+          (click)="clickButton()"
+          ><span>{{ ButtonText }}</span></small
+        >
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="container font-weight-bold mt-4 mb-4">
+  <div class="container-fluid" (pageShow)="ngOnInit()" *ngIf="userPriviledged">
+    <form>
+      <div class="form-group">
+        <label for="lobbyName"
+          ><span>{{ 'create-lobby.1' | translate }}</span></label
+        >
+        <input
+          class="form-control"
+          id="lobbyName"
+          name="name"
+          [(ngModel)]="lobbyDetails.name"
+          [ngClass]="{
+            'is-valid': !invalidData.includes('name') && invalidData.length > 0,
+            'is-invalid': invalidData.includes('name')
+          }"
+        />
+        <label for="lobbyCode"
+          ><span>{{ 'create-lobby.2' | translate }}</span></label
+        >
+        <input
+          class="form-control"
+          id="lobbyCode"
+          name="code"
+          [(ngModel)]="lobbyDetails.code"
+          [ngClass]="{
+            'is-valid': !invalidData.includes('code') && invalidData.length > 0,
+            'is-invalid': invalidData.includes('code')
+          }"
+        />
+      </div>
+      <div class="form-group">
+        <label for="lobbyDescription"
+          ><span>{{ 'create-lobby.3' | translate }}</span></label
+        >
+        <input
+          class="form-control"
+          id="lobbyDescription"
+          name="description"
+          [(ngModel)]="lobbyDetails.description"
+          [ngClass]="{
+            'is-valid':
+              !invalidData.includes('description') && invalidData.length > 0,
+            'is-invalid': invalidData.includes('description')
+          }"
+        />
+      </div>
+      <div class="form-group">
+        <label for="outcome"
+          ><span>{{ 'create-lobby.4' | translate }}</span></label
+        >
+        <input
+          class="form-control"
+          id="outcome"
+          name="outcome"
+          [(ngModel)]="lobbyDetails.outcome"
+          [ngClass]="{
+            'is-valid':
+              !invalidData.includes('outcome') && invalidData.length > 0,
+            'is-invalid': invalidData.includes('outcome')
+          }"
+        />
+      </div>
+
+      <div class="btn-group" role="group">
+        <button class="btn btn-success" (click)="saveChanges()">
+          <span>{{ 'create-lobby.9' | translate }}</span>
+        </button>
+        <button class="btn btn-danger" (click)="goBack()">
+          <span>{{ 'create-lobby.10' | translate }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

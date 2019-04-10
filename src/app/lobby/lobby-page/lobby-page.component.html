@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row mt-4 mb-2">
+    <div class="col">
+      <h1 class="text-center font-weight-bold">
+        {{ lobbyDetails?.name }} ({{ lobbyDetails?.code }})
+      </h1>
+      <h2 align="center" class="font-weight-normal">
+        {{ lobbyDetails?.description }}
+      </h2>
+      <p align="center" class="font-italic">
+        <span>{{ 'lobby-page.1' | translate }}</span>
+        {{ lobbyDetails?.creatorusername }}
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button
+        type="button"
+        class="btn btn-dark"
+        routerLink="/lobby/{{ id }}/settings"
+        *ngIf="lobbyDetails != null"
+      >
+        <span i18n>{{ 'lobby-page.2' | translate }}</span>
+      </button>
+      <button
+        routerLink="/lobby/{{ id }}/team/new"
+        type="button"
+        class="btn btn-dark"
+        [disabled]="
+          !this.canCreateTeam() ||
+          (lobbyDetails?.locked && userService.getRole() != 'teacher')
+        "
+      >
+        <span i18n>{{ 'lobby-page.3' | translate }}</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-danger"
+        *ngIf="userService.getRole() == 'teacher' && !lobbyDetails?.locked"
+        (click)="lockLobby()"
+      >
+        <span>{{ 'lobby-page.4' | translate }}</span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        *ngIf="userService.getRole() == 'teacher' && lobbyDetails?.locked"
+        (click)="unlockLobby()"
+      >
+        <span>{{ 'lobby-page.26' | translate }}</span>
+      </button>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value=""
+        id="defaultCheck1"
+        (change)="showHideCompleted()"
+      />
+      <label class="form-check-label" for="defaultCheck1">
+        <span>{{ 'lobby-page.5' | translate }}</span>
+      </label>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col">
+      <h2 class="text-center font-weight-bold">
+        <span>{{ 'lobby-page.6' | translate }}</span>
+      </h2>
+    </div>
+  </div>
+  <div class="row" [sortablejs]="challenges">
+    <div
+      class="col-sm-4 my-3"
+      *ngFor="let challenge of challenges; let i = index"
+    >
+      <app-challenge-box
+        [TopText]="i + 1 + ')' + challenge.name"
+        [MiddleText]="challenge.description"
+        [BottomText]="'Mini game:' + challenge.minigame"
+        (SettingsClicked)="openChallengeSettings(challenge.id)"
+      ></app-challenge-box>
+    </div>
+  </div>
+</div>

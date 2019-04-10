@@ -1,0 +1,33 @@
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.navbar .navbar-brand img {
+  height: 25px;
+}
+
+.navbar .navbar-brand {
+  padding-top: 8px;
+}
+
+@media only screen and (max-width: 992px) {
+  .show-mobile {
+    display: block;
+  }
+  .hide-mobile {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .show-mobile {
+    display: none;
+  }
+  .hide-mobile {
+    display: block;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}

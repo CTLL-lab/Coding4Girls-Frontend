@@ -1,0 +1,81 @@
+<div class="container" *ngIf="lobbyDetails != null">
+  <div class="row mt-4 mb-2">
+    <div class="col">
+      <div (pageShow)="ngOnInit()">
+        <h2 class="text-center font-weight-bold">
+          <span>{{ 'lobby-settings.1' | translate }}</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col">
+      <form>
+        <div class="form-group">
+          <label for="lobbyName" class="font-weight-bold"
+            ><span>{{ 'lobby-settings.2' | translate }}</span></label
+          >
+          <input
+            class="form-control"
+            id="lobbyName"
+            name="name"
+            [(ngModel)]="lobbyDetails.name"
+            [readOnly]="!this.isUserPriviledged"
+            [ngClass]="{ 'form-control-plaintext': !this.isUserPriviledged }"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lobbyDescription" class="font-weight-bold"
+            ><span>{{ 'lobby-settings.3' | translate }}</span></label
+          >
+          <input
+            class="form-control"
+            id="lobbyDescription"
+            name="description"
+            [(ngModel)]="lobbyDetails.description"
+            [readOnly]="!this.isUserPriviledged"
+            [ngClass]="{ 'form-control-plaintext': !this.isUserPriviledged }"
+          />
+        </div>
+        <div class="form-group">
+          <label for="outcome" class="font-weight-bold"
+            ><span>{{ 'lobby-settings.4' | translate }}</span></label
+          >
+          <textarea
+            class="form-control"
+            rows="5"
+            id="outcome"
+            name="outcome"
+            [(ngModel)]="lobbyDetails.outcome"
+            [readOnly]="!this.isUserPriviledged"
+            [ngClass]="{ 'form-control-plaintext': !this.isUserPriviledged }"
+          >
+          </textarea>
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button
+            class="btn btn-primary"
+            (click)="goBack()"
+            *ngIf="!this.isUserPriviledged"
+          >
+            <span>{{ 'lobby-settings.9' | translate }}</span>
+          </button>
+          <button
+            class="btn btn-success"
+            (click)="saveChanges()"
+            *ngIf="this.isUserPriviledged"
+          >
+            <span>{{ 'lobby-settings.10' | translate }}</span>
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="goBack()"
+            *ngIf="this.isUserPriviledged"
+          >
+            <span>{{ 'lobby-settings.11' | translate }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="row mt-4 mb-4">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <div class="form-inline">
+        <div class="form-group mr-sm-1 mb-2">
+          <label for="lobbycode" class="sr-only">{{
+            'lobbies.4' | translate
+          }}</label>
+          <input
+            id="code"
+            class="form-control"
+            name="code"
+            #lobbycode
+            placeholder="{{ 'lobbies.4' | translate }}"
+            (keyup.enter)="joinLobby(lobbycode.value)"
+          />
+        </div>
+        <button
+          (click)="joinLobby(lobbycode.value)"
+          class="btn btn-success mr-2 mb-2"
+        >
+          {{ 'lobbies.5' | translate }}
+        </button>
+        <button
+          routerLink="/lobbies/new"
+          class="btn btn-primary mb-2"
+          *ngIf="userPriviledged"
+        >
+          {{ 'lobbies.3' | translate }}
+        </button>
+      </div>
+      <h2 class="font-weight-bold mt-3 mb-3 text-center">
+        {{ 'lobbies.1' | translate }}
+      </h2>
+
+      <ul class="list-group">
+        <div
+          class="list-group-item  flex-column align-items-center"
+          *ngFor="let lobby of lobbiesJoined"
+          [routerLink]="['/lobby/' + lobby.id]"
+        >
+          <div class="d-flex justify-content-between align-center">
+            <h3 id="lobbyName" class="font-weight-bold">{{ lobby.name }}</h3>
+            <i
+              class="fas fa-user-minus mt-2 leave-lobby-icon"
+              aria-hidden="true"
+              (click)="
+                $event.preventDefault();
+                $event.stopPropagation();
+                removeLobby(lobby)
+              "
+            ></i>
+          </div>
+          <div class="row">
+            <div class="col-9">
+              <p class="mb-1">{{ lobby.description }}</p>
+            </div>
+            <div class="col-3">
+              <div *ngIf="lobby.verificationneeded && userPriviledged">
+                <div class="row mb-1">
+                  <div class="col">
+                    <span class="badge badge-pill badge-info float-right">{{
+                      'navbar.4' | translate
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="lobby.reviewasked">
+                <div class="row mb-1">
+                  <div class="col">
+                    <span class="badge badge-pill badge-danger float-right">{{
+                      'navbar.3' | translate
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="lobby.helpasked">
+                <div class="row mb-1">
+                  <div class="col">
+                    <span class="badge badge-pill badge-warning float-right">{{
+                      'navbar.10' | translate
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="lobby.brainstormasked">
+                <div class="row mb-1">
+                  <div class="col">
+                    <span
+                      class="badge badge-pill badge-secondary float-right"
+                      >{{ 'navbar.11' | translate }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="col-1"></div>
+  </div>
+</div>
