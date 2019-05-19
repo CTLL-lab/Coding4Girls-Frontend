@@ -39,6 +39,8 @@ export class CreateChallengeComponent implements OnInit {
   public htmlBefore;
   public htmlAfter;
 
+  public selectedMiniGameCategory;
+
   public quillModules = {
     imageResize: {},
     toolbar: [
@@ -186,5 +188,6 @@ export class CreateChallengeComponent implements OnInit {
 
   selectMiniGameCategory(category: object) {
     this.minigames = category['miniGames'];
+    this.selectedMiniGameCategory = category;
   }
 }

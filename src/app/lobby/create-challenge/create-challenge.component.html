@@ -51,7 +51,11 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Select Category
+                {{
+                  selectedMiniGameCategory?.categoryName == undefined
+                    ? 'Select Category'
+                    : selectedMiniGameCategory.categoryName
+                }}
               </button>
               <div
                 class="dropdown-menu overflow-auto"
