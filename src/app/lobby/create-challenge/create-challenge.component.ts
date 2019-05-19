@@ -4,6 +4,7 @@ import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
+import { MiniGamesObject } from './minigametags';
 
 @Component({
   selector: 'app-create-challenge',
@@ -28,6 +29,9 @@ export class CreateChallengeComponent implements OnInit {
   public minigameVariables = [];
   public challengeMinigameVariables = {};
   mode: string;
+
+  public MiniGameCategories: Array<string> = [];
+  public MiniGamesObject = MiniGamesObject;
   constructor(
     private route: ActivatedRoute,
     public user: UserService,
@@ -35,7 +39,11 @@ export class CreateChallengeComponent implements OnInit {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService
-  ) {}
+  ) {
+    for (let key in MiniGamesObject) {
+      this.MiniGameCategories.push(key);
+    }
+  }
 
   ngOnInit() {
     if (this.route.snapshot.url[2].toString() == 'edit') {
@@ -148,5 +156,10 @@ export class CreateChallengeComponent implements OnInit {
   }
   goBack() {
     this.router.navigateByUrl('/lobby/' + this.lobbyID);
+  }
+
+  selectMiniGameCategory(category: object) {
+    this.minigames = category['miniGames'];
+    console.log(this.minigames);
   }
 }
