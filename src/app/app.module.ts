@@ -11,7 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
-import { AuthenticationService } from './authentication/services/auth/authentication.service';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 export function getToken() {
   if (localStorage.getItem('token') != null) {
@@ -50,9 +50,10 @@ export function HttpLoaderFactory(http: HttpClient) {
         blacklistedRoutes: []
       }
     }),
-    CoreModule
+    CoreModule,
+    AuthenticationModule
   ],
-  providers: [JwtHelperService, HttpClient, AuthenticationService],
+  providers: [JwtHelperService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
