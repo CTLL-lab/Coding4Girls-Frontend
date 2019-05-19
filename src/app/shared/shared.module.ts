@@ -32,7 +32,6 @@ export class SharedModule {
       providers: [
         NotificationsToasterService,
         SpinnerService,
-        AuthenticationService,
         UserService,
         BsModalService,
         LobbyService

@@ -22,7 +22,7 @@ export class AuthenticationService {
     if (token != null) {
       try {
         this.user.SetUser(this.jwt.decodeToken(token));
-      } catch {
+      } catch (err) {
         this.user.SetUser(null);
       }
     }
@@ -103,6 +103,6 @@ export class AuthenticationService {
     } else {
       this.saveTemporaryToken(token);
     }
-    this.user.user = this.jwt.decodeToken(token);
+    this.user.SetUser(this.jwt.decodeToken(token));
   }
 }
