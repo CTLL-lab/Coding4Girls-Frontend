@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Include stylesheet -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+
+<!-- Create the editor container -->
+<div id="editor"></div>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+<!-- Initialize Quill editor -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
+  integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j"
+  crossorigin="anonymous"
+/>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
+  integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
+  crossorigin="anonymous"
+></script>
+<script>
+  const url = new URL(window.location.href);
+  var mode;
+  switch (url.searchParams.get('mode')) {
+    case 'before':
+      console.log('before');
+      break;
+    case 'after':
+      console.log('after');
+    default:
+      break;
+  }
+  const id = url.searchParams.get('id');
+  var options = {
+    modules: {
+      toolbar: false,
+      imageResize: {
+        modules: false
+      }
+    },
+    placeholder: 'Compose an epic...',
+    readOnly: true,
+    theme: 'snow'
+  };
+  //   Quill.register('modules/imageResize', imageResize);
+
+  var quill = new Quill('#editor', options);
+  quill.enable(false);
+
+  const Http = new XMLHttpRequest();
+
+  const requestURL =
+    'http://localhost:5000/challenges/' +
+    id +
+    '/page/' +
+    url.searchParams.get('mode');
+  Http.open('GET', requestURL);
+  Http.send();
+  Http.onloadend = e => {
+    quill.setContents(JSON.parse(Http.responseText));
+  };
+</script>
