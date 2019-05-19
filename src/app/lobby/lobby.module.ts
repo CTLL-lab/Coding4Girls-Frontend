@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
 import { LobbyRoutingModule } from './lobby-routing.module';
 import { ChallengeService } from './services/challenge/challenge.service';
 import { SortablejsModule } from 'node_modules/angular-sortablejs';
-
+import { QuillModule } from 'ngx-quill';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +21,8 @@ import { SortablejsModule } from 'node_modules/angular-sortablejs';
     LobbyRoutingModule,
     FormsModule,
     SharedModule,
-    SortablejsModule.forRoot({})
+    SortablejsModule.forRoot({}),
+    QuillModule.forRoot()
   ],
   declarations: [
     LobbyPageComponent,
