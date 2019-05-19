@@ -5,7 +5,10 @@ import { ChallengeService } from '../services/challenge/challenge.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { MiniGamesObject } from './minigametags';
+import Quill from 'quill';
+import ImageResize from 'quill-image-resize-module';
 
+Quill.register('modules/imageResize', ImageResize);
 @Component({
   selector: 'app-create-challenge',
   templateUrl: './create-challenge.component.html',
@@ -32,6 +35,34 @@ export class CreateChallengeComponent implements OnInit {
 
   public MiniGameCategories: Array<string> = [];
   public MiniGamesObject = MiniGamesObject;
+
+  public htmlBefore;
+  public htmlAfter;
+
+  public quillModules = {
+    imageResize: {},
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+      ['blockquote', 'code-block'],
+
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+      [{ direction: 'rtl' }], // text direction
+
+      [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      [{ align: [] }],
+
+      ['clean'], // remove formatting button
+
+      ['link', 'image', 'video', 'formula'] // link and image, video
+    ]
+  };
   constructor(
     private route: ActivatedRoute,
     public user: UserService,
@@ -51,20 +82,13 @@ export class CreateChallengeComponent implements OnInit {
     } else {
       this.mode = 'create';
     }
-    this.challengeService.GetMiniGames().subscribe(x => {
-      this.minigames = x['data']['mini_games'];
-    });
     this.populateComponent(this.mode);
   }
-  changeMinigame(value: string) {
-    this.currentMinigame = value;
-    this.challengeService.GetMiniGameDetails(value).subscribe(x => {
-      console.log(x);
-      this.minigameVariables = x['data']['mini_game']['variables'];
-    });
+
+  changeMinigame(id: string) {
+    this.minigameVariables = this.minigames.find(x => x.id == id).variables;
   }
   populateComponent(mode: string) {
-    console.log('Populating component');
     switch (mode) {
       case 'edit':
         this.populateComponentForEdit();
@@ -123,13 +147,15 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   createTeam() {
+    console.log(this.htmlBefore);
+    return;
     this.challengeService
       .createNewTeam(
         this.name,
         this.description,
         this.lobbyID,
         this.currentMinigame,
-        this.challengeMinigameVariables
+        this.minigameVariables
       )
       .subscribe(r => {
         if (r.status == 201) {
@@ -160,6 +186,5 @@ export class CreateChallengeComponent implements OnInit {
 
   selectMiniGameCategory(category: object) {
     this.minigames = category['miniGames'];
-    console.log(this.minigames);
   }
 }

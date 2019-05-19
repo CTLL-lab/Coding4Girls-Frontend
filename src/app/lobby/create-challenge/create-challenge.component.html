@@ -95,14 +95,61 @@
         </div>
         <div class="form-group row" *ngFor="let variable of minigameVariables">
           <div class="col-md-6">
-            <label for="{{ variable }}" class="font-weight-bold">{{
-              variable
+            <label for="{{ variable.name }}" class="font-weight-bold">{{
+              variable.name
             }}</label>
             <input
-              id="{{ variable }}"
-              [(ngModel)]="challengeMinigameVariables[variable]"
+              id="{{ variable.name }}"
+              [(ngModel)]="variable.value"
               [ngModelOptions]="{ standalone: true }"
             />
+          </div>
+        </div>
+        <div class="form-group row">
+          <ul class="nav nav-tabs" id="challengePages" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link  active"
+                data-toggle="list"
+                href="#pageBeforeChallenge"
+                role="tab"
+                >Before</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-toggle="list"
+                href="#pageAfterChallenge"
+                role="tab"
+                >After</a
+              >
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <div
+              class="tab-pane fade show active"
+              id="pageBeforeChallenge"
+              role="tabpanel"
+            >
+              <quill-editor
+                [styles]="{ height: '500px' }"
+                [format]="'object'"
+                [(ngModel)]="htmlBefore"
+                name="pageBeforeChallengeQuill"
+                [modules]="quillModules"
+              ></quill-editor>
+            </div>
+            <div class="tab-pane fade" id="pageAfterChallenge" role="tabpanel">
+              <quill-editor
+                [styles]="{ height: '500px' }"
+                [format]="'object'"
+                [(ngModel)]="htmlAfter"
+                [modules]="quillModules"
+                name="pageBeforeChallengeQuill"
+              ></quill-editor>
+            </div>
           </div>
         </div>
         <div class="btn-group mb-4" role="group" aria-label="Basic example">

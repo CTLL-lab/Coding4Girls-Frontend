@@ -50,7 +50,16 @@ export const MiniGamesObject = {
     },
     {
       categoryName: 'Modulo, roundings',
-      miniGames: [{ name: 'Donald Game', id: 8 }]
+      miniGames: [
+        {
+          name: 'Donald Game',
+          id: 8,
+          variables: [
+            { name: 'first_var', value: 'test1' },
+            { name: 'second_var', value: 'test2' }
+          ]
+        }
+      ]
     },
     {
       categoryName: 'Advanced, sin, cos, sqrt, power, roundings',
