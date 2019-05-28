@@ -1,0 +1,74 @@
+<div>
+  <form class="form-row form-inline">
+    <div class="col-sm-6">
+      <button
+        class="btn btn-primary"
+        (click)="showNewNoteModal(newNoteModal)"
+        *ngIf="canAddNotes"
+        [disabled]="!canAddNotes"
+      >
+        <span>{{ 'canvas.11' | translate }} </span>
+      </button>
+    </div>
+    <div *ngIf="userService.getRole() == 'teacher'" class="form-group col-sm-6">
+      <select #templateDropdown class="float-right form-control h-100">
+        <option value="0" [selected]="currentTemplate == null"
+          >{{ 'canvas.13' | translate }}
+        </option>
+        <option
+          *ngFor="let template of currentTeacherTemplates"
+          value="{{ template.id }}"
+          [selected]="template.id == level.appliedTemplate"
+        >
+          {{ template.name }}
+        </option>
+      </select>
+      <button
+        type="submit"
+        class="btn btn-primary float-right"
+        (click)="applyTemplate(templateDropdown.value)"
+      >
+        {{ 'canvas.12' | translate }}
+      </button>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col">
+      <div class="drag-boundary board" [style.height.px]="canvasHeight" #canvas>
+        <app-note
+          *ngFor="let note of this.notesProvider.notes"
+          [note]="note"
+          [canvasID]="canvasID"
+          (noteDelete)="deleteNote(note)"
+          (noteSave)="saveNote($event)"
+          (noteDrag)="dragNote($event)"
+          (noteResize)="resizeNote($event)"
+          (click)="clickNote(note)"
+          (noteDragStart)="clickNote(note)"
+          [options]="getNotesOptions(note)"
+          [bounds]="canvas"
+        ></app-note>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #newNoteModal>
+  <div class="modal-content">
+    <div class="modal-header">{{ 'canvas.11' | translate }}</div>
+    <div
+      class="modal-body"
+      [style.height.px]="newNote.size.height * 1.2"
+      #modalBody
+    >
+      <app-note
+        [note]="newNote"
+        [options]="addNewNoteOptions"
+        style="position: relative!important;display: block; transform: none!important;"
+        [bounds]="modalBody"
+        (noteSave)="saveNoteFromModal()"
+      ></app-note>
+    </div>
+    <div class="modal-footer"></div>
+  </div>
+</ng-template>

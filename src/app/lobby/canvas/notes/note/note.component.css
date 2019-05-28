@@ -1,0 +1,55 @@
+.note {
+  background-color: rgb(255, 255, 153);
+  margin: 2px 0;
+  cursor: -webkit-grab;
+  position: absolute;
+  box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, 0.2);
+  /* z-index: 9; */
+  padding: 12px;
+  display: inline-block;
+}
+.underChanging {
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+.textContainer {
+  height: auto;
+  /* overflow-wrap: break-word;
+  overflow: break-word; */
+  word-wrap: normal;
+  word-break: normal;
+  white-space: pre-wrap;
+}
+.fas {
+  padding: 7px;
+  text-align: center;
+  text-decoration: none;
+}
+img {
+  max-height: 100%;
+  max-width: 100%;
+}
+.ng-draggable {
+  cursor: move;
+}
+.dot {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  border: white;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.note-icon-margin {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.hand-cursor {
+  cursor: pointer;
+}

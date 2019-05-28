@@ -1,0 +1,144 @@
+<div
+  [ngResizable]="options?.resizable"
+  (rzStop)="resized($event)"
+  [rzMinHeight]="note_dimensions.height"
+  [rzMinWidth]="note_dimensions.width"
+  [rzMaxWidth]="1400"
+  [ngDraggable]="options?.draggable"
+  class="drag-block note"
+  [bounds]="bounds"
+  [outOfBounds]="myBounds"
+  [inBounds]="inBounds"
+  [position]="note.position"
+  (started)="draggingStarted()"
+  (endOffset)="draggingStopped(note, $event)"
+  [ngStyle]="{
+    'background-color': note.color,
+    width: note.size?.width + 'px',
+    height: note.size?.height + 'px',
+    'z-index': note.position.z
+  }"
+  [ngClass]="{ underChanging: changing }"
+>
+  <div class="h-100 w-100 d-inline-block">
+    <div
+      *ngIf="note?.isUnderEditing"
+      class="w-100"
+      [style.height.%]="editorType != 'text' ? 60 : 80"
+    >
+      <!-- Text area container -->
+      <textarea [(ngModel)]="note.text" class="h-100 w-100">
+      {{ note?.text }}</textarea
+      >
+      <!-- Media input boxes -->
+      <input
+        type="file"
+        (change)="fileChange($event)"
+        placeholder="Upload file"
+        *ngIf="editorType === 'image'"
+        style="width: 100%;"
+      />
+      <input
+        type="text"
+        placeholder="URL"
+        *ngIf="editorType !== 'text'"
+        [(ngModel)]="note.content"
+        style="width: 100%;"
+      />
+    </div>
+    <div
+      *ngIf="!note?.isUnderEditing"
+      class="w-100"
+      style="height: 80%"
+      (tap)="edit($event)"
+      (dblclick)="edit()"
+    >
+      <!-- Text container -->
+      <markdown ngPreserveWhitespaces class="textContainer w-100">
+        {{ note?.text }}
+      </markdown>
+      <!-- Image container -->
+      <img
+        *ngIf="note?.type === 'image'"
+        src="{{ note?.content }}"
+        class="w-100"
+      />
+      <div
+        [innerHtml]="contentToShow"
+        *ngIf="note?.type === 'video'"
+        class="w-100"
+      ></div>
+    </div>
+    <!-- Bottom buttons -->
+    <div class="d-flex flex-row">
+      <!-- Delete progress bar -->
+      <div class="w-100" *ngIf="options?.editable">
+        <div class="progress" style="height: 5px;" *ngIf="deleteTimer > 0">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="deleteTimer / 10"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row fixed-bottom" style="width: 97%;">
+      <div class="p-2 flex-grow-1" *ngIf="options?.editable">
+        <i
+          appHoldable
+          (holdTime)="delete($event)"
+          class="fas fa-trash-alt  hand-cursor"
+        ></i>
+        <!-- <span *ngIf="!note?.isUnderEditing">
+            <i class="fas fa-edit fa hand-cursor" (click)="edit()"></i>
+          </span> -->
+        <span *ngIf="note?.isUnderEditing === true">
+          <i
+            class="fas fa-images hand-cursor"
+            (click)="editorType = 'image'"
+            *ngIf="editorType !== 'image'"
+          ></i>
+          <i
+            class="fas fa-align-justify hand-cursor"
+            (click)="editorType = 'text'"
+            *ngIf="editorType !== 'text'"
+          ></i>
+          <i
+            class="fas fa-video hand-cursor"
+            (click)="editorType = 'video'"
+            *ngIf="editorType !== 'video'"
+          ></i>
+          <i class="fas fa-save fa hand-cursor" (click)="save()"></i><br />
+        </span>
+      </div>
+      <!-- Colors -->
+      <div class="p-2 flex-grow-1" *ngIf="note?.isUnderEditing">
+        <span *ngFor="let color of basicColors">
+          <div
+            class="dot hand-cursor"
+            [ngStyle]="{ 'background-color': color }"
+            (click)="note.color = color"
+          ></div>
+        </span>
+        <span *ngIf="options?.showExtendedColors">
+          <span *ngFor="let color of extendedColors">
+            <div
+              class="dot hand-cursor"
+              [ngStyle]="{ 'background-color': color }"
+              (click)="note.color = color"
+            ></div>
+          </span>
+        </span>
+      </div>
+      <!-- Lock -->
+      <div class="p-2 float-right">
+        <i
+          class=" fa-unlock-alt fa hand-cursor"
+          *ngIf="!note.locked"
+          (click)="toggleLock()"
+        ></i>
+        <i class=" fa-lock fa" *ngIf="note.locked" (click)="toggleLock()"></i>
+      </div>
+    </div>
+  </div>
+</div>

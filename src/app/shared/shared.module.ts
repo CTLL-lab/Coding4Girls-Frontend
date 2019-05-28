@@ -10,6 +10,7 @@ import { AuthenticationService } from '../authentication/services/auth/authentic
 import { UserService } from '../authentication/services/user/user.service';
 import { ModalModule, BsModalService } from 'node_modules/ngx-bootstrap';
 import { LobbyService } from './services/lobby/lobby.service';
+import { SocketioService } from './services/socketio/socketio.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -34,7 +35,8 @@ export class SharedModule {
         SpinnerService,
         UserService,
         BsModalService,
-        LobbyService
+        LobbyService,
+        SocketioService
       ]
     };
   }

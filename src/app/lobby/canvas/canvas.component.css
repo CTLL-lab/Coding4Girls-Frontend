@@ -1,0 +1,23 @@
+.borders {
+  height: 50px;
+  width: 50px;
+  border: solid black;
+}
+
+.board {
+  height: 500px;
+  width: 1400px;
+  /* border: 1px solid; */
+  position: relative;
+  background: beige;
+}
+
+.handle {
+  position: absolute;
+  height: 90%;
+  width: 90%;
+  margin: 5%;
+}
+mwlResizable {
+  box-sizing: border-box;
+}

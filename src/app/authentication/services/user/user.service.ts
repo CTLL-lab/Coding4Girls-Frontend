@@ -52,4 +52,11 @@ export class UserService {
   public GetUserID() {
     return this.user.value != null ? this.user.value.id : null;
   }
+
+  public GetUsername() {
+    if (this.user.value != null) {
+      return this.user.value.username;
+    }
+    return null;
+  }
 }

@@ -134,6 +134,15 @@
                 >Snap</a
               >
             </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-toggle="list"
+                href="#brainstormcanvas"
+                role="tab"
+                >Brainstorm canvas</a
+              >
+            </li>
           </ul>
 
           <div class="tab-content">
@@ -169,9 +178,14 @@
                 ></iframe>
               </div>
             </div>
+            <div class="tab-pane fade" id="brainstormcanvas" role="tabpanel">
+              <div class="row">
+                <app-canvas [canAddNotes]="true"></app-canvas>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="btn-group mb-4" role="group" aria-label="Basic example">
+        <div class="btn-group mb-4" role="group">
           <button
             class="btn btn-success"
             type="submit"
