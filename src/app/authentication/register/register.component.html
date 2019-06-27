@@ -15,6 +15,7 @@
         class="form-control"
         name="username"
         [(ngModel)]="user.username"
+        [ngClass]="{ 'is-invalid': invalidInput == 'username' }"
       />
     </div>
     <div class="form-row">
@@ -40,6 +41,8 @@
           name="passwordver"
           type="password"
           [(ngModel)]="passwordver"
+          [ngClass]="{ 'is-invalid': !passwordsMatch }"
+          (blur)="checkIfPasswordsMatch()"
         />
       </div>
     </div>
@@ -52,6 +55,7 @@
         class="form-control"
         name="email"
         [(ngModel)]="user.email"
+        [ngClass]="{ 'is-invalid': invalidInput == 'email' }"
       />
     </div>
 

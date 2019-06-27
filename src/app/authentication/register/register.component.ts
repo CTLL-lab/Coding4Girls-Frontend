@@ -4,6 +4,10 @@ import { User } from '../services/user/user';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
+import {
+  UsernameAlreadyInUseError,
+  EmailAlreadyInUseError
+} from '../exceptions';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,6 +20,9 @@ export class RegisterComponent implements OnInit {
   msg: any;
   code = '';
   terms_accepted = false;
+  invalidInput = '';
+  passwordsMatch = true;
+
   constructor(
     private authService: AuthenticationService,
     private router: Router,
@@ -56,18 +63,24 @@ export class RegisterComponent implements OnInit {
       )
       .subscribe(
         r => {
-          if (r['success']) {
-            this.translationService.get('in-code.17').subscribe(k => {
-              this.notifications.showSuccess(k);
-            });
-            this.router.navigateByUrl('/login');
-          }
+          this.translationService.get('in-code.17').subscribe(k => {
+            this.notifications.showSuccess(k);
+          });
+          this.router.navigateByUrl('/login');
         },
         err => {
+          if (err instanceof UsernameAlreadyInUseError) {
+            this.invalidInput = 'username';
+          } else if (err instanceof EmailAlreadyInUseError) {
+            this.invalidInput = 'email';
+          }
           this.translationService.get('in-code.18').subscribe(r => {
             this.notifications.showError(r);
           });
         }
       );
+  }
+  checkIfPasswordsMatch() {
+    this.passwordsMatch = this.passwordver == this.user.password;
   }
 }

@@ -3,6 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { apiURL } from '../../../config';
 import { UserService } from '../user/user.service';
+import {
+  InvalidPasswordError,
+  UserNotFoundError,
+  UsernameAlreadyInUseError,
+  EmailAlreadyInUseError
+} from '../../exceptions';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationService {
@@ -57,25 +64,67 @@ export class AuthenticationService {
     lname: string,
     code: string
   ) {
-    const body = new HttpParams()
-      .set('username', username)
-      .set('password', password)
-      .set('email', email)
-      .set('fname', fname)
-      .set('lname', lname)
-      .set('code', code);
-    return this.requester.post(
-      apiURL + '/users/register',
-      body,
-      this.httpOptions
-    );
+    return this.requester
+      .post(
+        apiURL + '/register',
+        {
+          username: username,
+          password: password,
+          email: email,
+          fname: fname,
+          lname: lname,
+          code: code
+        },
+        { observe: 'response' }
+      )
+      .pipe(
+        catchError(res => {
+          switch (res.status) {
+            case 409:
+              switch (res.error['data']['duplicate']) {
+                case 'username':
+                  console.log('Username already in use');
+                  throw new UsernameAlreadyInUseError();
+                case 'email':
+                  throw new EmailAlreadyInUseError();
+                default:
+                  throw new Error();
+              }
+              break;
+            default:
+              throw new Error();
+              break;
+          }
+        })
+      );
   }
 
   public loginUser(username: string, password: string) {
-    return this.requester.post(apiURL + '/login', {
-      username: username,
-      password: password
-    });
+    return this.requester
+      .post(
+        apiURL + '/login',
+        {
+          username: username,
+          password: password
+        },
+        { observe: 'response' }
+      )
+      .pipe(
+        map(res => {
+          return res.body;
+        }),
+        catchError(res => {
+          switch (res.status) {
+            case 401:
+              throw new InvalidPasswordError();
+            case 404:
+              throw new UserNotFoundError();
+              break;
+            default:
+              throw new Error();
+          }
+        })
+      );
   }
 
   public logoutUser() {
