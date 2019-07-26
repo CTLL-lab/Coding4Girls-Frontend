@@ -36,7 +36,7 @@ export class LobbiesComponent implements OnInit {
   }
 
   grabLobbies() {
-    this.lobbyService.getUserLobbies(this.user.id).subscribe(r => {
+    this.lobbyService.getUserLobbies().subscribe(r => {
       this.lobbiesJoined = r['data']['lobbies'];
     });
   }

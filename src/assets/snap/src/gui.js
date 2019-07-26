@@ -199,7 +199,6 @@ IDE_Morph.prototype.scriptsTexture = function () {
 };
 
 IDE_Morph.prototype.setDefaultDesign();
-
 // IDE_Morph instance creation:
 
 function IDE_Morph(isAutoFill) {
@@ -3872,6 +3871,7 @@ IDE_Morph.prototype.saveProject = function (name) {
 // Serialize a project and save to the browser.
 IDE_Morph.prototype.rawSaveProject = function (name) {
     var str;
+    console.log(name,this.serializer.serialize(this.stage));
     if (name) {
         this.setProjectName(name);
         if (Process.prototype.isCatchingErrors) {
@@ -4615,11 +4615,14 @@ IDE_Morph.prototype.rawOpenDataString = function (str, name, type) {
     }
 };
 
+
+// Generic for loading projects 
 IDE_Morph.prototype.openProject = function (name) {
     var str;
     if (name) {
-        this.showMessage('opening project\n' + name);
-        this.setProjectName(name);
+        // this.showMessage('opening project\n' + name);
+        console.log('opening project:',name);
+        // this.setProjectName(name);
         str = localStorage['-snap-project-' + name];
         this.openProjectString(str);
         this.setURL('#open:' + str);

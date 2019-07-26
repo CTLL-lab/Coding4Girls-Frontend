@@ -72,17 +72,36 @@
       </h2>
     </div>
   </div>
-  <div class="row" [sortablejs]="challenges">
-    <div
-      class="col-sm-4 my-3"
-      *ngFor="let challenge of challenges; let i = index"
-    >
-      <app-challenge-box
-        [TopText]="i + 1 + ')' + challenge.name"
-        [MiddleText]="challenge.description"
-        [BottomText]="'Mini game:' + challenge.minigame"
-        (SettingsClicked)="openChallengeSettings(challenge.id)"
-      ></app-challenge-box>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="container">
+        <h2>Members</h2>
+        <ul>
+          <li *ngFor="let member of members">
+            {{ member.username }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="list-group col-sm-4">
+      <div [sortablejs]="challenges" [sortablejsOptions]="SortableJSOptions">
+        <div *ngFor="let challenge of challenges; let i = index">
+          <app-challenge-box
+            class="my-3"
+            [TopText]="i + 1 + ')' + challenge.name"
+            [MiddleText]="challenge.description"
+            [BottomText]="'Mini game:' + challenge.minigame"
+            (SettingsClicked)="openChallengeSettings(challenge.id)"
+          ></app-challenge-box>
+          <div class="col text-center">
+            <i
+              class="fas fa-arrow-down fa-3x"
+              *ngIf="challenges.length != i + 1"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
     </div>
   </div>
 </div>

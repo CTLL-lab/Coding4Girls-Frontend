@@ -1,12 +1,13 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
-import { MiniGamesObject } from './minigametags';
+import { MiniGamesCategories, MiniGames } from './minigametags';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
+import { forkJoin, BehaviorSubject } from 'rxjs';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -16,6 +17,8 @@ Quill.register('modules/imageResize', ImageResize);
   providers: [ChallengeService]
 })
 export class CreateChallengeComponent implements OnInit {
+  public world: BehaviorSubject<any> = new BehaviorSubject(null);
+
   public numberOfLevels: number;
   public levelNames: Array<any>;
   public role: string;
@@ -27,17 +30,17 @@ export class CreateChallengeComponent implements OnInit {
   public name: string;
   public description: string;
   public canUpdate: Boolean;
-  public minigames = [];
-  public currentMinigame: string;
+  public MiniGames = [];
+  public currentMinigame: number;
   public minigameVariables = [];
   public challengeMinigameVariables = {};
   mode: string;
 
-  public MiniGameCategories: Array<string> = [];
-  public MiniGamesObject = MiniGamesObject;
+  public MiniGameHeaders: Array<string> = [];
+  public MiniGameCategories = MiniGamesCategories;
+  public SelectableMiniGames = MiniGames;
 
-  public htmlBefore;
-  public htmlAfter;
+  public htmlAfter = {};
 
   public selectedMiniGameCategory;
 
@@ -73,8 +76,9 @@ export class CreateChallengeComponent implements OnInit {
     private notifications: NotificationsToasterService,
     private translationService: TranslateService
   ) {
-    for (let key in MiniGamesObject) {
-      this.MiniGameCategories.push(key);
+    window['world'] = this.world;
+    for (let key in MiniGamesCategories) {
+      this.MiniGameHeaders.push(key);
     }
   }
 
@@ -87,8 +91,14 @@ export class CreateChallengeComponent implements OnInit {
     this.populateComponent(this.mode);
   }
 
-  changeMinigame(id: string) {
-    this.minigameVariables = this.minigames.find(x => x.id == id).variables;
+  changeMinigame(id: number) {
+    this.currentMinigame = id;
+    this.minigameVariables = this.SelectableMiniGames.find(
+      x => x.id == id
+    ).variables;
+    if (this.minigameVariables == undefined) {
+      this.minigameVariables = [];
+    }
   }
   populateComponent(mode: string) {
     switch (mode) {
@@ -104,16 +114,40 @@ export class CreateChallengeComponent implements OnInit {
 
   populateComponentForEdit() {
     this.challengeService.getTeamDetails(this.challengeID).subscribe(x => {
-      console.log(x);
       this.name = x['data']['challenge']['name'];
       this.description = x['data']['challenge']['description'];
-      this.currentMinigame = x['data']['challenge']['minigame'];
+      this.currentMinigame = Number(x['data']['challenge']['minigame']);
       this.lobbyID = x['data']['challenge']['lobbyid'];
       this.challengeMinigameVariables = x['data']['challenge']['variables'];
-      if (this.challengeMinigameVariables == null) {
-        this.challengeMinigameVariables = {};
+      this.world.subscribe(x => {
+        if (x == null) {
+          return;
+        }
+        this.challengeService
+          .GetChallengeSnap(this.challengeID)
+          .subscribe(y => {
+            x.children[0].openProjectString(y);
+          });
+        // this.world.children[0].openProject('Spyros');
+      });
+
+      for (let key in MiniGamesCategories) {
+        for (let category of this.MiniGameCategories[key]) {
+          if (
+            category.categoryName == x['data']['challenge']['minigame_category']
+          ) {
+            this.selectMiniGameCategory(category);
+            this.changeMinigame(this.currentMinigame);
+            if (this.challengeMinigameVariables == null) {
+              this.challengeMinigameVariables = {};
+            }
+            return;
+          }
+        }
       }
-      this.changeMinigame(this.currentMinigame);
+    });
+    this.challengeService.GetChallengePage(this.challengeID).subscribe(x => {
+      this.htmlAfter = x;
     });
   }
   populateComponentForCreate() {
@@ -134,30 +168,78 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   editTeam() {
-    this.challengeService
-      .editTeamInfo(
+    // Get Snap instance
+    const world = this.world.value;
+
+    // If not initiated yet, we wait
+    if (world == null) {
+      return;
+    }
+
+    let snapTemplateXML: string;
+
+    if (this.isSnapCanvasEmpty(world)) {
+      // Snap will produce some xml even with no blocks
+      // so to save space in database we store an empty string
+      snapTemplateXML = '';
+    } else {
+      world.children[0].setProjectName(this.name);
+      snapTemplateXML = world.children[0].serializer.serialize(
+        world.children[0].stage
+      );
+    }
+
+    forkJoin([
+      this.challengeService.editTeamInfo(
         this.challengeID,
         this.name,
         this.description,
         this.currentMinigame,
-        this.challengeMinigameVariables
-      )
-      .subscribe(x => {
-        this.storePreferences();
-        this.router.navigate(['/lobby/' + this.lobbyID]);
-      });
+        this.challengeMinigameVariables,
+        this.selectedMiniGameCategory.categoryName
+      ),
+      this.challengeService.EditChallengePage(
+        this.challengeID,
+        JSON.stringify(this.htmlAfter)
+      ),
+      this.challengeService.EditChallengeSnap(this.challengeID, snapTemplateXML)
+    ]).subscribe(x => {
+      this.storePreferences();
+      this.router.navigate(['/lobby/' + this.lobbyID]);
+    });
   }
 
   createTeam() {
-    console.log(this.htmlBefore);
-    return;
+    // Get Snap instance
+    const world = this.world.value;
+
+    // If not initiated yet, we wait
+    if (world == null) {
+      return;
+    }
+
+    let snapTemplateXML: string;
+
+    if (this.isSnapCanvasEmpty(world)) {
+      // Snap will produce some xml even with no blocks
+      // so to save space in database we store an empty string
+      snapTemplateXML = '';
+    } else {
+      world.children[0].setProjectName(this.name);
+      snapTemplateXML = world.children[0].serializer.serialize(
+        world.children[0].stage
+      );
+    }
     this.challengeService
       .createNewTeam(
         this.name,
         this.description,
         this.lobbyID,
         this.currentMinigame,
-        this.minigameVariables
+        this.minigameVariables,
+        snapTemplateXML,
+        JSON.stringify(this.htmlAfter),
+        this.selectedMiniGameCategory.categoryName
       )
       .subscribe(r => {
         if (r.status == 201) {
@@ -187,7 +269,25 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   selectMiniGameCategory(category: object) {
-    this.minigames = category['miniGames'];
+    this.MiniGames = [];
+    for (let minigame of category['miniGames']) {
+      this.MiniGames.push(this.SelectableMiniGames.find(x => x.id == minigame));
+    }
+    this.changeMinigame(this.MiniGames[0].id);
     this.selectedMiniGameCategory = category;
+  }
+
+  // Takes the world as argument and uses the serializer
+  // to find if the canvas is empty or not
+  isSnapCanvasEmpty(a): boolean {
+    // Load the current project to the serializer
+    a.children[0].serializer.store(a.children[0].stage);
+    const numberOfContents = a.children[0].serializer.contents.length;
+    a.children[0].serializer.flush();
+    // An empty project has 15 contents. So if we have 15, the user didn't add any blocks
+    if (numberOfContents == 15) {
+      return true;
+    }
+    return false;
   }
 }

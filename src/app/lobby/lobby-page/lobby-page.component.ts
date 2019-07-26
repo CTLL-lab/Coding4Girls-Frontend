@@ -29,14 +29,26 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private challengeService: ChallengeService,
     private modalService: BsModalService
-  ) {}
+  ) {
+    this.SortableJSOptions = {
+      onUpdate: (event: any) => {
+        const challengesIDOrder: Array<number> = [];
+        this.challenges.map(x => challengesIDOrder.push(x.id));
+        this.lobbyService
+          .ChangeChallengeOrderForLobby(this.id, challengesIDOrder)
+          .subscribe(x => {});
+      }
+    };
+  }
+  public SortableJSOptions;
   public id: string;
   public lobbyDetails: any;
   public newName: string;
   public showCompleted = false;
   public teamForModal;
-  public challenges;
+  public challenges = [];
   items = [1, 2, 3, 4, 5];
+  public members: Array<any>;
   ngAfterContentChecked() {}
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -49,7 +61,19 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
       //     });
     });
     this.lobbyService.GetLobbyChallenges(this.id).subscribe(r => {
-      this.challenges = r['data']['challenges'];
+      // first we store temporarily the challenges
+      const challengesTemp = r['data']['challenges'];
+      // and their order
+      const challengesOrder = r['data']['order'];
+      // and we recreate the challenges list based on this order
+      for (let i of challengesOrder) {
+        this.challenges.push(challengesTemp.find(x => x.id == i));
+      }
+      // this.challenges = r['data']['challenges'];
+    });
+    this.lobbyService.getLobbyMembers(this.id).subscribe(r => {
+      console.log(r);
+      this.members = r['data']['members'];
     });
   }
 

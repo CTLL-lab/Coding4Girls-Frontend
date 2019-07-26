@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from 'src/app/config';
 import { UserService } from 'src/app/authentication/services/user/user.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChallengeService {
@@ -11,8 +12,11 @@ export class ChallengeService {
     challengeName: string,
     challengeDescription: string,
     lobbyId: string,
-    minigame: string,
-    minigamevariables: Object
+    minigame: number,
+    minigamevariables: Object,
+    snapTemplate: string,
+    pageAfter: string,
+    minigameCategory: string
   ) {
     return this.http.post(
       apiURL + '/challenges',
@@ -21,7 +25,10 @@ export class ChallengeService {
         description: challengeDescription,
         lobbyid: lobbyId,
         minigame: minigame,
-        variables: minigamevariables
+        variables: minigamevariables,
+        snapTemplate: snapTemplate,
+        pageAfter: pageAfter,
+        miniGameCategory: minigameCategory
       },
       { observe: 'response' }
     );
@@ -31,8 +38,9 @@ export class ChallengeService {
     challengeID: string,
     challengeName: string,
     challengeDescription: string,
-    minigame: string,
-    minigamevariables: Object
+    minigame: number,
+    minigamevariables: Object,
+    minigameCategory: string
   ) {
     return this.http.put(
       apiURL + '/challenges/' + challengeID,
@@ -40,7 +48,8 @@ export class ChallengeService {
         name: challengeName,
         description: challengeDescription,
         minigame: minigame,
-        variables: minigamevariables
+        variables: minigamevariables,
+        miniGameCategory: minigameCategory
       },
       { observe: 'response' }
     );
@@ -137,5 +146,45 @@ export class ChallengeService {
 
   GetMiniGames() {
     return this.http.get(apiURL + '/mini_games');
+  }
+
+  GetChallengePage(challengeID: string) {
+    return this.http
+      .get(apiURL + '/challenges/' + challengeID + '/page', {
+        observe: 'response'
+      })
+      .pipe(map(x => x.body));
+  }
+
+  EditChallengePage(challengeID: string, pageAfter: string) {
+    return this.http
+      .put(
+        apiURL + '/challenges/' + challengeID + '/page',
+        { page: pageAfter },
+        {
+          observe: 'response'
+        }
+      )
+      .pipe(map(x => x.body));
+  }
+
+  GetChallengeSnap(challengeID: string) {
+    return this.http
+      .get(apiURL + '/challenges/' + challengeID + '/snap', {
+        observe: 'response'
+      })
+      .pipe(map(x => x.body));
+  }
+
+  EditChallengeSnap(challengeID: string, snapTemplate: string) {
+    return this.http
+      .put(
+        apiURL + '/challenges/' + challengeID + '/snap',
+        { snapTemplate: snapTemplate },
+        {
+          observe: 'response'
+        }
+      )
+      .pipe(map(x => x.body));
   }
 }

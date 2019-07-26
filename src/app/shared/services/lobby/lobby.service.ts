@@ -1,17 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from 'src/app/config';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class LobbyService {
   constructor(private http: HttpClient) {}
 
-  getUserLobbies(userID: string) {
-    return this.http.get(apiURL + '/users/' + userID + '/lobbies');
+  getUserLobbies(userID?: string) {
+    if (userID != undefined) {
+      return this.http
+        .get(apiURL + '/users/' + userID + '/lobbies', {
+          observe: 'response'
+        })
+        .pipe(map(x => x.body));
+    }
+    console.log('fetching /me/lobbies');
+    return this.http
+      .get(apiURL + '/me/lobbies', { observe: 'response' })
+      .pipe(map(x => x.body));
   }
 
   getLobbyMembers(lobbyID: string) {
-    return this.http.get(apiURL + '/lobbies/' + lobbyID + '/members');
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/members', { observe: 'response' })
+      .pipe(map(x => x.body));
   }
 
   getLobbyDetails(lobbyID: string) {
@@ -31,6 +44,9 @@ export class LobbyService {
   }
 
   createNewLobby(lobbyObject: any) {
+    // TODO
+    lobbyObject = { ...lobbyObject, snapTemplate: '' };
+
     return this.http.post(apiURL + '/lobbies', lobbyObject, {
       observe: 'response'
     });
@@ -44,5 +60,18 @@ export class LobbyService {
       lobbyObject,
       { observe: 'response' }
     );
+  }
+
+  ChangeChallengeOrderForLobby(
+    lobbyID: string,
+    challengesOrder: Array<number>
+  ) {
+    return this.http
+      .put(
+        apiURL + '/lobbies/' + lobbyID + '/challenges/order',
+        { order: challengesOrder },
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
   }
 }

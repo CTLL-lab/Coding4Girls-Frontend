@@ -6,6 +6,7 @@ import { apiURL } from 'src/app/config';
 export class SocketioService {
   public socket = io(apiURL.replace('http', 'ws'), {
     transports: ['websocket'],
-    reconnectionDelay: 500
+    reconnectionDelay: 500,
+    reconnectionAttempts: 10
   });
 }
