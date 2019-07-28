@@ -11,6 +11,12 @@ import { UserService } from '../authentication/services/user/user.service';
 import { ModalModule, BsModalService } from 'node_modules/ngx-bootstrap';
 import { LobbyService } from './services/lobby/lobby.service';
 import { SocketioService } from './services/socketio/socketio.service';
+import { QuillModule } from 'ngx-quill';
+import { CanvasComponent } from './canvas/canvas.component';
+import { NoteComponent } from './canvas/notes/note/note.component';
+import { NotesModule } from './canvas/notes/notes.module';
+import { ChallengeService } from '../lobby/services/challenge/challenge.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -20,11 +26,13 @@ import { SocketioService } from './services/socketio/socketio.service';
       preventDuplicates: true,
       resetTimeoutOnDuplicate: true
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    QuillModule.forRoot(),
+    NotesModule
   ],
-  declarations: [],
-  providers: [ToastrService],
-  exports: [TranslatePipe, NgxSpinnerComponent]
+  declarations: [CanvasComponent],
+  providers: [ToastrService, ChallengeService],
+  exports: [TranslatePipe, NgxSpinnerComponent, CanvasComponent, NoteComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

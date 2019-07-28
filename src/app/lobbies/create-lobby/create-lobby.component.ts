@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { TranslateService } from '@ngx-translate/core';
 import { priviledged_roles } from 'src/app/config';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-create-lobby',
@@ -13,6 +14,7 @@ import { priviledged_roles } from 'src/app/config';
   providers: [LobbyService]
 })
 export class CreateLobbyComponent implements OnInit {
+  public world: BehaviorSubject<any> = new BehaviorSubject(null);
   public lobbyDetails = {
     name: '',
     description: '',
@@ -28,7 +30,9 @@ export class CreateLobbyComponent implements OnInit {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService
-  ) {}
+  ) {
+    window['world'] = this.world;
+  }
 
   ngOnInit() {
     this.userPriviledged = priviledged_roles.includes(

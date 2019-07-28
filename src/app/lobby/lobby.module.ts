@@ -14,10 +14,8 @@ import { LobbyRoutingModule } from './lobby-routing.module';
 import { ChallengeService } from './services/challenge/challenge.service';
 import { SortablejsModule } from 'node_modules/angular-sortablejs';
 import { QuillModule } from 'ngx-quill';
-import { CanvasComponent } from './canvas/canvas.component';
-import { NoteComponent } from './canvas/notes/note/note.component';
-import { NotesModule } from './canvas/notes/notes.module';
-import { CanvasService } from './services/canvas/canvas.service';
+import { NoteComponent } from '../shared/canvas/notes/note/note.component';
+import { NotesModule } from '../shared/canvas/notes/notes.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,17 +24,15 @@ import { CanvasService } from './services/canvas/canvas.service';
     FormsModule,
     SharedModule,
     SortablejsModule.forRoot({}),
-    QuillModule.forRoot(),
-    NotesModule
+    QuillModule
   ],
   declarations: [
     LobbyPageComponent,
     CreateChallengeComponent,
     LobbySettingsComponent,
-    ChallengeBoxComponent,
-    CanvasComponent
+    ChallengeBoxComponent
   ],
-  providers: [ChallengeService, CanvasService]
+  providers: [ChallengeService]
 })
 export class LobbyModule {}
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { PostIt } from './postit';
 
-import { ChallengeService } from '../services/challenge/challenge.service';
+import { ChallengeService } from '../../lobby/services/challenge/challenge.service';
 import { Router } from 'node_modules/@angular/router';
 // import { TemplatesService } from '../services/templates/templates.service';
 import { NoteOptions } from './notes/note/note.component';
