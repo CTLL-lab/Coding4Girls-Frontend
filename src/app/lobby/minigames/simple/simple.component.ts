@@ -13,7 +13,5 @@ export class SimpleComponent implements OnInit {
   @Input() form: FormGroup;
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.variables, this.form);
-  }
+  ngOnInit() {}
 }

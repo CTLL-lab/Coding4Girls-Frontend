@@ -1,9 +1,11 @@
 <form [formGroup]="form">
-  <label *ngFor="let variable of variables">
-    <app-form-element
-      [form]="form"
-      [formElement]="variable"
-      class="form-row"
-    ></app-form-element>
-  </label>
+  <div class="form-group" *ngFor="let variable of variables">
+    <label>
+      <app-form-element
+        [form]="form"
+        [formElement]="variable"
+        class="form-row"
+      ></app-form-element>
+    </label>
+  </div>
 </form>

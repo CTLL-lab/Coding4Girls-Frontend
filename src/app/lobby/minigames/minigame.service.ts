@@ -103,14 +103,85 @@ export class MinigameService {
       }),
       new MinigameItem(null, { name: 'Find your path', id: 2 }),
       new MinigameItem(null, { name: 'Inventory/Marble', id: 3 }),
-      new MinigameItem(null, { name: 'Stepping Game', id: 4 }),
-      new MinigameItem(null, { name: 'Sound Game', id: 5 }),
-      new MinigameItem(null, { name: 'Snake game', id: 6 }),
-      new MinigameItem(null, { name: 'Witness Game', id: 7 }),
-      new MinigameItem(null, { name: 'Donald Game', id: 8 }),
-      new MinigameItem(null, { name: 'Stepping Game', id: 9 }),
-      new MinigameItem(null, { name: 'Slot Machine', id: 10 }),
-      new MinigameItem(null, { name: 'Multiple Questions', id: 11 })
+      new MinigameItem(null, { name: 'Stepping Game', id: 4 }), // questions
+      new MinigameItem(SimpleComponent, {
+        name: 'Sound Game',
+        id: 5,
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          }
+        ]
+      }),
+      new MinigameItem(SimpleComponent, {
+        name: 'Snake game',
+        id: 6,
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          }
+        ]
+      }),
+      new MinigameItem(SimpleComponent, {
+        name: 'Witness Game',
+        id: 7,
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          }
+        ]
+      }),
+      new MinigameItem(SimpleComponent, {
+        name: 'Donald Game',
+        id: 8,
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          },
+          {
+            label: 'Operation family',
+            key: 'opfamily',
+            controlType: 'dropdown',
+            options: [
+              { key: 'basicop', value: 'Basic operations' },
+              { key: 'advop', value: 'Advanced operations' },
+              { key: 'trig', value: 'Trigonometry' },
+              { key: 'all', value: 'All' }
+            ]
+          }
+        ]
+      }),
+      new MinigameItem(null, { name: 'Stepping Game', id: 9 }), // questions
+      new MinigameItem(SimpleComponent, {
+        name: 'Slot Machine',
+        id: 10,
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          }
+        ]
+      }),
+      new MinigameItem(null, { name: 'Multiple Questions', id: 11 }) // questions
     ];
   }
   getMinigames(): MinigameItem[] {

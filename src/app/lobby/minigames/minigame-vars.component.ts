@@ -4,7 +4,8 @@ import {
   OnInit,
   ViewChild,
   ComponentFactoryResolver,
-  OnDestroy
+  OnDestroy,
+  OnChanges
 } from '@angular/core';
 import { MinigameItem } from './minigame-item';
 import { MinigameVarsDirective } from './minigame-vars.directive';
@@ -19,7 +20,7 @@ import { FormGroup } from '@angular/forms';
     </div>
   `
 })
-export class MinigameVarsComponent implements OnInit, OnDestroy {
+export class MinigameVarsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() minigame: MinigameItem;
   @Input() varsForm: FormGroup;
   @ViewChild(MinigameVarsDirective) MinigameHost: MinigameVarsDirective;
@@ -31,6 +32,10 @@ export class MinigameVarsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {}
+
+  ngOnChanges() {
+    this.loadComponent();
+  }
 
   loadComponent() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
