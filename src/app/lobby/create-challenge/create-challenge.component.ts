@@ -8,6 +8,9 @@ import { MiniGamesCategories, MiniGames } from './minigametags';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
 import { forkJoin, BehaviorSubject } from 'rxjs';
+import { MinigameService } from '../minigames/minigame.service';
+import { MinigameItem } from '../minigames/minigame-item';
+import { FormGroup } from '@angular/forms';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -35,15 +38,17 @@ export class CreateChallengeComponent implements OnInit {
   public minigameVariables = [];
   public challengeMinigameVariables = {};
   mode: string;
-
+  public minigameType: string;
   public MiniGameHeaders: Array<string> = [];
-  public MiniGameCategories = MiniGamesCategories;
+  public MiniGameCategories;
   public SelectableMiniGames = MiniGames;
 
   public htmlAfter = {};
 
   public selectedMiniGameCategory;
 
+  public currentMinigameObject: MinigameItem;
+  public currentMinigameForm: FormGroup;
   public quillModules = {
     imageResize: {},
     toolbar: [
@@ -74,8 +79,10 @@ export class CreateChallengeComponent implements OnInit {
     private challengeService: ChallengeService,
     private router: Router,
     private notifications: NotificationsToasterService,
-    private translationService: TranslateService
+    private translationService: TranslateService,
+    private minigamesService: MinigameService
   ) {
+    this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
     window['world'] = this.world;
     for (let key in MiniGamesCategories) {
       this.MiniGameHeaders.push(key);
@@ -96,9 +103,14 @@ export class CreateChallengeComponent implements OnInit {
     this.minigameVariables = this.SelectableMiniGames.find(
       x => x.id == id
     ).variables;
+    this.minigameType = this.SelectableMiniGames.find(x => x.id == id).type;
     if (this.minigameVariables == undefined) {
       this.minigameVariables = [];
     }
+    this.currentMinigameObject = this.minigamesService.getMinigameItemByID(id);
+    this.currentMinigameForm = this.minigamesService.getMinigameByIDAsFormGroup(
+      id
+    );
   }
   populateComponent(mode: string) {
     switch (mode) {
@@ -275,6 +287,10 @@ export class CreateChallengeComponent implements OnInit {
     }
     this.changeMinigame(this.MiniGames[0].id);
     this.selectedMiniGameCategory = category;
+  }
+
+  addVariable() {
+    this.minigameVariables.push([]);
   }
 
   // Takes the world as argument and uses the serializer

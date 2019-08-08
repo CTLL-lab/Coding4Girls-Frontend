@@ -22,7 +22,21 @@ export const MiniGames = [
     variables: [
       { name: 'first_question', value: 'first_answer' },
       { name: 'second_question', value: 'second_answer' }
-    ]
+    ],
+
+    // variables: {
+    //   questions: [
+    //     {
+    //       question: 'First question',
+    //       answers: [
+    //         { text: 'Spyros', image: null, correct: false },
+    //         { text: 'C4G', image: 'url', correct: true },
+    //         { text: null, image: 'url2', correct: true }
+    //       ]
+    //     }
+    //   ]
+    // },
+    type: 'flex'
   }
 ];
 

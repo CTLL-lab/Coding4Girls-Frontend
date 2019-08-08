@@ -49,7 +49,14 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
   public challenges = [];
   items = [1, 2, 3, 4, 5];
   public members: Array<any>;
+
+  public currentDraggingBox = -1;
+
   ngAfterContentChecked() {}
+
+  dragStartMoises(event) {
+    console.log(event);
+  }
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {

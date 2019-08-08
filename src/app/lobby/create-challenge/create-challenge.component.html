@@ -100,17 +100,17 @@
             </button>
           </div>
         </div>
-        <div class="form-group row" *ngFor="let variable of minigameVariables">
-          <div class="col-md-6">
-            <label for="{{ variable.name }}" class="font-weight-bold">{{
-              variable.name
-            }}</label>
-            <input
-              id="{{ variable.name }}"
-              [(ngModel)]="variable.value"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </div>
+        <app-minigame-vars
+          *ngIf="currentMinigameObject"
+          [minigame]="currentMinigameObject"
+          [varsForm]="currentMinigameForm"
+        ></app-minigame-vars>
+        <div>
+          <i
+            class="fas fa-plus"
+            *ngIf="minigameType && minigameType == 'flex'"
+            (click)="addVariable()"
+          ></i>
         </div>
         <div class="form-group row">
           <ul class="nav nav-tabs" id="challengePages" role="tablist">

@@ -16,6 +16,9 @@ import { SortablejsModule } from 'node_modules/angular-sortablejs';
 import { QuillModule } from 'ngx-quill';
 import { NoteComponent } from '../shared/canvas/notes/note/note.component';
 import { NotesModule } from '../shared/canvas/notes/notes.module';
+import { MinigameVarsDirective } from './minigames/minigame-vars.directive';
+import { MinigamesModule } from './minigames/minigames.module';
+import { SimpleComponent } from './minigames/simple/simple.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +27,8 @@ import { NotesModule } from '../shared/canvas/notes/notes.module';
     FormsModule,
     SharedModule,
     SortablejsModule.forRoot({}),
-    QuillModule
+    QuillModule,
+    MinigamesModule
   ],
   declarations: [
     LobbyPageComponent,
@@ -32,7 +36,8 @@ import { NotesModule } from '../shared/canvas/notes/notes.module';
     LobbySettingsComponent,
     ChallengeBoxComponent
   ],
-  providers: [ChallengeService]
+  providers: [ChallengeService],
+  entryComponents: [SimpleComponent]
 })
 export class LobbyModule {}
 

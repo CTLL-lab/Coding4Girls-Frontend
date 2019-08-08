@@ -84,7 +84,11 @@
       </div>
     </div>
     <div class="list-group col-sm-4">
-      <div [sortablejs]="challenges" [sortablejsOptions]="SortableJSOptions">
+      <div
+        [sortablejs]="challenges"
+        [sortablejsOptions]="SortableJSOptions"
+        (dragstart)="dragStartMoises($event)"
+      >
         <div *ngFor="let challenge of challenges; let i = index">
           <app-challenge-box
             class="my-3"
@@ -93,10 +97,12 @@
             [BottomText]="'Mini game:' + challenge.minigame"
             (SettingsClicked)="openChallengeSettings(challenge.id)"
           ></app-challenge-box>
+
           <div class="col text-center">
             <i
               class="fas fa-arrow-down fa-3x"
               *ngIf="challenges.length != i + 1"
+              id="{{ i }}"
             ></i>
           </div>
         </div>
