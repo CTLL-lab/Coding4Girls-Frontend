@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LobbySettingsComponent } from './lobby-settings/lobby-settings.component';
 import { LobbyPageComponent } from './lobby-page/lobby-page.component';
 import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
+import { SolutionsComponent } from './solutions/solutions.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
   {
     path: ':id/team/new',
     component: CreateChallengeComponent
-  }
+  },
+  { path: ':id/solutions', component: SolutionsComponent }
 ];
 
 @NgModule({

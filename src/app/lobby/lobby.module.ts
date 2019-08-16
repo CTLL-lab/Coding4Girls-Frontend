@@ -14,11 +14,14 @@ import { LobbyRoutingModule } from './lobby-routing.module';
 import { ChallengeService } from './services/challenge/challenge.service';
 import { SortablejsModule } from 'node_modules/angular-sortablejs';
 import { QuillModule } from 'ngx-quill';
-import { NoteComponent } from '../shared/canvas/notes/note/note.component';
-import { NotesModule } from '../shared/canvas/notes/notes.module';
-import { MinigameVarsDirective } from './minigames/minigame-vars.directive';
 import { MinigamesModule } from './minigames/minigames.module';
 import { SimpleComponent } from './minigames/simple/simple.component';
+import { QuestionareComponent } from './minigames/questionare/questionare.component';
+import { SolutionsComponent } from './solutions/solutions.component';
+import { SolutionPageComponent } from './solution-page/solution-page.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SolutionsService } from './services/solutions/solutions.service';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -28,16 +31,19 @@ import { SimpleComponent } from './minigames/simple/simple.component';
     SharedModule,
     SortablejsModule.forRoot({}),
     QuillModule,
-    MinigamesModule
+    MinigamesModule,
+    NgxDatatableModule
   ],
   declarations: [
     LobbyPageComponent,
     CreateChallengeComponent,
     LobbySettingsComponent,
-    ChallengeBoxComponent
+    ChallengeBoxComponent,
+    SolutionsComponent,
+    SolutionPageComponent
   ],
-  providers: [ChallengeService],
-  entryComponents: [SimpleComponent]
+  providers: [ChallengeService, SolutionsService],
+  entryComponents: [SimpleComponent, QuestionareComponent]
 })
 export class LobbyModule {}
 
