@@ -4,6 +4,7 @@ import { LobbySettingsComponent } from './lobby-settings/lobby-settings.componen
 import { LobbyPageComponent } from './lobby-page/lobby-page.component';
 import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
 import { SolutionsComponent } from './solutions/solutions.component';
+import { SolutionPageComponent } from './solution-page/solution-page.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,11 @@ const routes: Routes = [
     path: ':id/team/new',
     component: CreateChallengeComponent
   },
-  { path: ':id/solutions', component: SolutionsComponent }
+  { path: ':id/solutions', component: SolutionsComponent },
+  {
+    path: ':id/solutions/:userID/:challengeID',
+    component: SolutionPageComponent
+  }
 ];
 
 @NgModule({
