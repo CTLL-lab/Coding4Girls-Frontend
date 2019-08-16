@@ -17,7 +17,6 @@ import { forkJoin, BehaviorSubject, Subscription } from 'rxjs';
 import { MinigameService } from '../minigames/minigame.service';
 import { MinigameItem } from '../minigames/minigame-item';
 import { FormGroup } from '@angular/forms';
-import { SnapService } from 'src/app/shared/services/snap/snap.service';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -87,8 +86,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService,
-    private minigamesService: MinigameService,
-    private snapService: SnapService
+    private minigamesService: MinigameService
   ) {
     window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
@@ -148,11 +146,9 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           return;
         }
 
-        console.log(x);
         this.challengeService
           .GetChallengeSnap(this.challengeID)
           .subscribe(y => {
-            console.log(String(y));
             x.children[0].rawOpenProjectString(y);
           });
         this.worldSubscription.unsubscribe();
@@ -206,7 +202,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
 
     let snapTemplateXML: string;
 
-    if (this.snapService.isSnapCanvasEmpty(world)) {
+    if (this.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
       snapTemplateXML = '';
@@ -216,7 +212,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         world.children[0].stage
       );
     }
-    console.log(snapTemplateXML);
+
     forkJoin([
       this.challengeService.editTeamInfo(
         this.challengeID,
@@ -250,7 +246,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
 
     let snapTemplateXML: string;
 
-    if (this.snapService.isSnapCanvasEmpty(world)) {
+    if (this.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
       snapTemplateXML = '';
