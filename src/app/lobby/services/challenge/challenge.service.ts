@@ -187,4 +187,20 @@ export class ChallengeService {
       )
       .pipe(map(x => x.body));
   }
+
+  GetChallengeSnapSolutionFromUser(challengeID: string, userID: string) {
+    return this.http
+      .get(
+        apiURL +
+          '/users/' +
+          userID +
+          '/challenges/' +
+          challengeID +
+          '/solution',
+        {
+          observe: 'response'
+        }
+      )
+      .pipe(map(x => x.body));
+  }
 }
