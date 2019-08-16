@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { SolutionsService } from '../services/solutions/solutions.service';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-solutions',
@@ -9,6 +10,7 @@ import { Subscription } from 'rxjs';
 })
 export class SolutionsComponent implements OnInit, OnDestroy {
   private lobbySolutionsSubscriber: Subscription;
+  private lobbyID: string;
   public rows = [];
   public columns = [
     { name: 'Username', prop: 'username' },
@@ -21,11 +23,15 @@ export class SolutionsComponent implements OnInit, OnDestroy {
       pipe: new SubmittedPipe()
     }
   ];
-  constructor(private solutionsService: SolutionsService) {}
+  constructor(
+    private solutionsService: SolutionsService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    this.lobbyID = this.route.snapshot.paramMap.get('id');
     this.lobbySolutionsSubscriber = this.solutionsService
-      .GetLobbySolutions('24')
+      .GetLobbySolutions(this.lobbyID)
       .subscribe(x => {
         this.rows = (<Array<any>>x).map(element => {
           return {
