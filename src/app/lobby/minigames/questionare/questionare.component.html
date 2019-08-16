@@ -1,3 +1,98 @@
-<p>
-  questionare works!
-</p>
+<form [formGroup]="form">
+  <div class="form-group" *ngFor="let variable of variables">
+    <app-form-element
+      [form]="form"
+      [formElement]="variable"
+      class="form-row"
+    ></app-form-element>
+  </div>
+  <div class="form-header" formArrayName="questions">
+    <div *ngFor="let question of QuestionsForm.controls; let i = index">
+      <div class="form-group">
+        <div [formGroupName]="i">
+          <div class="form-row">
+            Question {{ i + 1 }}:
+            <div class="col-auto">
+              <input
+                type="text"
+                class="form-control"
+                [formControlName]="'question'"
+              />
+            </div>
+            <div class="col-auto" *ngIf="options.allowsImageUpload">
+              <input
+                id="imagebox"
+                type="text"
+                class="form-control"
+                placeholder="Image url"
+                [formControlName]="'questionImage'"
+              />
+            </div>
+            <div class="col-auto" *ngIf="options.allowsImageUpload">
+              <input
+                type="file"
+                placeholder="Upload image"
+                (change)="fileChange($event, i, -1)"
+              />
+            </div>
+          </div>
+          <div
+            *ngFor="
+              let answer of question.get('answers')['controls'];
+              let j = index
+            "
+            [formArrayName]="'answers'"
+          >
+            <div class="form-row" [formGroupName]="j">
+              Answer {{ j + 1 }}:
+              <div class="col-auto">
+                <input
+                  type="text"
+                  [formControlName]="'answer'"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-auto" *ngIf="options.allowsImageUpload">
+                <input
+                  id="Answerimagebox"
+                  type="text"
+                  class="form-control"
+                  placeholder="Image url"
+                  [formControlName]="'image'"
+                />
+              </div>
+              <div class="col-auto" *ngIf="options.allowsImageUpload">
+                <input
+                  type="file"
+                  placeholder="Upload image"
+                  (change)="fileChange($event, i, j)"
+                />
+              </div>
+              <div class="col-auto">
+                <input
+                  type="radio"
+                  [value]="true"
+                  [name]="'correct'"
+                  [formTarget]="'correct'"
+                  *ngIf="
+                    !this.options.multipleCorrectAnswers &&
+                    this.options.numberOfAnswers > 1
+                  "
+                />
+                <input
+                  type="checkbox"
+                  [value]="true"
+                  [formControlName]="'correct'"
+                  *ngIf="this.options.multipleCorrectAnswers"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!this.options.fixedNumberOfQuestions">
+      <i class="fas fa-plus-circle fa-lg" (click)="addQuestion()"></i>
+    </div>
+  </div>
+</form>
