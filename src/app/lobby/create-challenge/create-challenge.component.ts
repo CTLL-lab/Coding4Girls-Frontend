@@ -1,4 +1,10 @@
-import { Component, OnInit, OnChanges, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  AfterViewInit,
+  OnDestroy
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
@@ -7,10 +13,11 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
 import { MiniGamesCategories, MiniGames } from './minigametags';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
-import { forkJoin, BehaviorSubject } from 'rxjs';
+import { forkJoin, BehaviorSubject, Subscription } from 'rxjs';
 import { MinigameService } from '../minigames/minigame.service';
 import { MinigameItem } from '../minigames/minigame-item';
 import { FormGroup } from '@angular/forms';
+import { SnapService } from 'src/app/shared/services/snap/snap.service';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -19,9 +26,9 @@ Quill.register('modules/imageResize', ImageResize);
   styleUrls: ['./create-challenge.component.css'],
   providers: [ChallengeService]
 })
-export class CreateChallengeComponent implements OnInit {
-  public world: BehaviorSubject<any> = new BehaviorSubject(null);
-
+export class CreateChallengeComponent implements OnInit, OnDestroy {
+  public worldBehaviorSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public worldSubscription: Subscription;
   public numberOfLevels: number;
   public levelNames: Array<any>;
   public role: string;
@@ -80,10 +87,11 @@ export class CreateChallengeComponent implements OnInit {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService,
-    private minigamesService: MinigameService
+    private minigamesService: MinigameService,
+    private snapService: SnapService
   ) {
+    window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
-    window['world'] = this.world;
     for (let key in MiniGamesCategories) {
       this.MiniGameHeaders.push(key);
     }
@@ -96,6 +104,10 @@ export class CreateChallengeComponent implements OnInit {
       this.mode = 'create';
     }
     this.populateComponent(this.mode);
+  }
+
+  ngOnDestroy() {
+    this.worldSubscription.unsubscribe();
   }
 
   changeMinigame(id: number) {
@@ -131,17 +143,21 @@ export class CreateChallengeComponent implements OnInit {
       this.currentMinigame = Number(x['data']['challenge']['minigame']);
       this.lobbyID = x['data']['challenge']['lobbyid'];
       this.challengeMinigameVariables = x['data']['challenge']['variables'];
-      this.world.subscribe(x => {
+      this.worldSubscription = this.worldBehaviorSubject.subscribe(x => {
         if (x == null) {
           return;
         }
+
+        console.log(x);
         this.challengeService
           .GetChallengeSnap(this.challengeID)
           .subscribe(y => {
-            x.children[0].openProjectString(y);
+            console.log(String(y));
+            x.children[0].rawOpenProjectString(y);
           });
-        // this.world.children[0].openProject('Spyros');
+        this.worldSubscription.unsubscribe();
       });
+      // });
 
       for (let key in MiniGamesCategories) {
         for (let category of this.MiniGameCategories[key]) {
@@ -181,7 +197,7 @@ export class CreateChallengeComponent implements OnInit {
 
   editTeam() {
     // Get Snap instance
-    const world = this.world.value;
+    const world = this.worldBehaviorSubject.value;
 
     // If not initiated yet, we wait
     if (world == null) {
@@ -190,7 +206,7 @@ export class CreateChallengeComponent implements OnInit {
 
     let snapTemplateXML: string;
 
-    if (this.isSnapCanvasEmpty(world)) {
+    if (this.snapService.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
       snapTemplateXML = '';
@@ -200,7 +216,7 @@ export class CreateChallengeComponent implements OnInit {
         world.children[0].stage
       );
     }
-
+    console.log(snapTemplateXML);
     forkJoin([
       this.challengeService.editTeamInfo(
         this.challengeID,
@@ -222,8 +238,10 @@ export class CreateChallengeComponent implements OnInit {
   }
 
   createTeam() {
+    // console.log(this.currentMinigameForm.value);
+
     // Get Snap instance
-    const world = this.world.value;
+    const world = this.worldBehaviorSubject.value;
 
     // If not initiated yet, we wait
     if (world == null) {
@@ -232,7 +250,7 @@ export class CreateChallengeComponent implements OnInit {
 
     let snapTemplateXML: string;
 
-    if (this.isSnapCanvasEmpty(world)) {
+    if (this.snapService.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
       snapTemplateXML = '';
@@ -248,7 +266,7 @@ export class CreateChallengeComponent implements OnInit {
         this.description,
         this.lobbyID,
         this.currentMinigame,
-        this.minigameVariables,
+        this.currentMinigameForm.value,
         snapTemplateXML,
         JSON.stringify(this.htmlAfter),
         this.selectedMiniGameCategory.categoryName

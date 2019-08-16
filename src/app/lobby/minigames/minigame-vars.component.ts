@@ -38,6 +38,9 @@ export class MinigameVarsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   loadComponent() {
+    if (this.minigame.component == null) {
+      return;
+    }
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       this.minigame.component
     );
@@ -50,5 +53,10 @@ export class MinigameVarsComponent implements OnInit, OnDestroy, OnChanges {
       componentRef.instance
     )).variables = this.minigame.data.variables;
     (<VarsComponent>componentRef.instance).form = this.varsForm;
+    if (this.minigame.data.options) {
+      (<VarsComponent>componentRef.instance)[
+        'options'
+      ] = this.minigame.data.options;
+    }
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MinigameItem } from './minigame-item';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SimpleComponent } from './simple/simple.component';
+import { QuestionareComponent } from './questionare/questionare.component';
 
 @Injectable()
 export class MinigameService {
@@ -101,9 +102,29 @@ export class MinigameService {
           }
         ]
       }),
-      new MinigameItem(null, { name: 'Find your path', id: 2 }),
-      new MinigameItem(null, { name: 'Inventory/Marble', id: 3 }),
-      new MinigameItem(null, { name: 'Stepping Game', id: 4 }), // questions
+      new MinigameItem(QuestionareComponent, {
+        name: 'Find your path',
+        id: 2,
+        options: {
+          fixedNumberOfQuestions: true,
+          numberOfQuestions: 5,
+          multipleCorrectAnswers: false,
+          allowsImageUpload: false,
+          numberOfAnswers: 2
+        }
+      }),
+      new MinigameItem(null, { name: 'Inventory/Marble', id: 3 }), // null because no variables
+      new MinigameItem(QuestionareComponent, {
+        name: 'Stepping Game',
+        id: 4,
+        options: {
+          fixedNumberOfQuestions: false,
+          numberOfQuestions: 5,
+          multipleCorrectAnswers: false,
+          allowsImageUpload: false,
+          numberOfAnswers: 1
+        }
+      }), // questions
       new MinigameItem(SimpleComponent, {
         name: 'Sound Game',
         id: 5,
@@ -167,7 +188,17 @@ export class MinigameService {
           }
         ]
       }),
-      new MinigameItem(null, { name: 'Stepping Game', id: 9 }), // questions
+      new MinigameItem(QuestionareComponent, {
+        name: 'Stepping Game',
+        id: 9,
+        options: {
+          fixedNumberOfQuestions: false,
+          numberOfQuestions: 5,
+          multipleCorrectAnswers: false,
+          allowsImageUpload: false,
+          numberOfAnswers: 1
+        }
+      }),
       new MinigameItem(SimpleComponent, {
         name: 'Slot Machine',
         id: 10,
@@ -181,7 +212,26 @@ export class MinigameService {
           }
         ]
       }),
-      new MinigameItem(null, { name: 'Multiple Questions', id: 11 }) // questions
+      new MinigameItem(QuestionareComponent, {
+        name: 'Multiple Questions',
+        id: 11,
+        options: {
+          fixedNumberOfQuestions: false,
+          numberOfQuestions: 5,
+          multipleCorrectAnswers: true,
+          allowsImageUpload: true,
+          numberOfAnswers: 4
+        },
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox'
+          }
+        ]
+      })
     ];
   }
   getMinigames(): MinigameItem[] {
@@ -195,11 +245,13 @@ export class MinigameService {
   getMinigameByIDAsFormGroup(id: number) {
     let group: any = {};
     const minigame = this.getMinigameItemByID(id);
-    minigame.data.variables.forEach(question => {
-      group[question.key] = question.required
-        ? new FormControl(question.value || '', Validators.required)
-        : new FormControl(question.value || '');
-    });
+    if (minigame.data.variables != null) {
+      minigame.data.variables.forEach(question => {
+        group[question.key] = question.required
+          ? new FormControl(question.value || '', Validators.required)
+          : new FormControl(question.value || '');
+      });
+    }
     return new FormGroup(group);
   }
 
@@ -207,9 +259,3 @@ export class MinigameService {
     return this.MiniGames.find(x => x.data.id == id);
   }
 }
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/
