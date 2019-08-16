@@ -16,6 +16,7 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { NoteComponent } from './canvas/notes/note/note.component';
 import { NotesModule } from './canvas/notes/notes.module';
 import { ChallengeService } from '../lobby/services/challenge/challenge.service';
+import { UploaderService } from './canvas/notes/services/uploader/uploader.service';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ export class SharedModule {
         UserService,
         BsModalService,
         LobbyService,
-        SocketioService
+        SocketioService,
+        UploaderService
       ]
     };
   }
