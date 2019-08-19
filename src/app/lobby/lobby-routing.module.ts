@@ -27,6 +27,16 @@ const routes: Routes = [
   {
     path: ':id/solutions/:userID/:challengeID',
     component: SolutionPageComponent
+  },
+  {
+    path: ':id/solutions/lobby',
+    component: SolutionsComponent,
+    data: { lobby: true }
+  },
+  {
+    path: ':id/solutions/lobby/:userID',
+    component: SolutionPageComponent,
+    data: { lobby: true }
   }
 ];
 
