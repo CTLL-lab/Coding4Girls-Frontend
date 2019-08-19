@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  AfterViewInit,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
