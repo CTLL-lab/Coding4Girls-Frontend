@@ -20,4 +20,16 @@ export class AnswersService {
         })
       );
   }
+
+  GetLobbyChallengesSolutions(lobbyID: string) {
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/challenges/solutions', {
+        observe: 'response'
+      })
+      .pipe(
+        map(x => {
+          return x.body;
+        })
+      );
+  }
 }
