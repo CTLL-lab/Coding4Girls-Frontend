@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class SolutionsService {
+export class AnswersService {
   constructor(private http: HttpClient) {}
 
   GetLobbySolutions(lobbyID: string) {

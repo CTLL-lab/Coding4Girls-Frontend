@@ -20,7 +20,7 @@ import { QuestionareComponent } from './minigames/questionare/questionare.compon
 import { SolutionsComponent } from './solutions/solutions.component';
 import { SolutionPageComponent } from './solution-page/solution-page.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { SolutionsService } from './services/solutions/solutions.service';
+import { AnswersService } from './services/answers/answers.service';
 
 @NgModule({
   imports: [
@@ -42,7 +42,7 @@ import { SolutionsService } from './services/solutions/solutions.service';
     SolutionsComponent,
     SolutionPageComponent
   ],
-  providers: [ChallengeService, SolutionsService],
+  providers: [ChallengeService, AnswersService],
   entryComponents: [SimpleComponent, QuestionareComponent]
 })
 export class LobbyModule {}
