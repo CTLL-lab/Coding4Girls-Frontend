@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
-import { SolutionsService } from '../services/solutions/solutions.service';
+import { AnswersService } from '../services/answers/answers.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -8,45 +8,61 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './solutions.component.html',
   styleUrls: ['./solutions.component.css']
 })
-export class SolutionsComponent implements OnInit, OnDestroy {
-  private lobbySolutionsSubscriber: Subscription;
+export class SolutionsComponent implements OnInit {
   private lobbyID: string;
   public rows = [];
-  public columns = [
-    { name: 'Username', prop: 'username' },
-    { name: 'First name', prop: 'fname' },
-    { name: 'Last name', prop: 'lname' },
-    { name: 'Challenge name', prop: 'challengeName' },
-    { name: 'Solution link' },
-    {
-      name: 'Submitted',
-      pipe: new SubmittedPipe()
-    }
-  ];
+  public currentState: SolutionsComponentState;
   constructor(
-    private solutionsService: SolutionsService,
+    private answersService: AnswersService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.lobbyID = this.route.snapshot.paramMap.get('id');
-    this.lobbySolutionsSubscriber = this.solutionsService
-      .GetLobbySolutions(this.lobbyID)
-      .subscribe(x => {
-        this.rows = (<Array<any>>x).map(element => {
-          return {
-            username: element.username,
-            fname: element.fname,
-            lname: element.lname,
-            challengeName: element.name,
-            submitted: element.last_update != null
-          };
+    this.route.data.subscribe(x => {
+      if (x['lobby']) {
+        this.currentState = new LobbySolutionsState();
+        this.answersService.GetLobbySolutions(this.lobbyID).subscribe(x => {
+          this.rows = (<Array<any>>x).map(element => {
+            return {
+              username: element.username,
+              fname: element.fname,
+              lname: element.lname,
+              submitted: element.last_update != null,
+              link:
+                element.last_update != null
+                  ? '<a href="/#/lobby/24/solutions/' +
+                    element.userid +
+                    '/">Solution</a>'
+                  : ''
+            };
+          });
         });
-      });
-  }
-
-  ngOnDestroy() {
-    this.lobbySolutionsSubscriber.unsubscribe();
+      } else {
+        this.currentState = new ChallengeSolutionsState();
+        this.answersService
+          .GetLobbyChallengesSolutions(this.lobbyID)
+          .subscribe(x => {
+            this.rows = (<Array<any>>x).map(element => {
+              return {
+                username: element.username,
+                fname: element.fname,
+                lname: element.lname,
+                challengeName: element.name,
+                submitted: element.last_update != null,
+                link:
+                  element.last_update != null
+                    ? '<a href="/#/lobby/24/solutions/' +
+                      element.userid +
+                      '/' +
+                      element.challengeid +
+                      '">Solution</a>'
+                    : ''
+              };
+            });
+          });
+      }
+    });
   }
 
   GetCSSClassForRow(row) {
@@ -57,8 +73,25 @@ export class SolutionsComponent implements OnInit, OnDestroy {
   }
 }
 
-class SubmittedPipe implements PipeTransform {
-  transform(value: any, ...args: any[]) {
-    return value ? '✅' : '—';
-  }
+interface SolutionsComponentState {
+  columns: Array<any>;
+}
+
+class ChallengeSolutionsState implements SolutionsComponentState {
+  public columns = [
+    { name: 'Username', prop: 'username' },
+    { name: 'First name', prop: 'fname' },
+    { name: 'Last name', prop: 'lname' },
+    { name: 'Challenge name', prop: 'challengeName' },
+    { name: 'Solution link', prop: 'link' }
+  ];
+}
+
+class LobbySolutionsState implements SolutionsComponentState {
+  public columns = [
+    { name: 'Username', prop: 'username' },
+    { name: 'First name', prop: 'fname' },
+    { name: 'Last name', prop: 'lname' },
+    { name: 'Solution link', prop: 'link' }
+  ];
 }
