@@ -6,7 +6,6 @@ import { NgxSpinnerModule, NgxSpinnerComponent } from 'ngx-spinner';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { NotificationsToasterService } from './services/toaster/notifications-toaster.service';
 import { SpinnerService } from './services/spinner/spinner.service';
-import { AuthenticationService } from '../authentication/services/auth/authentication.service';
 import { UserService } from '../authentication/services/user/user.service';
 import { ModalModule, BsModalService } from 'node_modules/ngx-bootstrap';
 import { LobbyService } from './services/lobby/lobby.service';
