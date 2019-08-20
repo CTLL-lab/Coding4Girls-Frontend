@@ -8,7 +8,6 @@ import { SharedModule } from '../shared/shared.module';
 import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
 import { FormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
-import { NotesModule } from '../shared/canvas/notes/notes.module';
 
 @NgModule({
   declarations: [LobbiesComponent, CreateLobbyComponent],
