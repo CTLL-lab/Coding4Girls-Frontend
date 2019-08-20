@@ -80,9 +80,6 @@ export class CanvasComponent implements OnChanges, OnInit {
       this.canvasID = this.level.id;
       this.notesProvider.joinCanvas(this.canvasID);
     }
-    if (this.level !== null) {
-      this.currentTemplate = this.level.appliedTemplate;
-    }
   }
 
   async addNewNote(note = null) {
