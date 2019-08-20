@@ -1,15 +1,15 @@
 <div>
+  <div class="col-sm-6">
+    <button
+      class="btn btn-primary"
+      (click)="showNewNoteModal(newNoteModal)"
+      *ngIf="canAddNotes"
+      [disabled]="!canAddNotes"
+    >
+      <span>{{ 'canvas.11' | translate }} </span>
+    </button>
+  </div>
   <form class="form-row form-inline">
-    <div class="col-sm-6">
-      <button
-        class="btn btn-primary"
-        (click)="showNewNoteModal(newNoteModal)"
-        *ngIf="canAddNotes"
-        [disabled]="!canAddNotes"
-      >
-        <span>{{ 'canvas.11' | translate }} </span>
-      </button>
-    </div>
     <div *ngIf="userService.getRole() == 'teacher'" class="form-group col-sm-6">
       <select #templateDropdown class="float-right form-control h-100">
         <option value="0" [selected]="currentTemplate == null"
