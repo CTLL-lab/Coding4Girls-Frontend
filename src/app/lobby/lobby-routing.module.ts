@@ -5,6 +5,7 @@ import { LobbyPageComponent } from './lobby-page/lobby-page.component';
 import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
 import { SolutionsComponent } from './solutions/solutions.component';
 import { SolutionPageComponent } from './solution-page/solution-page.component';
+import { BrainstormComponent } from './brainstorm/brainstorm.component';
 
 const routes: Routes = [
   {
@@ -37,7 +38,8 @@ const routes: Routes = [
     path: ':id/solutions/lobby/:userID',
     component: SolutionPageComponent,
     data: { lobby: true }
-  }
+  },
+  { path: ':id/brainstorm', component: BrainstormComponent }
 ];
 
 @NgModule({

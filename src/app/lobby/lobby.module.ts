@@ -21,6 +21,7 @@ import { SolutionsComponent } from './solutions/solutions.component';
 import { SolutionPageComponent } from './solution-page/solution-page.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AnswersService } from './services/answers/answers.service';
+import { BrainstormComponent } from './brainstorm/brainstorm.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { AnswersService } from './services/answers/answers.service';
     LobbySettingsComponent,
     ChallengeBoxComponent,
     SolutionsComponent,
-    SolutionPageComponent
+    SolutionPageComponent,
+    BrainstormComponent
   ],
   providers: [ChallengeService, AnswersService],
   entryComponents: [SimpleComponent, QuestionareComponent]
