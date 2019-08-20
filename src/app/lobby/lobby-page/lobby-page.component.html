@@ -49,20 +49,11 @@
         <span i18n>Lobby Answers</span>
       </button>
       <button
+        routerLink="/lobby/{{ id }}/brainstorm"
         type="button"
-        class="btn btn-danger"
-        *ngIf="userService.getRole() == 'teacher' && !lobbyDetails?.locked"
-        (click)="lockLobby()"
+        class="btn btn-dark"
       >
-        <span>{{ 'lobby-page.4' | translate }}</span>
-      </button>
-      <button
-        type="button"
-        class="btn btn-danger"
-        *ngIf="userService.getRole() == 'teacher' && lobbyDetails?.locked"
-        (click)="unlockLobby()"
-      >
-        <span>{{ 'lobby-page.26' | translate }}</span>
+        <span i18n>Brainstorm Canvas</span>
       </button>
     </div>
     <div class="form-check">
