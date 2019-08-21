@@ -26,7 +26,8 @@
               "./node_modules/quill/dist/quill.snow.css",
               "./node_modules/@swimlane/ngx-datatable/release/index.css",
               "./node_modules/@swimlane/ngx-datatable/release/themes/bootstrap.css",
-              "./node_modules/@swimlane/ngx-datatable/release/assets/icons.css"
+              "./node_modules/@swimlane/ngx-datatable/release/assets/icons.css",
+              "node_modules/angular2-draggable/css/resizable.min.css"
             ],
             "scripts": ["./node_modules/quill/dist/quill.min.js"]
           },
