@@ -4,7 +4,7 @@ import { apiURL } from 'src/app/config';
 
 @Injectable({ providedIn: 'root' })
 export class SocketioService {
-  public socket = io(apiURL.replace('http', 'ws'), {
+  public socket: SocketIOClient.Socket = io(apiURL.replace('http', 'ws'), {
     transports: ['websocket'],
     reconnectionDelay: 500,
     reconnectionAttempts: 10
