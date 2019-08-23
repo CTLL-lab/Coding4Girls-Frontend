@@ -4,7 +4,8 @@ import {
   OnChanges,
   SimpleChanges,
   OnInit,
-  TemplateRef
+  TemplateRef,
+  OnDestroy
 } from '@angular/core';
 import { PostIt } from './postit';
 
@@ -25,15 +26,14 @@ import { NotesProviderService } from './notes/services/notes/notes-provider.serv
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css']
 })
-export class CanvasComponent implements OnChanges, OnInit {
+export class CanvasComponent implements OnInit, OnDestroy {
   @Input()
   level: Level;
   teamMembers: Array<any>;
   @Input()
-  challengeID: string;
+  canvasID: string;
   @Input()
   canAddNotes: boolean;
-  public canvasID: string;
   public currentTeacherTemplates = [];
   public messages = new Array();
   public canvasHeight = 800;
@@ -70,16 +70,11 @@ export class CanvasComponent implements OnChanges, OnInit {
     this.notesProvider.notesHeight.subscribe(x => {
       this.canvasHeight = x + this.heightOffset;
     });
+    this.notesProvider.joinCanvas(this.canvasID);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['level']) {
-      if (this.level == null) {
-        return;
-      }
-      this.canvasID = this.level.id;
-      this.notesProvider.joinCanvas(this.canvasID);
-    }
+  ngOnDestroy() {
+    this.notesProvider.leaveCanvas(this.canvasID);
   }
 
   async addNewNote(note = null) {
@@ -154,6 +149,7 @@ export class CanvasComponent implements OnChanges, OnInit {
   clickNote(note: PostIt) {
     const options = this.getNotesOptions(note);
     if (options.editable) {
+      console.log('Moving note on top', note);
       this.notesProvider.moveNoteOnTop(note, this.canvasID);
     }
   }
