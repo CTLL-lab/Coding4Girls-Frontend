@@ -24,18 +24,18 @@ const routes: Routes = [
     path: ':id/team/new',
     component: CreateChallengeComponent
   },
-  { path: ':id/solutions', component: SolutionsComponent },
+  { path: ':id/solutions/challenges', component: SolutionsComponent },
   {
     path: ':id/solutions/:userID/:challengeID',
     component: SolutionPageComponent
   },
   {
-    path: ':id/solutions/:userID',
+    path: ':id/solutions',
     component: SolutionsComponent,
     data: { lobby: true }
   },
   {
-    path: ':id/solutions/lobby/:userID',
+    path: ':id/solutions/:userID',
     component: SolutionPageComponent,
     data: { lobby: true }
   },
