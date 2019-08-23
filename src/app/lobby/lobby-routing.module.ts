@@ -30,7 +30,7 @@ const routes: Routes = [
     component: SolutionPageComponent
   },
   {
-    path: ':id/solutions/lobby',
+    path: ':id/solutions/:userID',
     component: SolutionsComponent,
     data: { lobby: true }
   },
