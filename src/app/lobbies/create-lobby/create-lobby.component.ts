@@ -19,7 +19,8 @@ export class CreateLobbyComponent implements OnInit {
     name: '',
     description: '',
     outcome: '',
-    code: ''
+    code: '',
+    htmlAfter: null
   };
   public role: string;
   public userPriviledged = false;
