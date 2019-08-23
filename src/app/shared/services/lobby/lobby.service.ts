@@ -74,4 +74,36 @@ export class LobbyService {
       )
       .pipe(map(x => x.body));
   }
+
+  GetLobbySnapTemplate(lobbyID: string) {
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/snap', { observe: 'response' })
+      .pipe(map(x => x.body));
+  }
+
+  GetLobbyInstructionsPage(lobbyID: string) {
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/page', { observe: 'response' })
+      .pipe(map(x => x.body));
+  }
+
+  EditLobbySnapTemplate(lobbyID: string, snap: string) {
+    return this.http
+      .put(
+        apiURL + '/lobbies/' + lobbyID + '/snap',
+        { snapTemplate: snap },
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
+  }
+
+  EditLobbyInstructionsPage(lobbyID: string, page: Object) {
+    return this.http
+      .put(
+        apiURL + '/lobbies/' + lobbyID + '/page',
+        { pageAfter: page },
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
+  }
 }
