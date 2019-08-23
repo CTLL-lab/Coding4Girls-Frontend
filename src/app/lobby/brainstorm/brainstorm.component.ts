@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-brainstorm',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./brainstorm.component.css']
 })
 export class BrainstormComponent implements OnInit {
-
-  constructor() { }
+  public lobbyID: string;
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.lobbyID = this.route.snapshot.params.id;
   }
-
 }
