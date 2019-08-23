@@ -7,13 +7,13 @@ import { SocketioService } from 'src/app/shared/services/socketio/socketio.servi
 
 @Injectable()
 export class NotesProviderService {
-  public socket;
+  public socket: SocketIOClient.Socket;
   public notes: Array<PostIt> = new Array();
   public onlineUsers: Array<any> = new Array();
   private highestZ = 0;
   public notesHeight = new BehaviorSubject<number>(0);
   public notesLoaded = new BehaviorSubject<boolean>(false);
-  public currentCanvas = new BehaviorSubject<number>(null);
+  public currentCanvas = new BehaviorSubject<string>(null);
   constructor(
     private userService: UserService,
     private socketService: SocketioService
@@ -99,9 +99,9 @@ export class NotesProviderService {
   joinCanvas(canvasID) {
     const currentID = this.currentCanvas.getValue();
     if (currentID != null) {
-      this.leaveLastCanvas();
+      this.leaveCanvas(currentID.toString());
     }
-    this.socket.emit('room', canvasID, this.userService.user);
+    this.socket.emit('room', canvasID, this.userService.user.value);
     this.currentCanvas.next(canvasID);
   }
   reloadNotes(canvasID) {
@@ -112,6 +112,13 @@ export class NotesProviderService {
     this.onlineUsers = new Array();
     const canvasID = this.currentCanvas.getValue();
     this.socket.emit('leave-room', canvasID, this.userService.user);
+    this.notesLoaded.next(false);
+    this.currentCanvas.next(null);
+    this.notes = [];
+  }
+  leaveCanvas(canvasID: string) {
+    this.onlineUsers = [];
+    this.socket.emit('leave-room', canvasID, this.userService.user.value);
     this.notesLoaded.next(false);
     this.currentCanvas.next(null);
     this.notes = [];
