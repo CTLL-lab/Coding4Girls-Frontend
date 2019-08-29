@@ -84,10 +84,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   ) {
     window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
-    console.log(this.MiniGameCategories);
     for (let key in this.MiniGameCategories) {
-      console.log(key);
-
       this.MiniGameHeaders.push(key);
     }
   }
@@ -108,7 +105,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   changeMinigame(id: number) {
-    console.log(id);
     this.currentMinigame = id;
     this.minigameVariables = this.SelectableMiniGames.find(
       x => x.id == id
