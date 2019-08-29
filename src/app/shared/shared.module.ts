@@ -32,7 +32,13 @@ import { UploaderService } from './canvas/notes/services/uploader/uploader.servi
   ],
   declarations: [CanvasComponent],
   providers: [ToastrService, ChallengeService],
-  exports: [TranslatePipe, NgxSpinnerComponent, CanvasComponent, NoteComponent]
+  exports: [
+    TranslateModule,
+    TranslatePipe,
+    NgxSpinnerComponent,
+    CanvasComponent,
+    NoteComponent
+  ]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
