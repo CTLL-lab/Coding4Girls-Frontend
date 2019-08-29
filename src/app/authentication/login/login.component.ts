@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
           });
         } else if (err instanceof UserNotFoundError) {
           this.invalidField = 'username';
-          this.translationService.get('in-code.3').subscribe(k => {
+          this.translationService.get('in-code.12').subscribe(k => {
             this.notifications.showError(k);
           });
         } else {
