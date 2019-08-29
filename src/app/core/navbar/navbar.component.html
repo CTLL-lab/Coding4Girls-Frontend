@@ -25,7 +25,7 @@
           >
         </li>
       </ul>
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto align-vertical">
         <li
           class="nav-item"
           *ngIf="this.user != null"
@@ -80,7 +80,7 @@
         <li class="nav-item">
           <a class="navbar-brand">
             <img
-              [src]="imagePath"
+              [src]="currentLanguage?.imagePath"
               class="img-fluid rounded mx-auto d-block pointer"
               (click)="toggleNextFlag()"
             />
@@ -103,7 +103,7 @@
 
     <div class="navbar-brand dropdown">
       <img
-        [src]="imagePath"
+        [src]="currentLanguage?.imagePath"
         class="img-fluid rounded mx-auto d-block pointer dropdown-toggle"
         type="button"
         id="dropdownMenuButton"
@@ -118,7 +118,7 @@
           (click)="changeLanguageTo(language)"
         >
           <img
-            [src]="languages_flags_assets[i]"
+            [src]="languages_available[i].imagePath"
             class="img-fluid rounded mx-auto d-block pointer"
         /></a>
       </div>
