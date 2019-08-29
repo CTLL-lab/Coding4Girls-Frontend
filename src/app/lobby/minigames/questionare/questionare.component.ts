@@ -17,6 +17,7 @@ import { UploaderService } from 'src/app/shared/services/uploader/uploader.servi
 })
 export class QuestionareComponent implements OnInit {
   @Input() variables;
+  @Input() prefilled_variables;
   @Input() options: {
     fixedNumberOfQuestions: boolean;
     numberOfQuestions?: number;
@@ -28,30 +29,48 @@ export class QuestionareComponent implements OnInit {
 
   questionImages: Array<string> = [];
   answersImages: Array<Array<string>> = [];
+  prefilledQuestions;
   constructor(private uploader: UploaderService) {}
 
   ngOnInit() {
     this.form.addControl('questions', new FormArray([]));
-    if (this.options.fixedNumberOfQuestions) {
-      for (let i = 0; i < this.options.numberOfQuestions; i++) {
-        const question = new FormGroup({
-          question: new FormControl(''),
-          answers: new FormArray([])
-        });
-        if (this.options.allowsImageUpload) {
-          question.addControl('questionImage', new FormControl(''));
-        }
-        for (let j = 0; j < this.options.numberOfAnswers; j++) {
-          const answer = new FormGroup({
-            answer: new FormControl(''),
-            correct: new FormControl(false)
+
+    // if prefilled variables is {} and doesn't contain questions array
+    try {
+      this.prefilled_variables.questions.length;
+    } catch {
+      // make it undefined
+      this.prefilled_variables = undefined;
+    }
+    if (this.prefilled_variables) {
+      this.prefilledQuestions = this.prefilled_variables['questions'];
+      delete this.prefilled_variables['questions'];
+      for (let key in this.prefilled_variables) {
+        this.form.get(key).setValue(Number(this.prefilled_variables[key]));
+      }
+      this.fillQuestionsWithPrefilled();
+    } else {
+      if (this.options.fixedNumberOfQuestions) {
+        for (let i = 0; i < this.options.numberOfQuestions; i++) {
+          const question = new FormGroup({
+            question: new FormControl(''),
+            answers: new FormArray([])
           });
           if (this.options.allowsImageUpload) {
-            answer.addControl('image', new FormControl(''));
+            question.addControl('questionImage', new FormControl(''));
           }
-          (question.get('answers') as FormArray).push(answer);
+          for (let j = 0; j < this.options.numberOfAnswers; j++) {
+            const answer = new FormGroup({
+              answer: new FormControl(''),
+              correct: new FormControl(false)
+            });
+            if (this.options.allowsImageUpload) {
+              answer.addControl('image', new FormControl(''));
+            }
+            (question.get('answers') as FormArray).push(answer);
+          }
+          this.QuestionsForm.push(question);
         }
-        this.QuestionsForm.push(question);
       }
     }
   }
@@ -60,26 +79,45 @@ export class QuestionareComponent implements OnInit {
     return this.form.get('questions') as FormArray;
   }
 
-  addQuestion() {
+  fillQuestionsWithPrefilled() {
+    for (let question of this.prefilledQuestions) {
+      this.addQuestion(question);
+    }
+  }
+
+  addQuestion(questionObj?: any) {
     // we create a new Form group to facilitate the question and its contents
     const question = new FormGroup({
-      question: new FormControl(''),
+      question: new FormControl(questionObj ? questionObj.question : ''),
       answers: new FormArray([])
     });
     // if we can have pictures add a new form control for that
     if (this.options.allowsImageUpload) {
-      question.addControl('questionImage', new FormControl(''));
+      question.addControl(
+        'questionImage',
+        new FormControl(questionObj ? questionObj.questionImage : '')
+      );
     }
     // for each answer
     for (let j = 0; j < this.options.numberOfAnswers; j++) {
+      // check for default value in correct answers
+      let correct = this.options.numberOfAnswers > 1 ? false : true;
+      if (questionObj) {
+        correct = questionObj.answers[j].correct;
+      }
       // create a form group for it and for its details
       const answer = new FormGroup({
-        answer: new FormControl(''),
-        correct: new FormControl(false)
+        answer: new FormControl(
+          questionObj ? questionObj.answers[j].answer : ''
+        ),
+        correct: new FormControl(correct)
       });
       // add a form control if we can upload images
       if (this.options.allowsImageUpload) {
-        answer.addControl('image', new FormControl(''));
+        answer.addControl(
+          'image',
+          new FormControl(questionObj ? questionObj.answers[j].answerImage : '')
+        );
       }
       // push the answer to questions array
       // we need to typecast so typescript treats it as an FormArray
