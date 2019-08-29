@@ -99,7 +99,9 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.worldSubscription.unsubscribe();
+    if (this.worldSubscription && !this.worldSubscription.closed) {
+      this.worldSubscription.unsubscribe();
+    }
   }
 
   changeMinigame(id: number) {
@@ -188,6 +190,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     const world = this.worldBehaviorSubject.value;
 
     // If not initiated yet, we wait
+    // because this code runs when the user clicks the Save button
+    // in edit team
     if (world == null) {
       return;
     }
