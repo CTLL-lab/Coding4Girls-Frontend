@@ -147,7 +147,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           });
         this.worldSubscription.unsubscribe();
       });
-      // });
 
       for (let key in MiniGamesCategories) {
         for (let category of this.MiniGameCategories[key]) {
