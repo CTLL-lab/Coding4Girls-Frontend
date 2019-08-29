@@ -74,7 +74,6 @@ export class LobbySettingsComponent implements OnInit {
 
     // Populate quill text editor
     this.lobbyService.GetLobbyInstructionsPage(this.id).subscribe(x => {
-      console.log(x);
       this.htmlPage = x;
     });
 
