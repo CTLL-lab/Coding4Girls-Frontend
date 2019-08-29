@@ -153,8 +153,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           if (
             category.categoryName == x['data']['challenge']['minigame_category']
           ) {
-            this.selectMiniGameCategory(category);
-            this.changeMinigame(this.currentMinigame);
+            this.selectMiniGameCategory(category, this.currentMinigame);
             if (this.challengeMinigameVariables == null) {
               this.challengeMinigameVariables = {};
             }
@@ -287,12 +286,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/lobby/' + this.lobbyID);
   }
 
-  selectMiniGameCategory(category: object) {
+  selectMiniGameCategory(category: object, miniGameID?: number) {
     this.MiniGames = [];
     for (let minigame of category['miniGames']) {
       this.MiniGames.push(this.SelectableMiniGames.find(x => x.id == minigame));
     }
-    this.changeMinigame(this.MiniGames[0].id);
+    this.changeMinigame(miniGameID ? miniGameID : this.MiniGames[0].id);
     this.selectedMiniGameCategory = category;
   }
 
