@@ -144,8 +144,10 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
 
         this.challengeService
           .GetChallengeSnap(this.challengeID)
-          .subscribe(y => {
-            x.children[0].rawOpenProjectString(y);
+          .subscribe((y: string) => {
+            if (y.startsWith('<project')) {
+              x.children[0].rawOpenProjectString(y);
+            }
           });
         this.worldSubscription.unsubscribe();
       });

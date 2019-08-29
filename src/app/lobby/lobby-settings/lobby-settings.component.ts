@@ -83,8 +83,10 @@ export class LobbySettingsComponent implements OnInit {
       if (x == null) {
         return;
       }
-      this.lobbyService.GetLobbySnapTemplate(this.id).subscribe(y => {
-        x.children[0].rawOpenProjectString(y);
+      this.lobbyService.GetLobbySnapTemplate(this.id).subscribe((y: string) => {
+        if (y.startsWith('<project')) {
+          x.children[0].rawOpenProjectString(y);
+        }
       });
       this.worldSubscription.unsubscribe();
     });
