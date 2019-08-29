@@ -51,12 +51,12 @@ export class LobbiesComponent implements OnInit {
       r => {
         switch (r.status) {
           case 404:
-            this.translationService.get('in-code.7').subscribe(k => {
+            this.translationService.get('in-code.15').subscribe(k => {
               this.notifications.showError(k);
             });
             break;
           case 409:
-            this.translationService.get('in-code.7').subscribe(k => {
+            this.translationService.get('in-code.16').subscribe(k => {
               this.notifications.showError(k);
             });
             break;
