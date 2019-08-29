@@ -1,170 +1,66 @@
 {
-  "achiev": {
-    "1": "First review",
-    "10": "Finish a challenge while asking for brainstorm",
-    "11": "Finish a challenge while asking for help and brainstorm",
-    "12": "Set a challenge name",
-    "13": "Reach top 5 in rank as player",
-    "14": "Reach top 5 in rank as team",
-    "15": "Complete all achievements",
-    "2": "10 reviews written",
-    "3": "First completed challenge",
-    "4": "10 challenges completed",
-    "5": "10 challenges created",
-    "6": "10 challenges completed with all levels being positively reviewed",
-    "7": "10 upvotes received",
-    "8": "10 levels passed",
-    "9": "Finish a challenge while asking for help"
-  },
   "canvas": {
-    "1": "Special Actions",
-    "10": "Fail",
     "11": "Add new note",
     "12": "Apply template",
     "13": "None",
-    "14": "Lock Level",
-    "15": "Unlock Level",
-    "16": "Canvas",
     "17": "Reload",
-    "2": "Ask for Brainstorm",
-    "3": "End Brainstorm",
-    "4": "Ask for Review",
-    "5": "Ask for Help",
-    "6": "Coins:",
-    "7": "Special Actions",
-    "8": "Help Provided",
-    "9": "Pass",
     "18": "*Edit me*\n###### Double click me"
   },
   "create-lobby": {
     "1": "Name",
-    "10": "Discard",
     "2": "Code",
     "3": "Description",
     "4": "Learning Objectives and Expected Learning Outcomes",
-    "5": "Maximum number of players",
-    "6": "Maximum number of teams",
-    "7": "Minimum team size",
-    "8": "Maximum team size",
-    "9": "Save"
+    "9": "Save",
+    "10": "Discard"
   },
   "create-team": {
     "1": "Create New Challenge",
-    "10": "Submit",
-    "11": "Discard",
-    "12": "Delete Challenge",
-    "13": "Are you sure?",
-    "2": "Name:",
-    "3": "Challenge Description:",
-    "4": "Starting Date:",
-    "5": "Number Of Levels:",
-    "6": "Level",
-    "7": "End Date:",
-    "8": "Please fill every field",
-    "9": "Invalid Dates"
+    "11": "Discard"
   },
   "edit-team": {
-    "1": "Edit Challenge",
-    "10": "Save",
-    "11": "Discard",
     "2": "Name:",
     "3": "Challenge Description:",
-    "4": "Starting Date:",
-    "5": "Number Of Levels:",
-    "6": "Level",
-    "7": "End Date:",
-    "8": "Invalid Dates",
-    "9": "Ok"
-  },
-  "feedback": {
-    "1": "Send us your feedback",
-    "2": "It's really important for us to know what you think",
-    "3": "Type",
-    "4": "Bug",
-    "5": "Feature",
-    "6": "Description",
-    "7": "Send",
-    "8": "Thank you for submiting your feedback"
-  },
-  "home": {
-    "1": "Design It project aims at encouraging innovation, creativity among Higher Education students supporting them in bringing ideas into action. Our solution is providing Higher Education educators with methods and gamified tools for design thinking. We will apply Design thinking through gamified ICT deployment in the context of entrepreneurship education in formal and informal entrepreneurship education contexts as a complementary learning tool.\n\n",
-    "2": "The project will improve the current situation in entrepreneurship education in Higher Education courses. The impact is created in the participating Higher Education institutions by empowering the changes towards creative interdisciplinary project based learning with gamified design thinking approaches. This will happen by exchanging gamifying and design thinking experiences among partners and creating new application ways for gamified design thinking in different contextual settings in engineering and entrepreneurship education courses.",
-    "3": "The DesignIT platform supports and promotes creativity!\nDesignIT helps learners and users in general to execute and collect contextual data, analyse it and keep engagement alive through the gamified features.\nThe platform can be used in mobile devices to allow smooth contextual data gathering.\nDesignIT platform is especially suitable for project work where teams are solving wicked problems and need be creative.",
-    "4": "The tool has been designed and developed in the framework of the Erasmus+ project <i>Design thinking in higher education for promoting human-centered innovation in business and society</i>, 2017-1-EE01-KA203-034889.",
-    "5": "This website is best viewed in Google Chrome"
+    "10": "Save"
   },
   "in-code": {
     "1": "New lobby created!",
-    "10": "Logged in",
-    "11": "Wrong password!",
-    "12": "Error on loading template",
-    "13": "Template saved!",
-    "14": "An error occurred. Please try again",
-    "15": "Username can't be empty",
-    "16": "Passwords don't match",
-    "17": "Registered successfully",
-    "18": "Registration failed!",
-    "19": "Template Applied",
     "2": "Challenge created",
-    "3": "An error has occurred",
-    "4": "Template deleted",
-    "5": "Failed to delete template",
+    "3": "An error occurred",
     "6": "Lobby joined!",
     "7": "Failed to join lobby!",
     "8": "You left the lobby",
-    "9": "Changes saved"
-  },
-  "level-template": {
-    "1": "Templates",
-    "2": "No templates found. Create one!"
+    "9": "Changes saved",
+    "10": "Logged in",
+    "11": "Wrong password",
+    "12": "Invalid username",
+    "13": "Success",
+    "14": "Error",
+    "17": "Registered successfully",
+    "18": "Registration failed!"
   },
   "lobbies": {
     "1": "Created lobbies",
-    "2": "Max team size: ",
     "3": "Create new lobby",
     "4": "Join By Code",
     "5": "Join"
   },
   "lobby-page": {
     "1": "Created by:",
-    "10": "Help Asked",
-    "11": "Completed!",
-    "12": "Not verified yet!",
-    "13": "Level",
-    "14": "Members:",
-    "15": "Edit Team Name:",
-    "16": "Members",
-    "17": "None",
-    "18": "Save",
-    "19": "Leave Team",
     "2": "Lobby Settings",
-    "20": "Join",
-    "21": "Start",
-    "22": "Add Members",
-    "23": "View",
-    "24": "Review",
-    "25": "Lock Lobby",
-    "26": "Unlock Lobby",
     "3": "Create New Challenge",
-    "4": "Lock lobby",
-    "5": "Show Completed",
     "6": "Challenges",
     "7": "Challenge Description:",
-    "8": "Review Requested!",
-    "9": "Brainstorm Demanded!"
+    "14": "Members:"
   },
   "lobby-settings": {
     "1": "Lobby Settings",
-    "10": "Save",
-    "11": "Discard",
     "2": "Name:",
     "3": "Description:",
     "4": "Learning Objectives and Expected Learning Outcomes:",
-    "5": "Maximum number of players:",
-    "6": "Maximum number of teams:",
-    "7": "Minimum team size:",
-    "8": "Maximum team size:",
-    "9": "Ok"
+    "9": "Ok",
+    "10": "Save",
+    "11": "Discard"
   },
   "login": {
     "1": "Login",
@@ -174,49 +70,15 @@
     "5": "Remember me"
   },
   "navbar": {
-    "1": "Home",
-    "10": "Help",
-    "11": "Brainstorm",
     "2": "Lobbies",
     "3": "Review",
     "4": "Verify",
-    "5": "Templates",
     "6": "Feedback",
     "7": "Logout",
     "8": "Login",
-    "9": "Register"
-  },
-  "new-template": {
-    "1": "Name",
-    "2": "Description",
-    "3": "Add new note",
-    "4": "Save"
-  },
-  "profile": {
-    "1": "Global",
-    "10": "Files Uploaded:",
-    "11": "Please Select A Challenge",
-    "12": "Select Challenge",
-    "13": "Rank:",
-    "14": "Experience:",
-    "15": "Level:",
-    "16": "Coins:",
-    "17": "Coins Used:",
-    "18": "Review Answers:",
-    "19": "Help Asked:",
-    "2": "Per Challenge",
-    "20": "Brainstorms Started:",
-    "21": "Achievements",
-    "22": "Students In The Lobby",
-    "23": "Haven't Joined A Lobby Yet",
-    "24": "Back",
-    "3": "Rank:",
-    "4": "Experience:",
-    "5": "Reviews:",
-    "6": "Upvotes Received:",
-    "7": "Downvotes Received:",
-    "8": "Upvotes Given:",
-    "9": "Downvotes Given:"
+    "9": "Register",
+    "10": "Help",
+    "11": "Brainstorm"
   },
   "register": {
     "1": "Register",
@@ -227,52 +89,5 @@
     "6": "First Name",
     "7": "Last Name",
     "8": "Submit"
-  },
-  "review-lobbies": {
-    "1": "Lobbies For Review",
-    "2": "Name:",
-    "3": "Max team size:"
-  },
-  "review-teacher": {
-    "1": "Created by: ",
-    "2": "Challenges For Review",
-    "3": "Challenge Description:",
-    "4": "Level",
-    "5": "Members:",
-    "6": "Members",
-    "7": "None",
-    "8": "Review"
-  },
-  "reviews": {
-    "1": "Leave A Review",
-    "2": "Loading...",
-    "3": "No review have been posted!",
-    "4": "Comment:",
-    "5": "Reply to:",
-    "6": "Send"
-  },
-  "teacher-help": {
-    "1": "Submit"
-  },
-  "team-members": {
-    "1": "Members"
-  },
-  "team": {
-    "1": "Back to Lobby"
-  },
-  "verify-lobbies": {
-    "1": "Lobbies For Verification",
-    "2": "Name:",
-    "3": "Max team size:"
-  },
-  "verify-teacher": {
-    "1": "Created by: ",
-    "2": "Challenges For Verification",
-    "3": "Challenge Description:",
-    "4": "Level",
-    "5": "Members:",
-    "6": "Members",
-    "7": "None",
-    "8": "Verify"
   }
 }
