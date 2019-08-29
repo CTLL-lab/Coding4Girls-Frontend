@@ -37,3 +37,13 @@ export class EmailAlreadyInUseError implements Error {
     this.name = 'EmailAlreadyInUseError';
   }
 }
+
+export class CouldntLogoutError implements Error {
+  name: string;
+  message: string;
+  stack?: string;
+  constructor() {
+    this.message = 'User could not loggout';
+    this.name = 'CouldntLogoutError';
+  }
+}

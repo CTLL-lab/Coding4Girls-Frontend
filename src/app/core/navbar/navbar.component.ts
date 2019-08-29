@@ -4,8 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { languages_available } from 'src/app/config';
 import { AuthenticationService } from 'src/app/authentication/services/auth/authentication.service';
 import { UserService } from 'src/app/authentication/services/user/user.service';
-import { BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/authentication/services/user/user';
+import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
+import { CouldntLogoutError } from 'src/app/authentication/exceptions';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit {
     public auth: AuthenticationService,
     private router: Router,
     public userService: UserService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public notifications: NotificationsToasterService
   ) {}
 
   ngOnInit() {
@@ -35,8 +37,20 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logoutUser();
-    this.router.navigateByUrl('/home');
+    try {
+      this.auth.logoutUser();
+      this.router.navigateByUrl('/home');
+      this.notifications.showSuccess('');
+    } catch (err) {
+      if (err instanceof CouldntLogoutError) {
+        this.translate
+          .get('in-code.3')
+          .toPromise()
+          .then(x => {
+            this.notifications.showError(x);
+          });
+      }
+    }
   }
 
   public toggleNextFlag() {
