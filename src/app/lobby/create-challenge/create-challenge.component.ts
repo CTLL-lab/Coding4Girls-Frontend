@@ -154,7 +154,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
             category.categoryName == x['data']['challenge']['minigame_category']
           ) {
             this.selectMiniGameCategory(category, this.currentMinigame);
-            if (this.challengeMinigameVariables == null) {
+            if (!this.challengeMinigameVariables) {
               this.challengeMinigameVariables = {};
             }
             return;
@@ -204,20 +204,16 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         world.children[0].stage
       );
     }
-
     forkJoin([
       this.challengeService.editTeamInfo(
         this.challengeID,
         this.name,
         this.description,
         this.currentMinigame,
-        this.challengeMinigameVariables,
+        this.currentMinigameForm.value,
         this.selectedMiniGameCategory.categoryName
       ),
-      this.challengeService.EditChallengePage(
-        this.challengeID,
-        JSON.stringify(this.htmlAfter)
-      ),
+      this.challengeService.EditChallengePage(this.challengeID, this.htmlAfter),
       this.challengeService.EditChallengeSnap(this.challengeID, snapTemplateXML)
     ]).subscribe(x => {
       this.storePreferences();
