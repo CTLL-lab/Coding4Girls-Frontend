@@ -32,4 +32,16 @@ export class AnswersService {
         })
       );
   }
+
+  GetLobbySolutionForUser(userID: string, lobbyID: string) {
+    return this.http
+      .get(apiURL + '/users/' + userID + '/lobbies/' + lobbyID + '/solution', {
+        observe: 'response'
+      })
+      .pipe(
+        map(x => {
+          return x.body;
+        })
+      );
+  }
 }
