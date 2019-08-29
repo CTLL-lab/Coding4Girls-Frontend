@@ -41,10 +41,13 @@
           [routerLink]="['/lobby/' + lobby.id]"
         >
           <div class="d-flex justify-content-between align-center">
-            <h3 id="lobbyName" class="font-weight-bold">{{ lobby.name }}</h3>
+            <h3 id="lobbyName" class="font-weight-bold">
+              {{ lobby.name }}
+            </h3>
             <i
               class="fas fa-user-minus mt-2 leave-lobby-icon"
               aria-hidden="true"
+              *ngIf="user.id != lobby.createdby"
               (click)="
                 $event.preventDefault();
                 $event.stopPropagation();
