@@ -7,7 +7,8 @@ import {
   InvalidPasswordError,
   UserNotFoundError,
   UsernameAlreadyInUseError,
-  EmailAlreadyInUseError
+  EmailAlreadyInUseError,
+  CouldntLogoutError
 } from '../../exceptions';
 import { map, catchError } from 'rxjs/operators';
 
@@ -128,8 +129,12 @@ export class AuthenticationService {
   }
 
   public logoutUser() {
-    this.user.SetUser(null);
-    this.removeToken();
+    try {
+      this.user.SetUser(null);
+      this.removeToken();
+    } catch {
+      throw new CouldntLogoutError();
+    }
   }
 
   private removeToken() {
