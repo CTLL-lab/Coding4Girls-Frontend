@@ -23,6 +23,7 @@ import { FormGroup } from '@angular/forms';
 export class MinigameVarsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() minigame: MinigameItem;
   @Input() varsForm: FormGroup;
+  @Input() variables: any;
   @ViewChild(MinigameVarsDirective) MinigameHost: MinigameVarsDirective;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
@@ -57,6 +58,11 @@ export class MinigameVarsComponent implements OnInit, OnDestroy, OnChanges {
       (<VarsComponent>componentRef.instance)[
         'options'
       ] = this.minigame.data.options;
+    }
+    if (this.variables) {
+      (<VarsComponent>componentRef.instance)[
+        'prefilled_variables'
+      ] = this.variables;
     }
   }
 }
