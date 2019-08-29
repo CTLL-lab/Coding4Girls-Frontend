@@ -304,6 +304,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     if (category['categoryName'] == 'None') {
       return;
     }
+    this.MiniGames = [];
     for (let minigame of category['miniGames']) {
       this.MiniGames.push(this.SelectableMiniGames.find(x => x.id == minigame));
     }
