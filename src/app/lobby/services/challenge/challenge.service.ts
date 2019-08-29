@@ -156,7 +156,7 @@ export class ChallengeService {
       .pipe(map(x => x.body));
   }
 
-  EditChallengePage(challengeID: string, pageAfter: string) {
+  EditChallengePage(challengeID: string, pageAfter: any) {
     return this.http
       .put(
         apiURL + '/challenges/' + challengeID + '/page',
