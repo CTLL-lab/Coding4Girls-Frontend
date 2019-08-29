@@ -7,6 +7,7 @@ import { QuestionareComponent } from './questionare/questionare.component';
 @Injectable()
 export class MinigameService {
   MiniGamesCategories = {
+    None: [{ categoryName: 'None', miniGames: [null] }],
     Loops: [{ categoryName: 'Loops', miniGames: [1] }],
     Conditionals: [
       {
@@ -231,6 +232,11 @@ export class MinigameService {
             controlType: 'textbox'
           }
         ]
+      }),
+      // none minigame
+      new MinigameItem(null, {
+        name: 'None',
+        id: null
       })
     ];
   }

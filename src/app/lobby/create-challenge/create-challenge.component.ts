@@ -84,7 +84,10 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   ) {
     window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
-    for (let key in MiniGamesCategories) {
+    console.log(this.MiniGameCategories);
+    for (let key in this.MiniGameCategories) {
+      console.log(key);
+
       this.MiniGameHeaders.push(key);
     }
   }
@@ -105,6 +108,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   changeMinigame(id: number) {
+    console.log(id);
     this.currentMinigame = id;
     this.minigameVariables = this.SelectableMiniGames.find(
       x => x.id == id
@@ -215,8 +219,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         this.challengeID,
         this.name,
         this.description,
-        this.currentMinigame,
-        this.currentMinigameForm.value,
+        this.selectedMiniGameCategory['categoryName'] == 'None'
+          ? null
+          : this.currentMinigame,
+        this.selectedMiniGameCategory['categoryName'] == 'None'
+          ? null
+          : this.currentMinigameForm.value,
         this.selectedMiniGameCategory.categoryName
       ),
       this.challengeService.EditChallengePage(this.challengeID, this.htmlAfter),
@@ -228,8 +236,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   createTeam() {
-    // console.log(this.currentMinigameForm.value);
-
     // Get Snap instance
     const world = this.worldBehaviorSubject.value;
 
@@ -255,8 +261,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         this.name,
         this.description,
         this.lobbyID,
-        this.currentMinigame,
-        this.currentMinigameForm.value,
+        this.selectedMiniGameCategory['categoryName'] == 'None'
+          ? null
+          : this.currentMinigame,
+        this.selectedMiniGameCategory['categoryName'] == 'None'
+          ? null
+          : this.currentMinigameForm.value,
         snapTemplateXML,
         JSON.stringify(this.htmlAfter),
         this.selectedMiniGameCategory.categoryName
@@ -289,12 +299,15 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   selectMiniGameCategory(category: object, miniGameID?: number) {
-    this.MiniGames = [];
+    this.selectedMiniGameCategory = category;
+
+    if (category['categoryName'] == 'None') {
+      return;
+    }
     for (let minigame of category['miniGames']) {
       this.MiniGames.push(this.SelectableMiniGames.find(x => x.id == minigame));
     }
     this.changeMinigame(miniGameID ? miniGameID : this.MiniGames[0].id);
-    this.selectedMiniGameCategory = category;
   }
 
   addVariable() {
