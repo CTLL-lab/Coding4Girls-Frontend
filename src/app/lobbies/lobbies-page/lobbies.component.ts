@@ -13,7 +13,6 @@ import { priviledged_roles } from 'src/app/config';
   providers: [LobbyService]
 })
 export class LobbiesComponent implements OnInit {
-  private socket;
   public lobbiesJoined: Array<any> = new Array();
   public showSuccessAlert = false;
   public role: string = null;
