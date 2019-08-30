@@ -54,9 +54,6 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked() {}
 
-  dragStartMoises(event) {
-    console.log(event);
-  }
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {
