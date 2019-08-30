@@ -33,10 +33,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {}
   verifyRegistrationDetails() {
     if (!this.user.username) {
-      return 'in-code.15';
+      return 'in-code.21';
     }
     if (this.passwordver !== this.user.password) {
-      return 'in-code.16';
+      return 'in-code.22';
     }
 
     return null;
@@ -69,12 +69,15 @@ export class RegisterComponent implements OnInit {
           this.router.navigateByUrl('/login');
         },
         err => {
+          let errorMessage = 'in-code.18';
           if (err instanceof UsernameAlreadyInUseError) {
             this.invalidInput = 'username';
+            errorMessage = 'in-code.19';
           } else if (err instanceof EmailAlreadyInUseError) {
             this.invalidInput = 'email';
+            errorMessage = 'in-code.20';
           }
-          this.translationService.get('in-code.18').subscribe(r => {
+          this.translationService.get(errorMessage).subscribe(r => {
             this.notifications.showError(r);
           });
         }

@@ -45,7 +45,11 @@
     "15": "Lobby does not exist",
     "16": "You are already member of the lobby",
     "17": "Registered successfully",
-    "18": "Registration failed"
+    "18": "Registration failed",
+    "19": "Username already exists",
+    "20": "Email already exists",
+    "21": "Username can't be empty",
+    "22": "Passwords don't match"
   },
   "lobbies": {
     "1": "Created lobbies",
@@ -99,7 +103,10 @@
     "5": "E-mail",
     "6": "First Name",
     "7": "Last Name",
-    "8": "Submit"
+    "8": "Submit",
+    "9": "This site requires to collect your email adress and name to function properly. To continue using Coding4Girls, you must consent our Privacy policy",
+    "10": "Privacy policy",
+    "11": "I have read and accept the Coding4Girls"
   },
   "minigameHeaders": {
     "1": "None",
