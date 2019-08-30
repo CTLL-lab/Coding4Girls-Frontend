@@ -6,6 +6,10 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
 import { TranslateService } from '@ngx-translate/core';
 import { priviledged_roles } from 'src/app/config';
 import { BehaviorSubject } from 'rxjs';
+import Quill from 'quill';
+import ImageResize from 'quill-image-resize-module';
+
+Quill.register('modules/imageResize', ImageResize);
 
 @Component({
   selector: 'app-create-lobby',
