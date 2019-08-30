@@ -78,9 +78,15 @@ export class CreateLobbyComponent implements OnInit {
       err => {
         console.log(err);
         if (err.status == 422) {
-          this.invalidData = err.error.data.map(x => {
-            return x.param;
-          });
+          this.translationService
+            .get('in-code.4')
+            .toPromise()
+            .then(m => {
+              this.notifications.showError(m);
+              this.invalidData = err.error.data.map(x => {
+                return x.param;
+              });
+            });
         }
         if (err.status == 400) {
           switch (err.error.data.errorCode) {

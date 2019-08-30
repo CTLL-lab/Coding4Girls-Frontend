@@ -29,9 +29,10 @@
     "11": "Discard"
   },
   "in-code": {
-    "1": "New lobby created!",
+    "1": "New lobby created",
     "2": "Challenge created",
     "3": "An error occurred",
+    "4": "Invalid parameters",
     "6": "Lobby joined",
     "7": "Failed to join lobby",
     "8": "You left the lobby",
