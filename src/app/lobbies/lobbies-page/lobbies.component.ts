@@ -60,6 +60,9 @@ export class LobbiesComponent implements OnInit {
             });
             break;
           default:
+            this.translationService.get('in-code.3').subscribe(k => {
+              this.notifications.showError(k);
+            });
             break;
         }
       }
