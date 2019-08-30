@@ -15,13 +15,18 @@
     "10": "Discard"
   },
   "create-team": {
-    "1": "Create New Challenge",
-    "11": "Discard"
+    "1": "Create New Challenge"
   },
   "edit-team": {
+    "1": "Edit challenge",
     "2": "Name:",
     "3": "Challenge Description:",
-    "10": "Save"
+    "4": "Mini Game Category",
+    "5": "Mini Game",
+    "6": "Instructions",
+    "7": "Snap template",
+    "10": "Save",
+    "11": "Discard"
   },
   "in-code": {
     "1": "New lobby created!",
@@ -53,6 +58,9 @@
     "3": "Create New Challenge",
     "6": "Challenges",
     "7": "Challenge Description:",
+    "8": "Answers",
+    "9": "Lobby answers",
+    "10": "Brainstorm canvas",
     "14": "Members:"
   },
   "lobby-settings": {
@@ -91,5 +99,55 @@
     "6": "First Name",
     "7": "Last Name",
     "8": "Submit"
+  },
+  "minigameHeaders": {
+    "1": "None",
+    "2": "Loops",
+    "3": "Conditionals",
+    "4": "Variables",
+    "5": "Statements",
+    "6": "Parallelism",
+    "7": "Operators",
+    "8": "Events"
+  },
+  "minigameCategories": {
+    "1": "None",
+    "2": "Loops",
+    "3": "Conditionals",
+    "4": "Data types",
+    "5": "Data structures",
+    "6": "Sequence of statements",
+    "7": "Sounds",
+    "8": "Movement",
+    "9": "Looks",
+    "10": "Drawing",
+    "11": "Simultaneous sounds/movements/characters/interactions",
+    "12": "4 basic operations",
+    "13": "Modulo, roundings",
+    "14": "Advanced, sin, cos, sqrt, power, roundings",
+    "15": "AND/OR/NOT, booleans, ==",
+    "16": "Random",
+    "17": "Simultaneous sounds/movements/characters/interactions",
+    "18": "Events"
+  },
+  "minigame": {
+    "1": "Match3",
+    "2": "Find your path",
+    "3": "Inventory/Marble",
+    "4": "Stepping Game",
+    "5": "Sound Game",
+    "6": "Snake game",
+    "7": "Witness Game",
+    "8": "Donald Game",
+    "9": "Slot Machine",
+    "10": "Multiple Questions"
+  },
+  "variables": {
+    "1": "Timer",
+    "2": "Operation family",
+    "3": "Basic operations",
+    "4": "Advanced operations",
+    "5": "Trigonometry",
+    "6": "All"
   }
 }

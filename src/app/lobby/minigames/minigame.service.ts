@@ -7,81 +7,112 @@ import { QuestionareComponent } from './questionare/questionare.component';
 @Injectable()
 export class MinigameService {
   MiniGamesCategories = {
-    None: [{ categoryName: 'None', miniGames: [null] }],
-    Loops: [{ categoryName: 'Loops', miniGames: [1] }],
+    None: [
+      {
+        categoryName: 'None',
+        miniGames: [null],
+        translation: 'minigameCategories.1'
+      }
+    ],
+    Loops: [
+      {
+        categoryName: 'Loops',
+        miniGames: [1],
+        translation: 'minigameCategories.2'
+      }
+    ],
     Conditionals: [
       {
         categoryName: 'Conditionals',
-        miniGames: [2]
+        miniGames: [2],
+        translation: 'minigameCategories.3'
       }
     ],
     Variables: [
       {
         categoryName: 'Data types',
-        miniGames: [3]
+        miniGames: [3],
+        translation: 'minigameCategories.4'
       },
       {
         categoryName: 'Data structures',
-        miniGames: [3]
+        miniGames: [3],
+        translation: 'minigameCategories.5'
       }
     ],
 
     Statements: [
       {
         categoryName: 'Sequence of statements',
-        miniGames: [4, 11]
+        miniGames: [4, 11],
+        translation: 'minigameCategories.6'
       },
       {
         categoryName: 'Sounds',
-        miniGames: [5]
+        miniGames: [5],
+        translation: 'minigameCategories.7'
       },
       {
         categoryName: 'Movement',
-        miniGames: [4]
+        miniGames: [4],
+        translation: 'minigameCategories.8'
       },
-      { categoryName: 'Looks', miniGames: [6] },
+      {
+        categoryName: 'Looks',
+        miniGames: [6],
+        translation: 'minigameCategories.9'
+      },
       {
         categoryName: 'Drawing',
-        miniGames: [7]
+        miniGames: [7],
+        translation: 'minigameCategories.10'
       }
     ],
 
     Parallelism: [
       {
         categoryName: 'Simultaneous sounds/movements/characters/interactions',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.11'
       }
     ],
     Operators: [
       {
         categoryName: '4 basic operations',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.12'
       },
       {
         categoryName: 'Modulo, roundings',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.13'
       },
       {
         categoryName: 'Advanced, sin, cos, sqrt, power, roundings',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.14'
       },
       {
         categoryName: 'AND/OR/NOT, booleans, ==',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.15'
       },
       {
         categoryName: 'Random',
-        miniGames: [10]
+        miniGames: [10],
+        translation: 'minigameCategories.16'
       },
       {
         categoryName: 'Simultaneous sounds/movements/characters/interactions',
-        miniGames: [8]
+        miniGames: [8],
+        translation: 'minigameCategories.17'
       }
     ],
     Events: [
       {
         categoryName: 'Events',
-        miniGames: [9]
+        miniGames: [9],
+        translation: 'minigameCategories.18'
       }
     ]
   };
@@ -93,19 +124,22 @@ export class MinigameService {
       new MinigameItem(SimpleComponent, {
         name: 'Match3',
         id: 1,
+        translation: 'minigame.1',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       new MinigameItem(QuestionareComponent, {
         name: 'Find your path',
         id: 2,
+        translation: 'minigame.2',
         options: {
           fixedNumberOfQuestions: true,
           numberOfQuestions: 5,
@@ -114,9 +148,14 @@ export class MinigameService {
           numberOfAnswers: 2
         }
       }),
-      new MinigameItem(null, { name: 'Inventory/Marble', id: 3 }), // null because no variables
+      new MinigameItem(null, {
+        name: 'Inventory/Marble',
+        id: 3,
+        translation: 'minigame.3'
+      }), // null because no variables
       new MinigameItem(QuestionareComponent, {
         name: 'Stepping Game',
+        translation: 'minigame.4',
         id: 4,
         options: {
           fixedNumberOfQuestions: false,
@@ -129,62 +168,83 @@ export class MinigameService {
       new MinigameItem(SimpleComponent, {
         name: 'Sound Game',
         id: 5,
+        translation: 'minigame.5',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       new MinigameItem(SimpleComponent, {
         name: 'Snake game',
         id: 6,
+        translation: 'minigame.6',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       new MinigameItem(SimpleComponent, {
         name: 'Witness Game',
         id: 7,
+        translation: 'minigame.7',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       new MinigameItem(SimpleComponent, {
         name: 'Donald Game',
         id: 8,
+        translation: 'minigame.8',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           },
           {
             label: 'Operation family',
             key: 'opfamily',
             controlType: 'dropdown',
+            translation: 'variables.2',
             options: [
-              { key: 'basicop', value: 'Basic operations' },
-              { key: 'advop', value: 'Advanced operations' },
-              { key: 'trig', value: 'Trigonometry' },
-              { key: 'all', value: 'All' }
+              {
+                key: 'basicop',
+                value: 'Basic operations',
+                translation: 'variables.3'
+              },
+              {
+                key: 'advop',
+                value: 'Advanced operations',
+                translation: 'variables.4'
+              },
+              {
+                key: 'trig',
+                value: 'Trigonometry',
+                translation: 'variables.5'
+              },
+              { key: 'all', value: 'All', translation: 'variables.6' }
             ]
           }
         ]
@@ -192,6 +252,7 @@ export class MinigameService {
       new MinigameItem(QuestionareComponent, {
         name: 'Stepping Game',
         id: 9,
+        translation: 'minigame.4',
         options: {
           fixedNumberOfQuestions: false,
           numberOfQuestions: 5,
@@ -203,19 +264,22 @@ export class MinigameService {
       new MinigameItem(SimpleComponent, {
         name: 'Slot Machine',
         id: 10,
+        translation: 'minigame.9',
         variables: [
           {
             label: 'Timer',
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       new MinigameItem(QuestionareComponent, {
         name: 'Multiple Questions',
         id: 11,
+        translation: 'minigame.10',
         options: {
           fixedNumberOfQuestions: false,
           numberOfQuestions: 5,
@@ -229,14 +293,16 @@ export class MinigameService {
             type: 'number',
             value: 0,
             key: 'timer',
-            controlType: 'textbox'
+            controlType: 'textbox',
+            translation: 'variables.1'
           }
         ]
       }),
       // none minigame
       new MinigameItem(null, {
         name: 'None',
-        id: null
+        id: null,
+        translation: 'minigameHeaders.1'
       })
     ];
   }

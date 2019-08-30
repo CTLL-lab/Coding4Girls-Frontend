@@ -39,21 +39,21 @@
         type="button"
         class="btn btn-dark"
       >
-        <span i18n>Answers</span>
+        <span i18n [translate]="'lobby-page.8'"></span>
       </button>
       <button
         routerLink="/lobby/{{ id }}/solutions"
         type="button"
         class="btn btn-dark"
       >
-        <span i18n>Lobby Answers</span>
+        <span i18n [translate]="'lobby-page.9'"></span>
       </button>
       <button
         routerLink="/lobby/{{ id }}/brainstorm"
         type="button"
         class="btn btn-dark"
       >
-        <span i18n>Brainstorm Canvas</span>
+        <span i18n [translate]="'lobby-page.10'"></span>
       </button>
     </div>
   </div>
@@ -67,7 +67,7 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="container">
-        <h2>Members</h2>
+        <h2 [translate]="'lobby-page.14'"></h2>
         <ul>
           <li *ngFor="let member of members">
             {{ member.username }}
@@ -76,11 +76,7 @@
       </div>
     </div>
     <div class="list-group col-sm-4">
-      <div
-        [sortablejs]="challenges"
-        [sortablejsOptions]="SortableJSOptions"
-        (dragstart)="dragStartMoises($event)"
-      >
+      <div [sortablejs]="challenges" [sortablejsOptions]="SortableJSOptions">
         <div *ngFor="let challenge of challenges; let i = index">
           <app-challenge-box
             class="my-3"

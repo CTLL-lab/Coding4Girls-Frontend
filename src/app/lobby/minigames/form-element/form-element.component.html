@@ -1,5 +1,8 @@
 <div [formGroup]="form">
-  <label [attr.for]="formElement.key">{{ formElement.label }}</label>
+  <label
+    [attr.for]="formElement.key"
+    [translate]="formElement.translation"
+  ></label>
 
   <div [ngSwitch]="formElement.controlType">
     <input
@@ -14,9 +17,11 @@
       *ngSwitchCase="'dropdown'"
       [formControlName]="formElement.key"
     >
-      <option *ngFor="let opt of formElement.options" [value]="opt.key">{{
-        opt.value
-      }}</option>
+      <option
+        *ngFor="let opt of formElement.options"
+        [value]="opt.key"
+        [translate]="opt.translation"
+      ></option>
     </select>
   </div>
 </div>

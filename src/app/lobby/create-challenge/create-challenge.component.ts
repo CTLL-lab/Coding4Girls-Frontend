@@ -26,6 +26,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   public levelNames: Array<any>;
   public role: string;
   public currentDate: Date = new Date();
+  public pageTitle: string;
 
   public lobbyID = this.route.snapshot.paramMap.get('id');
   public challengeID = this.route.snapshot.paramMap.get('id');
@@ -41,7 +42,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   public minigameType: string;
   public MiniGameHeaders: Array<string> = [];
   public MiniGameCategories;
-  public SelectableMiniGames = MiniGames;
+  public SelectableMiniGames = this.minigamesService.MiniGames.map(x => x.data);
 
   public htmlAfter = {};
 
@@ -92,8 +93,10 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.route.snapshot.url[2].toString() == 'edit') {
       this.mode = 'edit';
+      this.pageTitle = 'edit-team.1';
     } else {
       this.mode = 'create';
+      this.pageTitle = 'create-team.1';
     }
     this.populateComponent(this.mode);
   }

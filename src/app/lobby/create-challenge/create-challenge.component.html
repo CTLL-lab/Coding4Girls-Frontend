@@ -2,7 +2,7 @@
   <div class="text-center row mt-4 mb-2">
     <div class="col">
       <div (pageShow)="ngOnInit()">
-        <h2 class=" font-weight-bold ">{{ 'create-team.1' | translate }}</h2>
+        <h2 class=" font-weight-bold " [translate]="pageTitle"></h2>
       </div>
     </div>
   </div>
@@ -40,8 +40,8 @@
         <div class="form-group row">
           <div class="col-md-6">
             <label for="minigameSelection" class="font-weight-bold"
-              ><span>Mini Game Category</span></label
-            >
+              ><span [translate]="'edit-team.4'"></span
+            ></label>
             <div class="dropdown">
               <button
                 class="btn btn-secondary dropdown-toggle"
@@ -61,16 +61,24 @@
                 class="dropdown-menu overflow-auto"
                 aria-labelledby="dropdownMenuButton"
               >
-                <div *ngFor="let miniGameCategory of MiniGameHeaders">
-                  <h6 class="dropdown-header">{{ miniGameCategory }}</h6>
+                <div
+                  *ngFor="
+                    let miniGameCategory of MiniGameHeaders;
+                    let i = index
+                  "
+                >
+                  <h6
+                    class="dropdown-header"
+                    [translate]="'minigameHeaders.' + (i + 1)"
+                  ></h6>
                   <a
                     class="dropdown-item"
                     (click)="selectMiniGameCategory(category)"
                     *ngFor="
                       let category of MiniGameCategories[miniGameCategory]
                     "
-                    >{{ category.categoryName }}</a
-                  >
+                    [translate]="category.translation"
+                  ></a>
                 </div>
               </div>
             </div>
@@ -85,8 +93,8 @@
         >
           <div class="col-md-6">
             <label for="minigameSelection" class="font-weight-bold"
-              ><span>Mini Game</span></label
-            >
+              ><span [translate]="'edit-team.5'"></span
+            ></label>
             <select
               #minigameDropdown
               id="minigameSelection"
@@ -97,13 +105,15 @@
                 *ngFor="let minigame of MiniGames"
                 value="{{ minigame.id }}"
                 [selected]="currentMinigame == minigame.id"
+                [translate]="minigame.translation"
               >
-                {{ minigame.name }}
               </option>
             </select>
-            <button (click)="changeMinigame(minigameDropdown.value)">
-              Set
-            </button>
+            <button
+              class="btn-primary"
+              (click)="changeMinigame(minigameDropdown.value)"
+              [translate]="'register.8'"
+            ></button>
           </div>
         </div>
         <app-minigame-vars
@@ -124,12 +134,12 @@
                 data-toggle="list"
                 href="#pageAfterChallenge"
                 role="tab"
-                >Page After</a
-              >
+                [translate]="'edit-team.6'"
+              ></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " data-toggle="list" href="#snap" role="tab"
-                >Snap</a
+              <a class="nav-link " data-toggle="list" href="#snap" role="tab" [translate]="'edit-team.7'"
+                ></a
               >
             </li>
           </ul>
@@ -169,7 +179,7 @@
             <span>{{ 'edit-team.10' | translate }}</span>
           </button>
           <button class="btn btn-danger" (click)="goBack()">
-            <span>{{ 'create-team.11' | translate }}</span>
+            <span>{{ 'edit-team.11' | translate }}</span>
           </button>
         </div>
       </form>
