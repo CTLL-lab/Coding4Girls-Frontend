@@ -88,22 +88,24 @@
       </div>
     </div>
     <p>
-      This site requires to collect your email adress and name to function
-      properly. To continue using Coding4Girls, you must consent our
-      <a href="#/privacy">Privacy policy</a>.
+      <span [translate]="'register.9'"></span>
     </p>
     <div class="form-row mb-2">
-      <div class="col">
+      <div class="col" id="privacyDiv">
         <input
           type="checkbox"
           id="privacy"
           name="privacy"
           [(ngModel)]="terms_accepted"
         />
-        <label for="privacy"
-          >I have read and accept the Coding4Girls
-          <a href="#/privacy">privacy policy</a></label
-        >.
+        <label for="privacyDiv" [translate]="'register.11'"></label>
+
+        <a
+          style="margin-left:5px"
+          for="privacy"
+          href="#/privacy"
+          [translate]="'register.10'"
+        ></a>
       </div>
       <div clas="col">
         <button
