@@ -7,6 +7,7 @@ import { UserService } from 'src/app/authentication/services/user/user.service';
 import { User } from 'src/app/authentication/services/user/user';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { CouldntLogoutError } from 'src/app/authentication/exceptions';
+import { NavbarService } from './navbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,7 +24,8 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     public userService: UserService,
     public translate: TranslateService,
-    public notifications: NotificationsToasterService
+    public notifications: NotificationsToasterService,
+    public nav: NavbarService
   ) {}
 
   ngOnInit() {

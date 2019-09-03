@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { NavbarService } from './core/navbar/navbar.service';
 
 export function getToken() {
   if (localStorage.getItem('token') != null) {
@@ -57,7 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CoreModule,
     AuthenticationModule
   ],
-  providers: [JwtHelperService, HttpClient],
+  providers: [JwtHelperService, HttpClient, NavbarService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
