@@ -149,7 +149,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   clickNote(note: PostIt) {
     const options = this.getNotesOptions(note);
     if (options.editable) {
-      console.log('Moving note on top', note);
       this.notesProvider.moveNoteOnTop(note, this.canvasID);
     }
   }
