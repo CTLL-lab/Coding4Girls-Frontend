@@ -47,3 +47,13 @@ export class CouldntLogoutError implements Error {
     this.name = 'CouldntLogoutError';
   }
 }
+
+export class InvalidRegistrationCode implements Error {
+  name: string;
+  message: string;
+  stack?: string;
+  constructor() {
+    this.message = 'Invalid registration code';
+    this.name = 'InvalidRegistrationCode';
+  }
+}
