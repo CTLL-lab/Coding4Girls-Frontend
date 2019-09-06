@@ -83,8 +83,14 @@
         />
       </div>
       <div class="form-group col-md-6">
-        <label for="code"><span>Code (optional)</span></label>
-        <input id="code" class="form-control" name="code" [(ngModel)]="code" />
+        <label for="code"><span>Code</span></label>
+        <input
+          id="code"
+          class="form-control"
+          name="code"
+          [(ngModel)]="code"
+          [ngClass]="{ 'is-invalid': invalidInput == 'code' }"
+        />
       </div>
     </div>
     <p>

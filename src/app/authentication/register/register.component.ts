@@ -6,7 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import {
   UsernameAlreadyInUseError,
-  EmailAlreadyInUseError
+  EmailAlreadyInUseError,
+  InvalidRegistrationCode
 } from '../exceptions';
 @Component({
   selector: 'app-register',
@@ -76,6 +77,8 @@ export class RegisterComponent implements OnInit {
           } else if (err instanceof EmailAlreadyInUseError) {
             this.invalidInput = 'email';
             errorMessage = 'in-code.20';
+          } else if (err instanceof InvalidRegistrationCode) {
+            this.invalidInput = 'code';
           }
           this.translationService.get(errorMessage).subscribe(r => {
             this.notifications.showError(r);
