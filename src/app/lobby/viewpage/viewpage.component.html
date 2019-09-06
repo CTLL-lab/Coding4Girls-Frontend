@@ -1,0 +1,19 @@
+<quill-view
+  *ngIf="type == 'instructions'"
+  [content]="quillContent"
+  [format]="'object'"
+  [modules]="quillModules"
+></quill-view>
+
+<iframe
+  *ngIf="type == 'snap'"
+  src="/assets/snap/snap.html"
+  width="1200"
+  height="1000"
+></iframe>
+
+<app-canvas
+  *ngIf="type == 'canvas'"
+  [canAddNotes]="true"
+  [canvasID]="lobbyID"
+></app-canvas>

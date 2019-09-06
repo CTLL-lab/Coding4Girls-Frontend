@@ -6,8 +6,10 @@ import { CreateChallengeComponent } from './create-challenge/create-challenge.co
 import { SolutionsComponent } from './solutions/solutions.component';
 import { SolutionPageComponent } from './solution-page/solution-page.component';
 import { BrainstormComponent } from './brainstorm/brainstorm.component';
+import { ViewpageComponent } from './viewpage/viewpage.component';
 
 const routes: Routes = [
+  { path: 'view', component: ViewpageComponent },
   {
     path: ':id',
     component: LobbyPageComponent
