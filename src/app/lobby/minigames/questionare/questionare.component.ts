@@ -62,7 +62,13 @@ export class QuestionareComponent implements OnInit {
           for (let j = 0; j < this.options.numberOfAnswers; j++) {
             const answer = new FormGroup({
               answer: new FormControl(''),
-              correct: new FormControl(false)
+              correct: new FormControl(
+                !this.options.multipleCorrectAnswers &&
+                this.options.numberOfAnswers > 1 &&
+                j == 0
+                  ? true
+                  : false
+              )
             });
             if (this.options.allowsImageUpload) {
               answer.addControl('image', new FormControl(''));
