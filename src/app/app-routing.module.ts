@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
 import { HomeComponent } from './core/home/home.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'lobbies', loadChildren: './lobbies/lobbies.module#LobbiesModule' },
   { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyModule' },
+  { path: 'privacy', component: PrivacyPolicyComponent },
   { path: 'home', component: HomeComponent },
   { path: '', component: HomeComponent }
 ];

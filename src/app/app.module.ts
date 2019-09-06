@@ -13,6 +13,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { NavbarService } from './core/navbar/navbar.service';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 export function getToken() {
   if (localStorage.getItem('token') != null) {
@@ -27,7 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, PrivacyPolicyComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
