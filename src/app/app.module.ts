@@ -49,7 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         // authScheme: 'Bearer ',
         skipWhenExpired: true,
         whitelistedDomains: [
-          'api.codinggirls.spanagiot.gr',
+          'api.coding4girls.e-ce.uth.gr',
           'localhost:5000',
           '10.2.1.5:5000'
         ],
