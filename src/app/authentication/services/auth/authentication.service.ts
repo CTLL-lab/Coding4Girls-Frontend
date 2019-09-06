@@ -8,7 +8,8 @@ import {
   UserNotFoundError,
   UsernameAlreadyInUseError,
   EmailAlreadyInUseError,
-  CouldntLogoutError
+  CouldntLogoutError,
+  InvalidRegistrationCode
 } from '../../exceptions';
 import { map, catchError } from 'rxjs/operators';
 
@@ -65,6 +66,7 @@ export class AuthenticationService {
     lname: string,
     code: string
   ) {
+    code = code == '' ? null : code;
     return this.requester
       .post(
         apiURL + '/register',
@@ -81,6 +83,8 @@ export class AuthenticationService {
       .pipe(
         catchError(res => {
           switch (res.status) {
+            case 426:
+              throw new InvalidRegistrationCode();
             case 409:
               switch (res.error['data']['duplicate']) {
                 case 'username':
