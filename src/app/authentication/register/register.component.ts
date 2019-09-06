@@ -79,6 +79,8 @@ export class RegisterComponent implements OnInit {
             errorMessage = 'in-code.20';
           } else if (err instanceof InvalidRegistrationCode) {
             this.invalidInput = 'code';
+          } else {
+            this.invalidInput = '';
           }
           this.translationService.get(errorMessage).subscribe(r => {
             this.notifications.showError(r);
