@@ -11,7 +11,8 @@
       <div class="form-group">
         <div [formGroupName]="i">
           <div class="form-row">
-            Question {{ i + 1 }}:
+            <!-- Question -->
+            {{ 'variables.9' | translate }} {{ i + 1 }}:
             <div class="col-auto">
               <input
                 type="text"
@@ -44,7 +45,29 @@
             [formArrayName]="'answers'"
           >
             <div class="form-row" [formGroupName]="j">
-              Answer {{ j + 1 }}:
+              <!-- Answer -->
+              <span
+                *ngIf="
+                  !this.options.multipleCorrectAnswers &&
+                  this.options.numberOfAnswers > 1
+                "
+              >
+                {{
+                  j == 0
+                    ? ('variables.7' | translate)
+                    : ('variables.8' | translate)
+                }}
+              </span>
+              <span
+                *ngIf="
+                  !(
+                    !this.options.multipleCorrectAnswers &&
+                    this.options.numberOfAnswers > 1
+                  )
+                "
+              >
+                {{ 'variables.10' | translate }} {{ j + 1 }}
+              </span>
               <div class="col-auto">
                 <input
                   type="text"
@@ -69,16 +92,6 @@
                 />
               </div>
               <div class="col-auto">
-                <input
-                  type="radio"
-                  [value]="true"
-                  [name]="'correct'"
-                  [formTarget]="'correct'"
-                  *ngIf="
-                    !this.options.multipleCorrectAnswers &&
-                    this.options.numberOfAnswers > 1
-                  "
-                />
                 <input
                   type="checkbox"
                   [value]="true"
