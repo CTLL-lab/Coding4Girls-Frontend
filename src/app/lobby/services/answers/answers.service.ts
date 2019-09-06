@@ -44,4 +44,37 @@ export class AnswersService {
         })
       );
   }
+
+  SubmitLobbySolutionForSelf(lobbyID: string, solution: string) {
+    return this.http
+      .post(
+        apiURL + '/me/lobbies/' + lobbyID + '/solution',
+        { snap: solution },
+        {
+          observe: 'response'
+        }
+      )
+      .pipe(
+        map(x => {
+          console.log(x);
+          return x.body;
+        })
+      );
+  }
+
+  SubmitChallengeSolutionForSelf(challengeID: string, solution: string) {
+    return this.http
+      .post(
+        apiURL + '/me/challenges/' + challengeID + '/solution',
+        { snap: solution },
+        {
+          observe: 'response'
+        }
+      )
+      .pipe(
+        map(x => {
+          return x.body;
+        })
+      );
+  }
 }
