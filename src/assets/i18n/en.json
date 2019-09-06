@@ -146,7 +146,7 @@
     "5": "Sound Game",
     "6": "Snake game",
     "7": "Witness Game",
-    "8": "Donald Game",
+    "8": "Pattern Matching Game",
     "9": "Slot Machine",
     "10": "Multiple Questions"
   },
@@ -156,7 +156,11 @@
     "3": "Basic operations",
     "4": "Advanced operations",
     "5": "Trigonometry",
-    "6": "All"
+    "6": "All",
+    "7": "Correct answer",
+    "8": "Wrong answer",
+    "9": "Question",
+    "10": "Answer"
   },
   "privacy": {
     "1": "Privacy Policy",
