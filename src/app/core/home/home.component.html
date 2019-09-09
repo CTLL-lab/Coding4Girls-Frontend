@@ -1,6 +1,26 @@
 <div class="container">
-  <img
-    src="https://www.coding4girls.eu/img/struct/logo-desktop.png"
-    class="img-fluid rounded mx-auto d-block"
-  />
+  <div>
+    <img
+      width="400px"
+      src="https://www.coding4girls.eu/img/struct/logo-desktop.png"
+      class="img-fluid rounded mx-auto d-block"
+    />
+  </div>
+  <div>
+    <p class="text-justify mt-4">{{ 'home.3' | translate }}</p>
+  </div>
+  <div>
+    <p class="text-justify" [innerHtml]="'home.4' | translate"></p>
+  </div>
+  <div>
+    <img
+      width="400px"
+      src="assets/Erasmus.png"
+      class="img-fluid rounded mx-auto d-block"
+    />
+    <p class="text-center">
+      <a href="https://www.coding4girls.eu" target="_blank">Coding4Girls</a>
+    </p>
+    <p class="small text-center">{{ 'home.5' | translate }}</p>
+  </div>
 </div>
