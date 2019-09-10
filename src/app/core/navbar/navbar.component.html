@@ -21,6 +21,7 @@
             href="#"
             [routerLink]="['lobbies']"
             [ngClass]="{ disabled: this.user == null }"
+            *ngIf="this.user != null"
             ><span>{{ 'navbar.2' | translate }}</span></a
           >
         </li>
@@ -150,6 +151,7 @@
             href="#"
             [routerLink]="['lobbies']"
             [ngClass]="{ disabled: this.user == null }"
+            *ngIf="this.user != null"
             ><span>{{ 'navbar.2' | translate }}</span></a
           >
         </li>
