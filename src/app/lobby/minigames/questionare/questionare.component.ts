@@ -34,22 +34,20 @@ export class QuestionareComponent implements OnInit {
 
   ngOnInit() {
     this.form.addControl('questions', new FormArray([]));
-
+    console.log(this.prefilled_variables);
     // if prefilled variables is {} and doesn't contain questions array
     try {
-      this.prefilled_variables.questions.length;
-    } catch {
+      if (this.prefilled_variables.questions.length > 0) {
+        this.prefilledQuestions = this.prefilled_variables['questions'];
+        delete this.prefilled_variables['questions'];
+        for (let key in this.prefilled_variables) {
+          this.form.get(key).setValue(Number(this.prefilled_variables[key]));
+        }
+        this.fillQuestionsWithPrefilled();
+      }
+    } catch (err) {
       // make it undefined
       this.prefilled_variables = undefined;
-    }
-    if (this.prefilled_variables) {
-      this.prefilledQuestions = this.prefilled_variables['questions'];
-      delete this.prefilled_variables['questions'];
-      for (let key in this.prefilled_variables) {
-        this.form.get(key).setValue(Number(this.prefilled_variables[key]));
-      }
-      this.fillQuestionsWithPrefilled();
-    } else {
       if (this.options.fixedNumberOfQuestions) {
         for (let i = 0; i < this.options.numberOfQuestions; i++) {
           const question = new FormGroup({
