@@ -12,6 +12,7 @@ import { ChallengeService } from '../services/challenge/challenge.service';
 import { ChallengeBoxOptions } from '../challenge-box/challenge-box.component';
 import { priviledged_roles } from '../../config';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { MinigameService } from '../minigames/minigame.service';
 
 @Component({
   selector: 'app-lobby-page',
@@ -28,7 +29,8 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
     private lobbyService: LobbyService,
     private router: Router,
     private challengeService: ChallengeService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    public minigamesService: MinigameService
   ) {
     this.SortableJSOptions = {
       onUpdate: (event: any) => {

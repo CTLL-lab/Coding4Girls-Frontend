@@ -82,7 +82,11 @@
             class="my-3"
             [TopText]="i + 1 + ')' + challenge.name"
             [MiddleText]="challenge.description"
-            [BottomText]="'Mini game:' + challenge.minigame"
+            [BottomText]="
+              minigamesService.getMinigameItemByID(challenge.minigame).data[
+                'translation'
+              ] | translate
+            "
             (SettingsClicked)="openChallengeSettings(challenge.id)"
           ></app-challenge-box>
 
