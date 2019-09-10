@@ -29,21 +29,21 @@
     "11": "Discard"
   },
   "in-code": {
-    "1": "New lobby created",
+    "1": "New course created",
     "2": "Challenge created",
     "3": "An error occurred",
     "4": "Invalid parameters",
-    "6": "Lobby joined",
-    "7": "Failed to join lobby",
-    "8": "You left the lobby",
+    "6": "Course joined",
+    "7": "Failed to join course",
+    "8": "You left the course",
     "9": "Changes saved",
     "10": "Logged in",
     "11": "Wrong password",
     "12": "Invalid username",
     "13": "Success",
     "14": "Error",
-    "15": "Lobby does not exist",
-    "16": "You are already member of the lobby",
+    "15": "Course does not exist",
+    "16": "You are already member of the course",
     "17": "Registered successfully",
     "18": "Registration failed",
     "19": "Username already exists",
@@ -52,24 +52,24 @@
     "22": "Passwords don't match"
   },
   "lobbies": {
-    "1": "Created lobbies",
-    "3": "Create new lobby",
+    "1": "Created courses",
+    "3": "Create new course",
     "4": "Join By Code",
     "5": "Join"
   },
   "lobby-page": {
     "1": "Created by:",
-    "2": "Lobby Settings",
+    "2": "Course Settings",
     "3": "Create New Challenge",
     "6": "Challenges",
     "7": "Challenge Description:",
     "8": "Answers",
-    "9": "Lobby answers",
+    "9": "Course answers",
     "10": "Brainstorm canvas",
     "14": "Members:"
   },
   "lobby-settings": {
-    "1": "Lobby Settings",
+    "1": "Course Settings",
     "2": "Name:",
     "3": "Description:",
     "4": "Learning Objectives and Expected Learning Outcomes:",
@@ -85,7 +85,7 @@
     "5": "Remember me"
   },
   "navbar": {
-    "2": "Lobbies",
+    "2": "Courses",
     "3": "Review",
     "4": "Verify",
     "6": "Feedback",
