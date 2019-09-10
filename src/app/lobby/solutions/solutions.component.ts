@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { AnswersService } from '../services/answers/answers.service';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-solutions',
@@ -14,7 +13,8 @@ export class SolutionsComponent implements OnInit {
   public currentState: SolutionsComponentState;
   constructor(
     private answersService: AnswersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -64,7 +64,9 @@ export class SolutionsComponent implements OnInit {
       }
     });
   }
-
+  goBack() {
+    this.router.navigate(['/lobby/' + this.lobbyID]);
+  }
   GetCSSClassForRow(row) {
     if (row.submitted) {
       return 'ngx-datatable-submitted';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ChallengeService } from '../services/challenge/challenge.service';
@@ -20,11 +20,20 @@ export class SolutionPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private challengeService: ChallengeService,
-    private answersService: AnswersService
+    private answersService: AnswersService,
+    private router: Router
   ) {
     window['world'] = this.worldBehaviorSubject;
   }
-
+  goBack() {
+    if (this.route.snapshot.data['lobby']) {
+      this.router.navigate(['/lobby/' + this.lobbyID + '/solutions/']);
+    } else {
+      this.router.navigate([
+        '/lobby/' + this.lobbyID + '/solutions/challenges'
+      ]);
+    }
+  }
   ngOnInit() {
     this.worldSubscription = this.worldBehaviorSubject.subscribe(x => {
       if (x == null) {

@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="row">
+    <div class="col-1 mb-2">
+      <i class="fas fa-arrow-circle-left fa-3x" (click)="goBack()"></i>
+    </div>
+  </div>
   <div class="text-center row mt-4 mb-2">
     <div class="col">
       <div (pageShow)="ngOnInit()">
@@ -181,9 +186,6 @@
             (click)="this.mode == 'edit' ? editTeam() : createTeam()"
           >
             <span>{{ 'edit-team.10' | translate }}</span>
-          </button>
-          <button class="btn btn-danger" (click)="goBack()">
-            <span>{{ 'edit-team.11' | translate }}</span>
           </button>
         </div>
       </form>
