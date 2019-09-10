@@ -9,29 +9,6 @@
       <span>{{ 'canvas.11' | translate }} </span>
     </button>
   </div>
-  <form class="form-row form-inline">
-    <div *ngIf="userService.getRole() == 'teacher'" class="form-group col-sm-6">
-      <select #templateDropdown class="float-right form-control h-100">
-        <option value="0" [selected]="currentTemplate == null"
-          >{{ 'canvas.13' | translate }}
-        </option>
-        <option
-          *ngFor="let template of currentTeacherTemplates"
-          value="{{ template.id }}"
-          [selected]="template.id == level.appliedTemplate"
-        >
-          {{ template.name }}
-        </option>
-      </select>
-      <button
-        type="submit"
-        class="btn btn-primary float-right"
-        (click)="applyTemplate(templateDropdown.value)"
-      >
-        {{ 'canvas.12' | translate }}
-      </button>
-    </div>
-  </form>
   <div class="row">
     <div class="col">
       <div class="drag-boundary board" [style.height.px]="canvasHeight" #canvas>
