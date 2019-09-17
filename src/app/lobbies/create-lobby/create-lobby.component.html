@@ -1,8 +1,8 @@
-<div class="container font-weight-bold mt-4 mb-4">
+<div class="container  mt-4 mb-4">
   <div class="container-fluid" (pageShow)="ngOnInit()" *ngIf="userPriviledged">
     <form>
       <div class="form-group">
-        <label for="lobbyName"
+        <label for="lobbyName" class="font-weight-bold"
           ><span>{{ 'create-lobby.1' | translate }}</span></label
         >
         <input
@@ -15,7 +15,7 @@
             'is-invalid': invalidData.includes('name')
           }"
         />
-        <label for="lobbyCode"
+        <label for="lobbyCode" class="font-weight-bold"
           ><span>{{ 'create-lobby.2' | translate }}</span></label
         >
         <input
@@ -30,7 +30,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="lobbyDescription"
+        <label for="lobbyDescription" class="font-weight-bold"
           ><span>{{ 'create-lobby.3' | translate }}</span></label
         >
         <input
@@ -46,7 +46,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="outcome"
+        <label for="outcome" class="font-weight-bold"
           ><span>{{ 'create-lobby.4' | translate }}</span></label
         >
         <input
@@ -61,6 +61,7 @@
           }"
         />
       </div>
+
       <div class="form-group row">
         <ul class="nav nav-tabs" id="challengePages" role="tablist">
           <li class="nav-item">
