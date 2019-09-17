@@ -183,7 +183,9 @@ export class CanvasComponent implements OnInit, OnDestroy {
       0,
       0
     );
-    this.modalService.show(modalToShow);
+    this.modalService.show(modalToShow, {
+      backdrop: 'static'
+    });
   }
 
   saveNoteFromModal() {
@@ -192,5 +194,16 @@ export class CanvasComponent implements OnInit, OnDestroy {
     }
     document.body.classList.remove('modal-open');
     this.addNewNote(this.newNote);
+  }
+
+  testFunc() {
+    console.log('mouse down');
+  }
+
+  closeModal() {
+    for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+      this.modalService.hide(i);
+    }
+    document.body.classList.remove('modal-open');
   }
 }

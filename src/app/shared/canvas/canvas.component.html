@@ -45,6 +45,10 @@
         (noteSave)="saveNoteFromModal()"
       ></app-note>
     </div>
-    <div class="modal-footer"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="closeModal()">
+        Close
+      </button>
+    </div>
   </div>
 </ng-template>
