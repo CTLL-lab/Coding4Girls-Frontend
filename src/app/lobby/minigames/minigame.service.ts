@@ -44,7 +44,7 @@ export class MinigameService {
     Statements: [
       {
         categoryName: 'Sequence of statements',
-        miniGames: [4, 11],
+        miniGames: [4],
         translation: 'minigameCategories.6'
       },
       {
@@ -113,6 +113,13 @@ export class MinigameService {
         categoryName: 'Events',
         miniGames: [9],
         translation: 'minigameCategories.18'
+      }
+    ],
+    MultipleChoiceQuestions: [
+      {
+        categoryName: 'Multiple Choice Questions',
+        miniGames: [11],
+        translation: 'minigame.10'
       }
     ]
   };
