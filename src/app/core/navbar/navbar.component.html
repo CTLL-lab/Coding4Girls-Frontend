@@ -45,16 +45,6 @@
             <i class="fas fa-user-circle"></i> Users
           </a>
         </li>
-        <li
-          class="nav-item"
-          *ngIf="this.user != null"
-          [routerLinkActive]="['active']"
-        >
-          <a class="nav-link" [routerLink]="['feedback']">
-            <i class="fas fa-headset"></i
-            ><span>{{ 'navbar.6' | translate }}</span></a
-          >
-        </li>
         <li class="nav-item" *ngIf="this.user != null">
           <a class="nav-link" (click)="logout()"
             ><span>{{ 'navbar.7' | translate }}</span></a
@@ -178,18 +168,6 @@
           <a class="nav-link" [routerLink]="['users']">
             <i class="fas fa-user-circle"></i> Users
           </a>
-        </li>
-        <li
-          data-toggle="collapse"
-          data-target=".navbar-collapse.show"
-          class="nav-item"
-          *ngIf="this.user != null"
-          [routerLinkActive]="['active']"
-        >
-          <a class="nav-link" [routerLink]="['feedback']">
-            <i class="fas fa-headset"></i
-            ><span>{{ 'navbar.6' | translate }}</span></a
-          >
         </li>
         <li
           data-toggle="collapse"
