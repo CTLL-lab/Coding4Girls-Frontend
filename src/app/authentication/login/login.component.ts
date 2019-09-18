@@ -30,11 +30,15 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(this.username, this.password).subscribe(
       r => {
         const token = r['data']['token'];
-        this.authService.storeUser(token, this.rememberme);
-        this.translationService.get('in-code.10').subscribe(k => {
-          this.notifications.showSuccess(k);
-        });
-        this.router.navigateByUrl('/home');
+        if (this.authService.DecodeToken(token)['role'] == 'student') {
+          this.notifications.showError('Login not permitted to students');
+        } else {
+          this.authService.storeUser(token, this.rememberme);
+          this.translationService.get('in-code.10').subscribe(k => {
+            this.notifications.showSuccess(k);
+          });
+          this.router.navigateByUrl('/home');
+        }
       },
       err => {
         if (err instanceof InvalidPasswordError) {
