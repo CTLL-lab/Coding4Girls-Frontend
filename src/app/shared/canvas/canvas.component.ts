@@ -1,8 +1,6 @@
 import {
   Component,
   Input,
-  OnChanges,
-  SimpleChanges,
   OnInit,
   TemplateRef,
   OnDestroy
@@ -11,12 +9,10 @@ import { PostIt } from './postit';
 
 import { ChallengeService } from '../../lobby/services/challenge/challenge.service';
 import { Router } from 'node_modules/@angular/router';
-// import { TemplatesService } from '../services/templates/templates.service';
 import { NoteOptions } from './notes/note/note.component';
 import { priviledged_roles } from 'src/app/config';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Level } from 'src/app/teamModel';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { NotesProviderService } from './notes/services/notes/notes-provider.service';
@@ -27,18 +23,14 @@ import { NotesProviderService } from './notes/services/notes/notes-provider.serv
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit, OnDestroy {
-  @Input()
-  level: Level;
   teamMembers: Array<any>;
   @Input()
   canvasID: string;
   @Input()
   canAddNotes: boolean;
-  public currentTeacherTemplates = [];
   public messages = new Array();
   public canvasHeight = 800;
   public heightOffset = 200;
-  public currentTemplate = null;
   public addNewNoteOptions: NoteOptions = {
     locked: true,
     draggable: false,
@@ -54,7 +46,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
     public notesProvider: NotesProviderService,
     public challengeService: ChallengeService,
     public userService: UserService,
-    // private templatesService: TemplatesService,
     private notifications: NotificationsToasterService,
     private router: Router,
     private translationService: TranslateService,
@@ -62,11 +53,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.userService.getRole() !== 'student') {
-      // this.templatesService.getTemplates().subscribe(r => {
-      //   this.currentTeacherTemplates = r['templates'];
-      // });
-    }
     this.notesProvider.notesHeight.subscribe(x => {
       this.canvasHeight = x + this.heightOffset;
     });
@@ -125,25 +111,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   }
   resizeNote(note) {
     this.notesProvider.editNote(note, this.canvasID);
-  }
-
-  applyTemplate(template) {
-    const currentTemplate = this.level.appliedTemplate
-      ? this.level.appliedTemplate
-      : null;
-    const templateToApply = template ? template : null;
-    // if (currentTemplate !== templateToApply) {
-    //   this.templatesService
-    //     .applyTemplateToLevel(templateToApply, this.canvasID)
-    //     .subscribe(r => {
-    //       this.translationService.get('in-code.19').subscribe(k => {
-    //         this.notifications.showSuccess(k);
-    //       });
-    //       this.notesProvider.applyTemplate(this.canvasID);
-    //       this.notesProvider.reloadNotes(this.canvasID);
-    //       this.level.appliedTemplate = templateToApply;
-    //     });
-    // }
   }
 
   clickNote(note: PostIt) {
