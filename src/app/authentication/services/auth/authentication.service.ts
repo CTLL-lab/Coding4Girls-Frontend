@@ -69,7 +69,7 @@ export class AuthenticationService {
     code = code == '' ? null : code;
     return this.requester
       .post(
-        apiURL + '/register',
+        apiURL + '/register?l=web',
         {
           username: username,
           password: password,
