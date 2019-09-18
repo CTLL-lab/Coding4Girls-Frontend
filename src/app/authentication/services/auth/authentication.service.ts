@@ -163,4 +163,8 @@ export class AuthenticationService {
     }
     this.user.SetUser(this.jwt.decodeToken(token));
   }
+
+  public DecodeToken(token) {
+    return this.jwt.decodeToken(token);
+  }
 }
