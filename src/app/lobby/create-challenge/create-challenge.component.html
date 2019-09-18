@@ -179,7 +179,7 @@
             </div>
           </div>
         </div>
-        <div class="btn-group mb-4" role="group">
+        <div class=" mb-4" role="group">
           <button
             class="btn btn-success"
             type="submit"
@@ -187,8 +187,30 @@
           >
             <span>{{ 'edit-team.10' | translate }}</span>
           </button>
+          <button
+            class="btn btn-danger float-right"
+            type="submit"
+            *ngIf="this.mode == 'edit'"
+            (click)="showModal(deleteConfirmation)"
+          >
+            <span>{{ 'in-code.23' | translate }}</span>
+          </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<ng-template #deleteConfirmation>
+  <div class="modal-content">
+    <div class="modal-header">{{ 'in-code.24' | translate }}</div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="deleteChallenge()">
+        {{ 'in-code.25' | translate }}
+      </button>
+      <button class="btn btn-success" (click)="closeAllModals()">
+        {{ 'in-code.26' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

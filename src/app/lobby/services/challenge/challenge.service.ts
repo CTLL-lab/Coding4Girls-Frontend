@@ -55,8 +55,14 @@ export class ChallengeService {
     );
   }
 
-  deleteTeam(teamID: string) {
-    return this.http.delete(apiURL + '/teams/' + teamID);
+  deleteChallenge(challengeID: string) {
+    return this.http
+      .delete(apiURL + '/challenges/' + challengeID, { observe: 'response' })
+      .pipe(
+        map(x => {
+          x.body;
+        })
+      );
   }
 
   getTeamMembers(teamID: string) {

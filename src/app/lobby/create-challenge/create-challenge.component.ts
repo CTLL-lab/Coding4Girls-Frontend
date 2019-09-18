@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
@@ -11,6 +11,7 @@ import { forkJoin, BehaviorSubject, Subscription } from 'rxjs';
 import { MinigameService } from '../minigames/minigame.service';
 import { MinigameItem } from '../minigames/minigame-item';
 import { FormGroup } from '@angular/forms';
+import { BsModalService } from 'ngx-bootstrap';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -81,7 +82,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService,
-    private minigamesService: MinigameService
+    private minigamesService: MinigameService,
+    private modalService: BsModalService
   ) {
     window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
@@ -326,5 +328,29 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  deleteChallenge() {
+    this.challengeService.deleteChallenge(this.challengeID).subscribe(
+      x => {
+        this.closeAllModals();
+        this.notifications.showSuccess('');
+        this.goBack();
+      },
+      x => {
+        this.notifications.showError('');
+      }
+    );
+  }
+
+  showModal(modalToShow: TemplateRef<any>) {
+    this.modalService.show(modalToShow);
+  }
+
+  closeAllModals() {
+    for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+      this.modalService.hide(i);
+    }
+    document.body.classList.remove('modal-open');
   }
 }
