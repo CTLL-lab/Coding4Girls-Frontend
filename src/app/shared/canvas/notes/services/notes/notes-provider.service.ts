@@ -54,7 +54,9 @@ export class NotesProviderService {
       this.notes[this.notes.findIndex(x => x.id === r.note.id)] = r.note;
     });
     this.socket.on('join-room', r => {
-      for (const note of r) {
+      this.notes = [];
+      r.map(x => {
+        const note = x;
         note.text = note['notetext'];
         note.type = note['contenttype'];
         note.color = note['color'];
@@ -67,8 +69,9 @@ export class NotesProviderService {
         delete note.width;
         delete note.height;
         delete note.contenttype;
-      }
-      this.notes = r;
+        this.notes.push(note);
+      });
+
       this.calculateHighestZ();
       this.notesHeight.next(this.calculateNewHeight(this.notes));
       this.notesLoaded.next(true);
@@ -101,27 +104,39 @@ export class NotesProviderService {
     if (currentID != null) {
       this.leaveCanvas(currentID.toString());
     }
-    this.socket.emit('room', canvasID, this.userService.user.value);
+    if (canvasID == undefined) {
+      return;
+    }
     this.currentCanvas.next(canvasID);
+    this.socket.emit('room', canvasID, this.userService.user.value);
   }
   reloadNotes(canvasID) {
     this.leaveLastCanvas();
+    if (canvasID == undefined) {
+      return;
+    }
     this.joinCanvas(canvasID);
   }
   leaveLastCanvas() {
     this.onlineUsers = new Array();
     const canvasID = this.currentCanvas.getValue();
-    this.socket.emit('leave-room', canvasID, this.userService.user);
     this.notesLoaded.next(false);
     this.currentCanvas.next(null);
     this.notes = [];
+    if (canvasID == undefined) {
+      return;
+    }
+    this.socket.emit('leave-room', canvasID, this.userService.user);
   }
   leaveCanvas(canvasID: string) {
     this.onlineUsers = [];
-    this.socket.emit('leave-room', canvasID, this.userService.user.value);
     this.notesLoaded.next(false);
     this.currentCanvas.next(null);
     this.notes = [];
+    if (canvasID == undefined) {
+      return;
+    }
+    this.socket.emit('leave-room', canvasID, this.userService.user.value);
   }
   joinLobbyPage(lobbyID) {
     this.socket.emit('lobby-room', 'lobby-' + lobbyID, this.userService.user);
@@ -152,6 +167,10 @@ export class NotesProviderService {
     this.socket.emit('challenge-changed', 'lobby-' + lobbyID, team);
   }
   moveNote(postit: PostIt, canvasID) {
+    this.notesHeight.next(this.calculateNewHeight(this.notes));
+    if (canvasID == undefined) {
+      return;
+    }
     this.socket.emit(
       'move-note',
       {
@@ -159,7 +178,6 @@ export class NotesProviderService {
       },
       canvasID
     );
-    this.notesHeight.next(this.calculateNewHeight(this.notes));
   }
 
   addNewNote(postit: PostIt, canvasID) {
@@ -169,6 +187,9 @@ export class NotesProviderService {
       postit.position.z = this.highestZ;
     }
     this.notes.push(postit);
+    if (canvasID == undefined) {
+      return;
+    }
     this.socket.emit(
       'new-note',
       postit,
@@ -178,6 +199,11 @@ export class NotesProviderService {
   }
 
   deleteNote(postit: PostIt, canvasID) {
+    this.notes.splice(this.notes.indexOf(postit), 1);
+    this.calculateHighestZ();
+    if (canvasID == undefined) {
+      return;
+    }
     this.socket.emit(
       'delete-note',
       {
@@ -186,11 +212,13 @@ export class NotesProviderService {
       canvasID,
       this.userService.GetUserID()
     );
-    this.notes.splice(this.notes.indexOf(postit), 1);
-    this.calculateHighestZ();
   }
 
   editNote(postit: PostIt, canvasID) {
+    this.notesHeight.next(this.calculateNewHeight(this.notes));
+    if (canvasID == undefined) {
+      return;
+    }
     this.socket.emit(
       'edit-note',
       {
@@ -198,9 +226,11 @@ export class NotesProviderService {
       },
       canvasID
     );
-    this.notesHeight.next(this.calculateNewHeight(this.notes));
   }
   applyTemplate(canvasID) {
+    if (canvasID == undefined) {
+      return;
+    }
     this.socket.emit('template-changed', canvasID);
   }
   moveNoteOnTop(note, canvasID) {
@@ -226,6 +256,9 @@ export class NotesProviderService {
     if (zOfMovingNote < this.highestZ) {
       note.position.z = this.highestZ;
       notesToUpdate.push({ id: note.id, z: note.position.z });
+    }
+    if (canvasID == undefined) {
+      return;
     }
     if (notesToUpdate.length > 0) {
       this.socket.emit('z-note', notesToUpdate, canvasID);
