@@ -9,7 +9,6 @@ import {
 } from 'angular2-draggable';
 import { MarkdownModule, MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 import { HoldableDirective } from './directives/holdable/holdable.directive';
-import { NotesProviderService } from './services/notes/notes-provider.service';
 import { UploaderService } from './services/uploader/uploader.service';
 import { EmbedVideoService } from './services/embed/embed-video.service';
 
@@ -31,7 +30,7 @@ import { EmbedVideoService } from './services/embed/embed-video.service';
     AngularDraggableDirective,
     AngularResizableDirective
   ],
-  providers: [NotesProviderService, UploaderService, EmbedVideoService]
+  providers: [UploaderService, EmbedVideoService]
 })
 export class NotesModule {}
 
