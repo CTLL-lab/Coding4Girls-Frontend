@@ -44,9 +44,6 @@ export class LobbyService {
   }
 
   createNewLobby(lobbyObject: any) {
-    // TODO
-    lobbyObject = { ...lobbyObject, snapTemplate: '' };
-
     return this.http.post(apiURL + '/lobbies', lobbyObject, {
       observe: 'response'
     });
