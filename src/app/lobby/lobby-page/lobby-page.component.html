@@ -81,7 +81,17 @@
       </div>
     </div>
     <div class="list-group col-sm-4">
-      <div [sortablejs]="challenges" [sortablejsOptions]="SortableJSOptions">
+      <div *ngIf="challenges.length == 0">
+        <p
+          [translate]="'canvas.13'"
+          class="lead display-4 text-center text-muted"
+        ></p>
+      </div>
+      <div
+        [sortablejs]="challenges"
+        [sortablejsOptions]="SortableJSOptions"
+        *ngIf="challenges.length > 0"
+      >
         <div *ngFor="let challenge of challenges; let i = index">
           <app-challenge-box
             class="my-3"
