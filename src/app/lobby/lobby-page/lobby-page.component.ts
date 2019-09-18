@@ -13,6 +13,7 @@ import { ChallengeBoxOptions } from '../challenge-box/challenge-box.component';
 import { priviledged_roles } from '../../config';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MinigameService } from '../minigames/minigame.service';
+import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 
 @Component({
   selector: 'app-lobby-page',
@@ -30,7 +31,8 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
     private router: Router,
     private challengeService: ChallengeService,
     private modalService: BsModalService,
-    public minigamesService: MinigameService
+    public minigamesService: MinigameService,
+    public notifications: NotificationsToasterService
   ) {
     this.SortableJSOptions = {
       onUpdate: (event: any) => {
@@ -166,5 +168,19 @@ export class LobbyPageComponent implements OnInit, AfterContentChecked {
       IsUserPriviledged: false
     };
     return teamOptions;
+  }
+
+  showModal(modalToShow: TemplateRef<any>) {
+    this.modalService.show(modalToShow);
+  }
+
+  deleteLobby() {
+    this.lobbyService
+      .DeleteLobby(this.lobbyDetails['id'].toString())
+      .subscribe(x => {
+        this.closeAllModals();
+        this.notifications.showSuccess('');
+        this.router.navigateByUrl('/lobbies');
+      });
   }
 }

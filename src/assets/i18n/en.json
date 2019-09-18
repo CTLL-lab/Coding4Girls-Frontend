@@ -49,7 +49,11 @@
     "19": "Username already exists",
     "20": "Email already exists",
     "21": "Username can't be empty",
-    "22": "Passwords don't match"
+    "22": "Passwords don't match",
+    "23": "Delete",
+    "24": "Are you sure?",
+    "25": "Yes",
+    "26": "No"
   },
   "lobbies": {
     "1": "Created courses",

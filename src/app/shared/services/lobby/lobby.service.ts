@@ -106,4 +106,10 @@ export class LobbyService {
       )
       .pipe(map(x => x.body));
   }
+
+  DeleteLobby(lobbyID: string) {
+    return this.http
+      .delete(apiURL + '/lobbies/' + lobbyID, { observe: 'response' })
+      .pipe(map(x => x.body));
+  }
 }
