@@ -104,14 +104,7 @@
             </div>
           </div>
         </div>
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button
-            class="btn btn-primary"
-            (click)="goBack()"
-            *ngIf="!this.isUserPriviledged"
-          >
-            <span>{{ 'lobby-settings.9' | translate }}</span>
-          </button>
+        <div class="mt-4" role="group" aria-label="Basic example">
           <button
             class="btn btn-success"
             (click)="saveChanges()"
@@ -119,8 +112,27 @@
           >
             <span>{{ 'lobby-settings.10' | translate }}</span>
           </button>
+          <button
+            class="btn btn-danger float-right"
+            [translate]="'in-code.23'"
+            (click)="showModal(deleteConfirmation)"
+          ></button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<ng-template #deleteConfirmation>
+  <div class="modal-content">
+    <div class="modal-header">{{ 'in-code.24' | translate }}</div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="deleteLobby()">
+        {{ 'in-code.25' | translate }}
+      </button>
+      <button class="btn btn-success" (click)="closeAllModals()">
+        {{ 'in-code.26' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

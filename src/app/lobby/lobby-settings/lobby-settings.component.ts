@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LobbyService } from 'src/app/shared/services/lobby/lobby.service';
@@ -6,6 +6,7 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
 import { TranslateService } from '@ngx-translate/core';
 import { priviledged_roles } from 'src/app/config';
 import { BehaviorSubject, Subscription, forkJoin } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-lobby-settings',
@@ -58,7 +59,8 @@ export class LobbySettingsComponent implements OnInit {
     private lobbyService: LobbyService,
     private router: Router,
     public notifications: NotificationsToasterService,
-    private translationService: TranslateService
+    private translationService: TranslateService,
+    private modalService: BsModalService
   ) {
     window['world'] = this.world;
   }
@@ -134,6 +136,27 @@ export class LobbySettingsComponent implements OnInit {
         });
       }
     );
+  }
+
+  showModal(modalToShow: TemplateRef<any>) {
+    this.modalService.show(modalToShow);
+  }
+
+  deleteLobby() {
+    this.lobbyService
+      .DeleteLobby(this.lobbyDetails['id'].toString())
+      .subscribe(x => {
+        this.closeAllModals();
+        this.notifications.showSuccess('');
+        this.router.navigateByUrl('/lobbies');
+      });
+  }
+
+  closeAllModals() {
+    for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
+      this.modalService.hide(i);
+    }
+    document.body.classList.remove('modal-open');
   }
 
   // Takes the world as argument and uses the serializer
