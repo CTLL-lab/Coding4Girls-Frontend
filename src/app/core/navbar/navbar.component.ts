@@ -17,7 +17,11 @@ import { NavbarService } from './navbar.service';
 export class NavbarComponent implements OnInit {
   user: User;
   counter = 0;
-  public currentLanguage;
+  public currentLanguage: {
+    name: string;
+    imagePath: string;
+    code: string;
+  };
   public languages_available = languages_available;
   constructor(
     public auth: AuthenticationService,
@@ -61,7 +65,7 @@ export class NavbarComponent implements OnInit {
     this.changeLanguageTo(this.currentLanguage.code);
   }
   public changeLanguageTo(lang: string) {
-    //   this.changeFlagToLanguage(lang);
+    this.translate.use(lang);
     //   this.user.changeUserLanguage(lang).subscribe();
   }
 }
