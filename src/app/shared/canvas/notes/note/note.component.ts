@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { UploaderService } from '../services/uploader/uploader.service';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { EmbedVideoService } from '../services/embed/embed-video.service';
 import { PostIt } from '../../postit';
 import { UserService } from 'src/app/authentication/services/user/user.service';
+import { UploaderService } from 'src/app/shared/services/uploader/uploader.service';
 
 const DIMENSIONS_EDIT = { height: 346, width: 456 };
 const DIMENSIONS_NO_EDIT = { height: 130, width: 130 };

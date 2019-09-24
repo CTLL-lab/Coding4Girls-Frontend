@@ -15,8 +15,8 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { NoteComponent } from './canvas/notes/note/note.component';
 import { NotesModule } from './canvas/notes/notes.module';
 import { ChallengeService } from '../lobby/services/challenge/challenge.service';
-import { UploaderService } from './canvas/notes/services/uploader/uploader.service';
 import { NotesProviderService } from './canvas/notes/services/notes/notes-provider.service';
+import { UploaderService } from './services/uploader/uploader.service';
 
 @NgModule({
   imports: [
