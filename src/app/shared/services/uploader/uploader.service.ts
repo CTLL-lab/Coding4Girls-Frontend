@@ -11,6 +11,7 @@ export class UploaderService {
   uploadImage(img: File) {
     const body = new FormData();
     body.set('image', img);
-    return this.http.post(imgurAPI + '/image', body, this.requestOptions);
+
+    return this.http.post(imgurAPI + '/images', body, this.requestOptions);
   }
 }
