@@ -4,6 +4,7 @@ import { LoginComponent } from './authentication/login/login.component';
 import { RegisterComponent } from './authentication/register/register.component';
 import { HomeComponent } from './core/home/home.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { AuthGuardService } from './authentication/services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -11,8 +12,16 @@ const routes: Routes = [
     component: LoginComponent
   },
   { path: 'register', component: RegisterComponent },
-  { path: 'lobbies', loadChildren: './lobbies/lobbies.module#LobbiesModule' },
-  { path: 'lobby', loadChildren: './lobby/lobby.module#LobbyModule' },
+  {
+    path: 'lobbies',
+    loadChildren: './lobbies/lobbies.module#LobbiesModule',
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'lobby',
+    loadChildren: './lobby/lobby.module#LobbyModule',
+    canActivate: [AuthGuardService]
+  },
   { path: 'privacy', component: PrivacyPolicyComponent },
   { path: 'home', component: HomeComponent },
   { path: '', component: HomeComponent }
@@ -20,6 +29,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuardService]
 })
 export class AppRoutingModule {}
