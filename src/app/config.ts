@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 // export const apiURL = 'http://localhost:5000';
 export const apiURL = environment.apiURL;
 // export const apiURL = 'https://api.coding4girls.e-ce.uth.gr';
-export const imgurAPI = 'https://api.imgur.com/3';
+export const imgurAPI = environment.imgurAPI;
 export const priviledged_roles = ['admin', 'teacher', 'sysadmin'];
 export const fully_priviledged_roles = ['admin', 'sysadmin'];
 export const languages_available = [
