@@ -80,32 +80,22 @@ export class MinigameService {
       {
         categoryName: '4 basic operations',
         miniGames: [8],
-        translation: 'minigameCategories.12'
+        translation: 'variables.3'
       },
       {
         categoryName: 'Modulo, roundings',
         miniGames: [8],
-        translation: 'minigameCategories.13'
+        translation: 'variables.4'
       },
       {
         categoryName: 'Advanced, sin, cos, sqrt, power, roundings',
         miniGames: [8],
-        translation: 'minigameCategories.14'
-      },
-      {
-        categoryName: 'AND/OR/NOT, booleans, ==',
-        miniGames: [8],
-        translation: 'minigameCategories.15'
+        translation: 'variables.5'
       },
       {
         categoryName: 'Random',
         miniGames: [10],
         translation: 'minigameCategories.16'
-      },
-      {
-        categoryName: 'Simultaneous sounds/movements/characters/interactions',
-        miniGames: [8],
-        translation: 'minigameCategories.17'
       }
     ],
     Events: [
