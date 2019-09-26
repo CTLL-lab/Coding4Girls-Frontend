@@ -48,10 +48,10 @@
     "20": "E-mail zaten mevcut",
     "21": "Kullanıcı adı boş bırakılamaz",
     "22": "Parolalar eşleşmemektedir",
-    "23": "Delete",
-    "24": "Are you sure?",
-    "25": "Yes",
-    "26": "No"
+    "23": "Sil",
+    "24": "Emin misiniz?",
+    "25": "Evet",
+    "26": "Hayir"
   },
   "lobbies": {
     "1": "Oluşturulan dersler",
