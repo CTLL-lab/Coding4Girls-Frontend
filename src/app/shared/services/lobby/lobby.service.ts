@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from 'src/app/config';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class LobbyService {
@@ -108,5 +108,13 @@ export class LobbyService {
     return this.http
       .delete(apiURL + '/lobbies/' + lobbyID, { observe: 'response' })
       .pipe(map(x => x.body));
+  }
+
+  CloneLobby(lobbyID: string, name: string, description: string, code: string) {
+    return this.http.post(apiURL + '/lobbies/' + lobbyID + '/clone', {
+      code,
+      name,
+      description
+    });
   }
 }

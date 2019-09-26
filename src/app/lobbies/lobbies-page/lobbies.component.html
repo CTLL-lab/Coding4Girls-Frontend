@@ -54,6 +54,15 @@
                 removeLobby(lobby)
               "
             ></i>
+            <i
+              class="fas fa-copy mt-2 leave-lobby-icon"
+              (click)="
+                $event.preventDefault();
+                $event.stopPropagation();
+                showModal(cloneModal);
+                this.LobbyCloneForm.get('id').setValue(lobby.id)
+              "
+            ></i>
           </div>
           <div class="row">
             <div class="col-9">
@@ -105,3 +114,59 @@
     <div class="col-1"></div>
   </div>
 </div>
+
+<ng-template #cloneModal>
+  <div class="modal-content">
+    <div class="modal-header">Clone course</div>
+    <div class="modal-body">
+      {{ LobbyCloneForm.value | json }}
+      <form [formGroup]="LobbyCloneForm">
+        <div class="form-group">
+          <label
+            for="exampleInputEmail1"
+            [translate]="'create-lobby.1'"
+          ></label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            aria-describedby="name"
+            formControlName="name"
+          />
+        </div>
+        <div class="form-group">
+          <label
+            for="exampleInputPassword1"
+            [translate]="'create-lobby.3'"
+          ></label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            formControlName="description"
+          />
+        </div>
+        <div class="form-group">
+          <label for="code" [translate]="'create-lobby.2'"></label>
+          <input
+            type="text"
+            class="form-control"
+            id="code"
+            formControlName="code"
+          />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" (click)="CloneCourse()">
+        {{ 'create-lobby.9' | translate }}
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="this.LobbyCloneForm.get('id').setValue(null); closeAllModals()"
+      >
+        {{ 'create-lobby.10' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

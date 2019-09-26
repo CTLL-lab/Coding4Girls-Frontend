@@ -6,7 +6,7 @@ import { LobbiesRoutingModule } from './lobbies-routing.module';
 import { LobbiesComponent } from './lobbies-page/lobbies.component';
 import { SharedModule } from '../shared/shared.module';
 import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 
 @NgModule({
@@ -14,6 +14,7 @@ import { QuillModule } from 'ngx-quill';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     LobbiesRoutingModule,
     SharedModule,
     QuillModule
