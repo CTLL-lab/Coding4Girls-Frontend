@@ -77,4 +77,16 @@ export class AnswersService {
         })
       );
   }
+
+  GetAnonymousLobbySolutions(lobbyID: string) {
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/solutions/anonymous', {
+        observe: 'response'
+      })
+      .pipe(
+        map(x => {
+          return x.body;
+        })
+      );
+  }
 }

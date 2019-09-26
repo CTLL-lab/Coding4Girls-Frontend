@@ -26,10 +26,20 @@ const routes: Routes = [
     path: ':id/team/new',
     component: CreateChallengeComponent
   },
-  { path: ':id/solutions/challenges', component: SolutionsComponent },
+  {
+    path: ':id/solutions/challenges',
+    component: SolutionsComponent,
+    data: { challenge: true }
+  },
   {
     path: ':id/solutions/:userID/:challengeID',
-    component: SolutionPageComponent
+    component: SolutionPageComponent,
+    data: { challenge: true }
+  },
+  {
+    path: ':id/solutions/comparison',
+    component: SolutionsComponent,
+    data: { comparison: true }
   },
   {
     path: ':id/solutions',
