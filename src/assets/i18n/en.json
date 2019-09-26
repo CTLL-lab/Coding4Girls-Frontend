@@ -144,16 +144,16 @@
     "18": "Events"
   },
   "minigame": {
-    "1": "Match3",
-    "2": "Find your path",
-    "3": "Inventory/Marble",
+    "1": "Match3 Game",
+    "2": "Find your path Game",
+    "3": "Inventory Game",
     "4": "Stepping Game",
     "5": "Sound Game",
-    "6": "Snake game",
+    "6": "Snake Game",
     "7": "Puzzle Game",
     "8": "Pattern Matching Game",
     "9": "Dice Game",
-    "10": "Multiple Questions"
+    "10": "Multiple Questions Game"
   },
   "variables": {
     "1": "Timer",
