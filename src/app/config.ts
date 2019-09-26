@@ -33,6 +33,11 @@ export const languages_available = [
     code: 'hr'
   },
   {
+    name: 'Italian',
+    imagePath: 'assets/FlagIcons/flag_italy.png',
+    code: 'it'
+  },
+  {
     name: 'Slovenian',
     imagePath: 'assets/FlagIcons/flag_slovenia.png',
     code: 'sl'
