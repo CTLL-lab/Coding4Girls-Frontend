@@ -58,8 +58,8 @@
               >
                 {{
                   selectedMiniGameCategory?.categoryName == undefined
-                    ? 'Select Category'
-                    : selectedMiniGameCategory.categoryName
+                    ? ('edit-team.4' | translate)
+                    : (selectedMiniGameCategory.translation | translate)
                 }}
               </button>
               <div
