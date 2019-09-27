@@ -20,6 +20,7 @@ export class UserService {
     this.user.next(user);
     if (user) {
       this.GetUserLanguage().subscribe(x => {
+        localStorage.setItem('-snap-setting-language', x);
         this.translationService.use(x);
       });
     }
@@ -72,6 +73,7 @@ export class UserService {
   }
 
   public SetUserLanguage(lang: string) {
+    localStorage.setItem('-snap-setting-language', lang);
     return this.http.post(apiURL + '/me/language', { lang });
   }
 }
