@@ -11,7 +11,11 @@
       [id]="formElement.key"
       [type]="formElement.type"
     />
-
+    <textarea
+      *ngSwitchCase="'textarea'"
+      [formControlName]="formElement.key"
+      [id]="formElement.key"
+    ></textarea>
     <select
       [id]="formElement.key"
       *ngSwitchCase="'dropdown'"
