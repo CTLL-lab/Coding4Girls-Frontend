@@ -44,25 +44,27 @@
             <h3 id="lobbyName" class="font-weight-bold">
               {{ lobby.name }}
             </h3>
-            <i
-              class="fas fa-user-minus mt-2 leave-lobby-icon"
-              aria-hidden="true"
-              *ngIf="user.id != lobby.createdby"
-              (click)="
-                $event.preventDefault();
-                $event.stopPropagation();
-                removeLobby(lobby)
-              "
-            ></i>
-            <i
-              class="fas fa-copy mt-2 leave-lobby-icon"
-              (click)="
-                $event.preventDefault();
-                $event.stopPropagation();
-                showModal(cloneModal);
-                this.LobbyCloneForm.get('id').setValue(lobby.id)
-              "
-            ></i>
+            <div>
+              <i
+                class="mx-1 fas fa-user-minus mt-2 leave-lobby-icon m"
+                aria-hidden="true"
+                *ngIf="user.id != lobby.createdby"
+                (click)="
+                  $event.preventDefault();
+                  $event.stopPropagation();
+                  removeLobby(lobby)
+                "
+              ></i>
+              <i
+                class="mx-1 fas fa-copy mt-2 leave-lobby-icon"
+                (click)="
+                  $event.preventDefault();
+                  $event.stopPropagation();
+                  showModal(cloneModal);
+                  this.LobbyCloneForm.get('id').setValue(lobby.id)
+                "
+              ></i>
+            </div>
           </div>
           <div class="row">
             <div class="col-9">
