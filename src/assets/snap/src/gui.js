@@ -615,12 +615,12 @@ IDE_Morph.prototype.createControlBar = function () {
         stopButton,
         pauseButton,
         startButton,
-        projectButton,
+        // projectButton,
         settingsButton,
         stageSizeButton,
         appModeButton,
         steppingButton,
-        cloudButton,
+        // cloudButton,
         x,
         colors = [
             this.groupColor,
@@ -868,8 +868,8 @@ IDE_Morph.prototype.createControlBar = function () {
     // button.hint = 'open, save, & annotate project';
     button.fixLayout();
     projectButton = button;
-    this.controlBar.add(projectButton);
-    this.controlBar.projectButton = projectButton; // for menu positioning
+    //  this.controlBar.add(projectButton);
+    //  this.controlBar.projectButton = projectButton; // for menu positioning
 
     // settingsButton
     button = new PushButtonMorph(
@@ -915,8 +915,8 @@ IDE_Morph.prototype.createControlBar = function () {
     // button.hint = 'cloud operations';
     button.fixLayout();
     cloudButton = button;
-    this.controlBar.add(cloudButton);
-    this.controlBar.cloudButton = cloudButton; // for menu positioning
+    // this.controlBar.add(cloudButton);
+    // this.controlBar.cloudButton = cloudButton; // for menu positioning
 
     this.controlBar.fixLayout = function () {
         x = this.right() - padding;
@@ -4948,8 +4948,8 @@ IDE_Morph.prototype.toggleAppMode = function (appMode) {
     var world = this.world(),
         elements = [
             this.logo,
-            this.controlBar.cloudButton,
-            this.controlBar.projectButton,
+            // this.controlBar.cloudButton,
+            // this.controlBar.projectButton,
             this.controlBar.settingsButton,
             this.controlBar.steppingButton,
             this.controlBar.stageSizeButton,
