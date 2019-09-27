@@ -4,7 +4,6 @@ import { UserService } from 'src/app/authentication/services/user/user.service';
 import { ChallengeService } from '../services/challenge/challenge.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
-import { MiniGamesCategories, MiniGames } from './minigametags';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
 import { forkJoin, BehaviorSubject, Subscription } from 'rxjs';
@@ -44,7 +43,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   mode: string;
   public minigameType: string;
   public MiniGameHeaders: Array<string> = [];
-  public MiniGameCategories;
+  public MiniGameCategories = this.minigamesService.MiniGamesCategories;
   public SelectableMiniGames = this.minigamesService.MiniGames.map(x => x.data);
 
   public htmlAfter = {};
@@ -163,7 +162,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         this.worldSubscription.unsubscribe();
       });
 
-      for (let key in MiniGamesCategories) {
+      for (let key in this.MiniGameCategories) {
         for (let category of this.MiniGameCategories[key]) {
           if (
             category.categoryName == x['data']['challenge']['minigame_category']
