@@ -13,7 +13,6 @@ export class UserService {
     private http: HttpClient
   ) {
     this.user = new BehaviorSubject<User>(null);
-    this.translationService.setDefaultLang('en');
   }
 
   public SetUser(user: User) {
