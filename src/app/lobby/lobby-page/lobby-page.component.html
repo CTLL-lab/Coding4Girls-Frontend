@@ -27,9 +27,9 @@
         routerLink="/lobby/{{ id }}/team/new"
         type="button"
         class="btn btn-dark"
-        [disabled]="
-          !this.canCreateTeam() ||
-          (lobbyDetails?.locked && userService.getRole() != 'teacher')
+        *ngIf="
+          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          fullyPriviledgedRoles.includes(this.userService.getRole())
         "
       >
         <span i18n>{{ 'lobby-page.3' | translate }}</span>
@@ -38,6 +38,10 @@
         routerLink="/lobby/{{ id }}/solutions/challenges"
         type="button"
         class="btn btn-dark"
+        *ngIf="
+          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          fullyPriviledgedRoles.includes(this.userService.getRole())
+        "
       >
         <span i18n [translate]="'lobby-page.8'"></span>
       </button>
@@ -45,6 +49,10 @@
         routerLink="/lobby/{{ id }}/solutions"
         type="button"
         class="btn btn-dark"
+        *ngIf="
+          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          fullyPriviledgedRoles.includes(this.userService.getRole())
+        "
       >
         <span i18n [translate]="'lobby-page.9'"></span>
       </button>
@@ -52,6 +60,10 @@
         routerLink="/lobby/{{ id }}/brainstorm"
         type="button"
         class="btn btn-dark"
+        *ngIf="
+          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          fullyPriviledgedRoles.includes(this.userService.getRole())
+        "
       >
         <span i18n [translate]="'lobby-page.10'"></span>
       </button>
@@ -65,6 +77,7 @@
     </div>
   </div>
   <div class="row">
+    <!-- Members -->
     <div class="col-sm-4">
       <div class="container">
         <h2 [translate]="'lobby-page.14'"></h2>
@@ -75,6 +88,7 @@
         </ul>
       </div>
     </div>
+    <!-- Challenges -->
     <div class="list-group col-sm-4">
       <div *ngIf="challenges.length == 0">
         <p

@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { priviledged_roles } from 'src/app/config';
 import { BehaviorSubject, Subscription, forkJoin } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap';
-
+import { fully_priviledged_roles } from '../../config';
 @Component({
   selector: 'app-lobby-settings',
   templateUrl: './lobby-settings.component.html',
@@ -15,6 +15,8 @@ import { BsModalService } from 'ngx-bootstrap';
   providers: [LobbyService]
 })
 export class LobbySettingsComponent implements OnInit {
+  public fullyPriviledgedRoles = fully_priviledged_roles;
+
   public world: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public lobbyDetails = null;
@@ -54,7 +56,7 @@ export class LobbySettingsComponent implements OnInit {
   };
 
   constructor(
-    private user: UserService,
+    public user: UserService,
     private route: ActivatedRoute,
     private lobbyService: LobbyService,
     private router: Router,

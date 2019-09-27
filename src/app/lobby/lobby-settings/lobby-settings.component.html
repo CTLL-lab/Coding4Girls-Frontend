@@ -108,7 +108,10 @@
           <button
             class="btn btn-success"
             (click)="saveChanges()"
-            *ngIf="this.isUserPriviledged"
+            *ngIf="
+              this.lobbyDetails.createdby == this.user.GetUserID() ||
+              fullyPriviledgedRoles.includes(this.user.getRole())
+            "
           >
             <span>{{ 'lobby-settings.10' | translate }}</span>
           </button>
@@ -116,6 +119,10 @@
             class="btn btn-danger float-right"
             [translate]="'in-code.23'"
             (click)="showModal(deleteConfirmation)"
+            *ngIf="
+              this.lobbyDetails.createdby == this.user.GetUserID() ||
+              fullyPriviledgedRoles.includes(this.user.getRole())
+            "
           ></button>
         </div>
       </form>

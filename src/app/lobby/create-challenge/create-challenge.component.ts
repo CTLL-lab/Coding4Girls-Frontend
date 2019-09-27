@@ -12,6 +12,8 @@ import { MinigameService } from '../minigames/minigame.service';
 import { MinigameItem } from '../minigames/minigame-item';
 import { FormGroup } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap';
+import { LobbyService } from 'src/app/shared/services/lobby/lobby.service';
+import { fully_priviledged_roles } from 'src/app/config';
 
 Quill.register('modules/imageResize', ImageResize);
 @Component({
@@ -75,6 +77,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       ['link', 'image', 'video', 'formula'] // link and image, video
     ]
   };
+
+  public canSaveAndDelete = false;
   constructor(
     private route: ActivatedRoute,
     public user: UserService,
@@ -83,7 +87,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     private notifications: NotificationsToasterService,
     private translationService: TranslateService,
     private minigamesService: MinigameService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private lobbyService: LobbyService
   ) {
     window['world'] = this.worldBehaviorSubject;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
@@ -142,6 +147,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       this.currentMinigame = Number(x['data']['challenge']['minigame']);
       this.lobbyID = x['data']['challenge']['lobbyid'];
       this.challengeMinigameVariables = x['data']['challenge']['variables'];
+      this.checkIfCanSaveAndDelete();
       this.worldSubscription = this.worldBehaviorSubject.subscribe(x => {
         if (x == null) {
           return;
@@ -187,7 +193,19 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       this.description = '';
     }
   }
-
+  checkIfCanSaveAndDelete() {
+    if (this.lobbyID) {
+      this.lobbyService.getLobbyDetails(this.lobbyID).subscribe(x => {
+        const lobby = x['data']['lobby'];
+        if (
+          lobby.createdby == this.user.GetUserID() ||
+          fully_priviledged_roles.includes(this.user.getRole())
+        ) {
+          this.canSaveAndDelete = true;
+        }
+      });
+    }
+  }
   canUpdateInfo() {
     this.canUpdate = true;
   }

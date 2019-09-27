@@ -6,7 +6,7 @@ import { ChallengeBoxOptions } from '../challenge-box/challenge-box.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MinigameService } from '../minigames/minigame.service';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
-
+import { fully_priviledged_roles } from '../../config';
 @Component({
   selector: 'app-lobby-page',
   templateUrl: './lobby-page.component.html',
@@ -14,6 +14,7 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
   providers: []
 })
 export class LobbyPageComponent implements OnInit {
+  public fullyPriviledgedRoles = fully_priviledged_roles;
   constructor(
     private route: ActivatedRoute,
     public userService: UserService,

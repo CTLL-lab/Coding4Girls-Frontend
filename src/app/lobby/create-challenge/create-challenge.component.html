@@ -184,13 +184,14 @@
             class="btn btn-success"
             type="submit"
             (click)="this.mode == 'edit' ? editTeam() : createTeam()"
+            *ngIf="canSaveAndDelete"
           >
             <span>{{ 'edit-team.10' | translate }}</span>
           </button>
           <button
             class="btn btn-danger float-right"
             type="submit"
-            *ngIf="this.mode == 'edit'"
+            *ngIf="this.mode == 'edit' && canSaveAndDelete"
             (click)="showModal(deleteConfirmation)"
           >
             <span>{{ 'in-code.23' | translate }}</span>
