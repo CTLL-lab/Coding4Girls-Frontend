@@ -37,6 +37,9 @@ export class NavbarComponent implements OnInit {
       this.user = x;
     });
     this.currentLanguage = languages_available[0];
+    this.translate.onLangChange.subscribe(x => {
+      this.changeFlagTo(x.lang);
+    });
     // this.user.getUserLanguage().subscribe(r => {
     //   this.changeFlagToLanguage(r);
     // });
@@ -64,8 +67,19 @@ export class NavbarComponent implements OnInit {
     this.currentLanguage = this.languages_available[this.counter];
     this.changeLanguageTo(this.currentLanguage.code);
   }
+  public changeFlagTo(code: string) {
+    for (let i = 0; i < this.languages_available.length; i++) {
+      if (this.languages_available[i].code == code) {
+        this.counter = i;
+        this.currentLanguage = this.languages_available[this.counter];
+        break;
+      }
+    }
+  }
   public changeLanguageTo(lang: string) {
     this.translate.use(lang);
-    //   this.user.changeUserLanguage(lang).subscribe();
+    if (this.user) {
+      this.userService.SetUserLanguage(lang).subscribe(() => {}, () => {});
+    }
   }
 }

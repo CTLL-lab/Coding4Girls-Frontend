@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { fully_priviledged_roles, apiURL } from 'src/app/config';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -17,6 +18,11 @@ export class UserService {
 
   public SetUser(user: User) {
     this.user.next(user);
+    if (user) {
+      this.GetUserLanguage().subscribe(x => {
+        this.translationService.use(x);
+      });
+    }
   }
 
   public IsUserFullyPriviledged(): boolean {
@@ -57,5 +63,15 @@ export class UserService {
       return this.user.value.username;
     }
     return null;
+  }
+
+  public GetUserLanguage() {
+    return this.http
+      .get(apiURL + '/me/language')
+      .pipe(map(x => x['data']['lang']));
+  }
+
+  public SetUserLanguage(lang: string) {
+    return this.http.post(apiURL + '/me/language', { lang });
   }
 }
