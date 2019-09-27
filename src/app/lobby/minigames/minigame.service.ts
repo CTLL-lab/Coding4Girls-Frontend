@@ -241,6 +241,7 @@ export class MinigameService {
                 value: 'Trigonometry',
                 translation: 'variables.5'
               },
+              { key: 'bool', value: 'Boolean', translation: 'variables.11' },
               { key: 'all', value: 'All', translation: 'variables.6' }
             ]
           }

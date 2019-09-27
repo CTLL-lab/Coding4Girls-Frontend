@@ -165,7 +165,8 @@
     "7": "Correct answer",
     "8": "Wrong answer",
     "9": "Question",
-    "10": "Answer"
+    "10": "Answer",
+    "11": "Boolean"
   },
   "privacy": {
     "1": "Privacy Policy",
