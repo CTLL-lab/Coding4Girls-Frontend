@@ -145,10 +145,28 @@ export class MinigameService {
           numberOfAnswers: 2
         }
       }),
-      new MinigameItem(null, {
+      new MinigameItem(SimpleComponent, {
         name: 'Inventory/Marble',
         id: 3,
-        translation: 'minigame.3'
+        translation: 'minigame.3',
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox',
+            translation: 'variables.1'
+          },
+          {
+            label: 'Instructions',
+            type: 'text',
+            value: 0,
+            key: 'instructions',
+            controlType: 'textarea',
+            translation: 'edit-team.6'
+          }
+        ]
       }), // null because no variables
       new MinigameItem(QuestionareComponent, {
         name: 'Stepping Game',
