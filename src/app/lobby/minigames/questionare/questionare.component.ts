@@ -34,7 +34,6 @@ export class QuestionareComponent implements OnInit {
 
   ngOnInit() {
     this.form.addControl('questions', new FormArray([]));
-    console.log(this.prefilled_variables);
     // if prefilled variables is {} and doesn't contain questions array
     try {
       if (this.prefilled_variables.questions.length > 0) {
