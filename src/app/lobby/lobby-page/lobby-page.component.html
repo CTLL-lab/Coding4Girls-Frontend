@@ -28,7 +28,7 @@
         type="button"
         class="btn btn-dark"
         *ngIf="
-          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
         "
       >
@@ -39,7 +39,7 @@
         type="button"
         class="btn btn-dark"
         *ngIf="
-          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
         "
       >
@@ -50,7 +50,7 @@
         type="button"
         class="btn btn-dark"
         *ngIf="
-          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
         "
       >
@@ -61,7 +61,7 @@
         type="button"
         class="btn btn-dark"
         *ngIf="
-          this.lobbyDetails.createdby == this.userService.GetUserID() ||
+          this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
         "
       >
