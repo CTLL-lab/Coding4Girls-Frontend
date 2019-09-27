@@ -119,7 +119,7 @@
 
 <ng-template #cloneModal>
   <div class="modal-content">
-    <div class="modal-header">Clone course</div>
+    <div class="modal-header" [translate]="'lobbies.6'"></div>
     <div class="modal-body">
       {{ LobbyCloneForm.value | json }}
       <form [formGroup]="LobbyCloneForm">

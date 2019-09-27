@@ -59,7 +59,8 @@
     "1": "Created courses",
     "3": "Create new course",
     "4": "Join By Code",
-    "5": "Join"
+    "5": "Join",
+    "6": "Clone course"
   },
   "lobby-page": {
     "1": "Created by:",
