@@ -1,11 +1,9 @@
 <div class="container" *ngIf="lobbyDetails != null">
-  <div class="row">
-    <div class="col-1 mb-2">
-      <i class="fas fa-arrow-circle-left fa-3x" (click)="goBack()"></i>
-    </div>
-  </div>
   <div class="row mt-4 mb-2">
-    <div class="col">
+    <div class="col-1">
+      <i class="fas fa-arrow-circle-left fa-2x" (click)="goBack()"></i>
+    </div>
+    <div class="col-10">
       <div (pageShow)="ngOnInit()">
         <h2 class="text-center font-weight-bold">
           <span>{{ 'lobby-settings.1' | translate }}</span>
