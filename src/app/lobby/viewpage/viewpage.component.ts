@@ -134,6 +134,9 @@ export class ViewpageComponent implements OnInit, OnDestroy {
           if (y == null) {
             return;
           }
+          if (x == '') {
+            return;
+          }
           y.children[0].rawOpenProjectString(x);
         });
       });
