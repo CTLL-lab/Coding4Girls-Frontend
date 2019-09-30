@@ -119,7 +119,7 @@ export class QuestionareComponent implements OnInit {
       if (this.options.allowsImageUpload) {
         answer.addControl(
           'image',
-          new FormControl(questionObj ? questionObj.answers[j].answerImage : '')
+          new FormControl(questionObj ? questionObj.answers[j].image : '')
         );
       }
       // push the answer to questions array
