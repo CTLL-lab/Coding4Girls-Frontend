@@ -104,13 +104,13 @@ export class AuthenticationService {
       );
   }
 
-  public loginUser(username: string, password: string) {
+  public loginUser(loginForm: { username: string; password: string }) {
     return this.requester
       .post(
         apiURL + '/login',
         {
-          username: username,
-          password: password
+          username: loginForm.username,
+          password: loginForm.password
         },
         { observe: 'response' }
       )

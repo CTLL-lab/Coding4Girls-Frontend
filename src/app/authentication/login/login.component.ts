@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NotificationsToasterService } from '../../shared/services/toaster/notifications-toaster.service';
 import { TranslateService } from '@ngx-translate/core';
 import { InvalidPasswordError, UserNotFoundError } from '../exceptions';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -11,29 +12,40 @@ import { InvalidPasswordError, UserNotFoundError } from '../exceptions';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public username: string;
-  public password: string;
-  public rememberme = false;
   public invalidField = '';
+
+  public loginForm: FormGroup;
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     private notifications: NotificationsToasterService,
-    private translationService: TranslateService
+    private translationService: TranslateService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.authService.checkIfValidTokenExists();
+    this.loginForm = this.fb.group({
+      username: [''],
+      password: [''],
+      rememberme: [false]
+    });
   }
-
+  get loginDetails(): {
+    username: string;
+    password: string;
+    rememberme: boolean;
+  } {
+    return this.loginForm.value;
+  }
   loginUser() {
-    this.authService.loginUser(this.username, this.password).subscribe(
+    this.authService.loginUser(this.loginDetails).subscribe(
       r => {
         const token = r['data']['token'];
         if (this.authService.DecodeToken(token)['role'] == 'student') {
           this.notifications.showError('Login not permitted to students');
         } else {
-          this.authService.storeUser(token, this.rememberme);
+          this.authService.storeUser(token, this.loginDetails.rememberme);
           this.translationService.get('in-code.10').subscribe(k => {
             this.notifications.showSuccess(k);
           });

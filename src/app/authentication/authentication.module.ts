@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthenticationService } from './services/auth/authentication.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // import ngx-translate and the http loader
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     AuthenticationRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule
   ],
   declarations: [LoginComponent, RegisterComponent],
