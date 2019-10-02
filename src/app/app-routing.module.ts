@@ -14,12 +14,12 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {
     path: 'lobbies',
-    loadChildren: () => import('./lobbies/lobbies.module').then(m => m.LobbiesModule),
+    loadChildren: './lobbies/lobbies.module#LobbiesModule',
     canActivate: [AuthGuardService]
   },
   {
     path: 'lobby',
-    loadChildren: () => import('./lobby/lobby.module').then(m => m.LobbyModule),
+    loadChildren: './lobby/lobby.module#LobbyModule',
     canActivate: [AuthGuardService]
   },
   { path: 'privacy', component: PrivacyPolicyComponent },
