@@ -24,6 +24,7 @@
     "@biesbjerg/ngx-translate-extract-marker": "^1.0.0",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@rxweb/reactive-form-validators": "^1.9.3",
     "@swimlane/ngx-datatable": "^15.0.2",
     "angular-sortablejs": "^2.7.0",
     "angular2-draggable": "^2.3.2",

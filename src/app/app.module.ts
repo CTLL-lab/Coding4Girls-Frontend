@@ -14,7 +14,8 @@ import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { NavbarService } from './core/navbar/navbar.service';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators'; // <-- #2 import module
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 export function getToken() {
   if (localStorage.getItem('token') != null) {
     return localStorage.getItem('token');
@@ -57,7 +58,10 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     CoreModule,
-    AuthenticationModule
+    AuthenticationModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RxReactiveFormsModule
   ],
   providers: [JwtHelperService, HttpClient, NavbarService],
   bootstrap: [AppComponent]

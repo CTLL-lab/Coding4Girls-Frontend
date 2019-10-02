@@ -9,13 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { SharedModule } from '../shared/shared.module';
-
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 @NgModule({
   imports: [
     CommonModule,
     AuthenticationRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    RxReactiveFormsModule,
     SharedModule
   ],
   declarations: [LoginComponent, RegisterComponent],

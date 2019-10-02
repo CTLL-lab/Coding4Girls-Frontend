@@ -9,58 +9,54 @@ import {
   EmailAlreadyInUseError,
   InvalidRegistrationCode
 } from '../exceptions';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RxwebValidators } from '@rxweb/reactive-form-validators';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  user: User = new User();
-  passwordver: string;
   errorMessage = '';
   msg: any;
-  code = '';
-  terms_accepted = false;
   invalidInput = '';
-  passwordsMatch = true;
 
+  public registerForm: FormGroup;
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     private notifications: NotificationsToasterService,
-    private translationService: TranslateService
+    private translationService: TranslateService,
+    private fb: FormBuilder
   ) {}
 
-  ngOnInit() {}
-  verifyRegistrationDetails() {
-    if (!this.user.username) {
-      return 'in-code.21';
-    }
-    if (this.passwordver !== this.user.password) {
-      return 'in-code.22';
-    }
-
-    return null;
+  ngOnInit() {
+    this.registerForm = this.fb.group({
+      username: ['', RxwebValidators.required()],
+      password: ['', RxwebValidators.required()],
+      vpassword: ['', RxwebValidators.compare({ fieldName: 'password' })],
+      email: ['', RxwebValidators.email()],
+      fname: [''],
+      lname: [''],
+      code: ['', RxwebValidators.required()],
+      acceptedTerms: [false, Validators.requiredTrue]
+    });
+  }
+  public get registerDetails() {
+    return this.registerForm.value;
   }
   registerUser() {
-    if (!this.terms_accepted) {
-      return;
-    }
-    const validForm = this.verifyRegistrationDetails();
-    if (validForm != null) {
-      this.translationService.get(validForm).subscribe(r => {
-        this.notifications.showError(r);
-      });
+    if (this.registerForm.invalid) {
       return;
     }
     this.authService
       .registerUser(
-        this.user.username,
-        this.user.password,
-        this.user.email,
-        this.user.fname,
-        this.user.lname,
-        this.code
+        this.registerDetails.username,
+        this.registerDetails.password,
+        this.registerDetails.email,
+        this.registerDetails.fname,
+        this.registerDetails.lname,
+        this.registerDetails.code
       )
       .subscribe(
         r => {
@@ -87,8 +83,5 @@ export class RegisterComponent implements OnInit {
           });
         }
       );
-  }
-  checkIfPasswordsMatch() {
-    this.passwordsMatch = this.passwordver == this.user.password;
   }
 }
