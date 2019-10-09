@@ -5,6 +5,7 @@
       (click)="showNewNoteModal(newNoteModal)"
       *ngIf="canAddNotes"
       [disabled]="!canAddNotes"
+      type="button"
     >
       <span>{{ 'canvas.11' | translate }} </span>
     </button>
