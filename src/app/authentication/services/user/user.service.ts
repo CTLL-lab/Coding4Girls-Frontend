@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
 import { BehaviorSubject } from 'rxjs';
-import { fully_priviledged_roles, apiURL } from 'src/app/config';
+import {
+  fully_priviledged_roles,
+  apiURL,
+  priviledged_roles
+} from 'src/app/config';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -29,6 +33,12 @@ export class UserService {
   public IsUserFullyPriviledged(): boolean {
     if (this.user.value != null) {
       return fully_priviledged_roles.includes(this.user.value.role);
+    }
+    return false;
+  }
+  public IsUserPriviledged(): boolean {
+    if (this.user.value != null) {
+      return priviledged_roles.includes(this.user.value.role);
     }
     return false;
   }
