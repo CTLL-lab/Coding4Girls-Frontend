@@ -32,6 +32,11 @@ const routes: Routes = [
     data: { challenge: true }
   },
   {
+    path: ':id/solutions/:userID/comparison',
+    component: SolutionPageComponent,
+    data: { lobby: true, comparison: true }
+  },
+  {
     path: ':id/solutions/:userID/:challengeID',
     component: SolutionPageComponent,
     data: { challenge: true }

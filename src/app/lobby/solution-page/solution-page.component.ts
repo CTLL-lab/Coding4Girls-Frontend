@@ -24,11 +24,16 @@ export class SolutionPageComponent implements OnInit {
     private router: Router
   ) {
     window['world'] = this.worldBehaviorSubject;
+    console.log(this.route.snapshot);
   }
   goBack() {
-    if (this.route.snapshot.data['lobby']) {
+    if (this.route.snapshot.data['comparison']) {
+      this.router.navigate([
+        '/lobby/' + this.lobbyID + '/solutions/comparison'
+      ]);
+    } else if (this.route.snapshot.data['lobby']) {
       this.router.navigate(['/lobby/' + this.lobbyID + '/solutions/']);
-    } else {
+    } else if (this.route.snapshot.data['challenge']) {
       this.router.navigate([
         '/lobby/' + this.lobbyID + '/solutions/challenges'
       ]);

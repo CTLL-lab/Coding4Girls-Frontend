@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, PipeTransform } from '@angular/core';
 import { AnswersService } from '../services/answers/answers.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from 'src/app/authentication/services/user/user.service';
+import { NavbarService } from 'src/app/core/navbar/navbar.service';
 
 @Component({
   selector: 'app-solutions',
@@ -17,13 +19,18 @@ export class SolutionsComponent implements OnInit {
     private answersService: AnswersService,
     private route: ActivatedRoute,
     private router: Router,
-    private translation: TranslateService
+    private translation: TranslateService,
+    private userService: UserService,
+    private navbarService: NavbarService
   ) {}
 
   ngOnInit() {
     this.lobbyID = this.route.snapshot.paramMap.get('id');
     this.route.data.subscribe(x => {
       if (x['lobby']) {
+        if (!this.userService.IsUserPriviledged()) {
+          return;
+        }
         this.currentState = new LobbySolutionsState();
         this.answersService.GetLobbySolutions(this.lobbyID).subscribe(x => {
           this.rows = (<Array<any>>x).map(element => {
@@ -42,6 +49,9 @@ export class SolutionsComponent implements OnInit {
           });
         });
       } else if (x['challenge']) {
+        if (!this.userService.IsUserPriviledged()) {
+          return;
+        }
         this.currentState = new ChallengeSolutionsState();
         this.answersService
           .GetLobbyChallengesSolutions(this.lobbyID)
@@ -65,6 +75,7 @@ export class SolutionsComponent implements OnInit {
             });
           });
       } else if (x['comparison']) {
+        this.navbarService.hide();
         this.comparison = true;
         this.currentState = new AnonymousSolutionsState();
         this.answersService
@@ -83,7 +94,7 @@ export class SolutionsComponent implements OnInit {
                       this.lobbyID +
                       '/solutions/' +
                       element.userid +
-                      '">Solution</a>'
+                      '/comparison">Solution</a>'
                     : ''
               };
             });
