@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { apiURL } from 'src/app/config';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ChallengeService {
@@ -18,6 +19,20 @@ export class ChallengeService {
     pageAfter: string,
     minigameCategory: string
   ) {
+    if (minigamevariables['timer'] == '') {
+      minigamevariables['timer'] = '180';
+    }
+    if (minigamevariables['opfamily'] == '') {
+      minigamevariables['opfamily'] = 'basicop';
+    }
+    if (minigamevariables['questions']) {
+      if (minigamevariables['questions'].length == 0) {
+        return new Observable(sub => {
+          sub.error('no questions');
+          sub.complete();
+        });
+      }
+    }
     return this.http.post(
       apiURL + '/challenges',
       {
