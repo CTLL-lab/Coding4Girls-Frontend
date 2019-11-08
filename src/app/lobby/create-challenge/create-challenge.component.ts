@@ -191,6 +191,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       this.name = '';
       this.description = '';
     }
+    this.checkIfCanSaveAndDelete();
   }
   checkIfCanSaveAndDelete() {
     if (this.lobbyID) {
