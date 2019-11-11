@@ -233,25 +233,37 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         world.children[0].stage
       );
     }
-    forkJoin([
-      this.challengeService.editTeamInfo(
-        this.challengeID,
-        this.name,
-        this.description,
-        this.selectedMiniGameCategory['categoryName'] == 'None'
-          ? null
-          : this.currentMinigame,
-        this.selectedMiniGameCategory['categoryName'] == 'None'
-          ? null
-          : this.currentMinigameForm.value,
-        this.selectedMiniGameCategory.categoryName
-      ),
-      this.challengeService.EditChallengePage(this.challengeID, this.htmlAfter),
-      this.challengeService.EditChallengeSnap(this.challengeID, snapTemplateXML)
-    ]).subscribe(x => {
-      this.storePreferences();
-      this.router.navigate(['/lobby/' + this.lobbyID]);
-    });
+    try {
+      forkJoin([
+        this.challengeService.editTeamInfo(
+          this.challengeID,
+          this.name,
+          this.description,
+          this.selectedMiniGameCategory['categoryName'] == 'None'
+            ? null
+            : this.currentMinigame,
+          this.selectedMiniGameCategory['categoryName'] == 'None'
+            ? null
+            : this.currentMinigameForm.value,
+          this.selectedMiniGameCategory.categoryName
+        ),
+        this.challengeService.EditChallengePage(
+          this.challengeID,
+          this.htmlAfter
+        ),
+        this.challengeService.EditChallengeSnap(
+          this.challengeID,
+          snapTemplateXML
+        )
+      ]).subscribe(x => {
+        this.storePreferences();
+        this.router.navigate(['/lobby/' + this.lobbyID]);
+      });
+    } catch (err) {
+      this.translationService.get('in-code.3').subscribe(k => {
+        this.notifications.showError(k);
+      });
+    }
   }
 
   createTeam() {
@@ -275,34 +287,40 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         world.children[0].stage
       );
     }
-    this.challengeService
-      .createNewTeam(
-        this.name,
-        this.description,
-        this.lobbyID,
-        this.selectedMiniGameCategory['categoryName'] == 'None'
-          ? null
-          : this.currentMinigame,
-        this.selectedMiniGameCategory['categoryName'] == 'None'
-          ? null
-          : this.currentMinigameForm.value,
-        snapTemplateXML,
-        JSON.stringify(this.htmlAfter),
-        this.selectedMiniGameCategory.categoryName
-      )
-      .subscribe(r => {
-        if (r.status == 201) {
-          this.translationService.get('in-code.2').subscribe(k => {
-            this.notifications.showSuccess(k);
-          });
-          this.storePreferences();
-          this.router.navigate(['/lobby/' + this.lobbyID]);
-        } else {
-          this.translationService.get('in-code.3').subscribe(k => {
-            this.notifications.showError(k);
-          });
-        }
+    try {
+      this.challengeService
+        .createNewTeam(
+          this.name,
+          this.description,
+          this.lobbyID,
+          this.selectedMiniGameCategory['categoryName'] == 'None'
+            ? null
+            : this.currentMinigame,
+          this.selectedMiniGameCategory['categoryName'] == 'None'
+            ? {}
+            : this.currentMinigameForm.value,
+          snapTemplateXML,
+          JSON.stringify(this.htmlAfter),
+          this.selectedMiniGameCategory.categoryName
+        )
+        .subscribe(r => {
+          if (r.status == 201) {
+            this.translationService.get('in-code.2').subscribe(k => {
+              this.notifications.showSuccess(k);
+            });
+            this.storePreferences();
+            this.router.navigate(['/lobby/' + this.lobbyID]);
+          } else {
+            this.translationService.get('in-code.3').subscribe(k => {
+              this.notifications.showError(k);
+            });
+          }
+        });
+    } catch (err) {
+      this.translationService.get('in-code.3').subscribe(k => {
+        this.notifications.showError(k);
       });
+    }
   }
   storePreferences() {
     localStorage.setItem(

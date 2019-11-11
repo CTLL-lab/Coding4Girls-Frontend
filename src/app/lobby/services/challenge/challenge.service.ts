@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { apiURL } from 'src/app/config';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { map } from 'rxjs/operators';
@@ -27,10 +27,7 @@ export class ChallengeService {
     }
     if (minigamevariables['questions']) {
       if (minigamevariables['questions'].length == 0) {
-        return new Observable(sub => {
-          sub.error('no questions');
-          sub.complete();
-        });
+        return;
       }
     }
     return this.http.post(
@@ -57,6 +54,17 @@ export class ChallengeService {
     minigamevariables: Object,
     minigameCategory: string
   ) {
+    if (minigamevariables['timer'] == '') {
+      minigamevariables['timer'] = '180';
+    }
+    if (minigamevariables['opfamily'] == '') {
+      minigamevariables['opfamily'] = 'basicop';
+    }
+    if (minigamevariables['questions']) {
+      if (minigamevariables['questions'].length == 0) {
+        return;
+      }
+    }
     return this.http.put(
       apiURL + '/challenges/' + challengeID,
       {
