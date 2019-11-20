@@ -5,6 +5,11 @@ import { CreateLobbyComponent } from './create-lobby/create-lobby.component';
 
 const routes: Routes = [
   {
+    path: 'public',
+    component: LobbiesComponent,
+    data: { public: true }
+  },
+  {
     path: '',
     component: LobbiesComponent
   },

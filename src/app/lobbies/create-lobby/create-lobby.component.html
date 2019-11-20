@@ -61,6 +61,18 @@
           }"
         />
       </div>
+      <div class="form-group">
+        <label for="public" class="font-weight-bold"
+          ><span>{{ 'create-lobby.5' | translate }}</span></label
+        >
+        <input
+          class="form-control"
+          id="public"
+          name="public"
+          [(ngModel)]="lobbyDetails.public"
+          type="checkbox"
+        />
+      </div>
 
       <div class="form-group row">
         <ul class="nav nav-tabs" id="challengePages" role="tablist">

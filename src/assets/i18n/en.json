@@ -11,6 +11,7 @@
     "2": "Code",
     "3": "Description",
     "4": "Learning Objectives and Expected Learning Outcomes",
+    "5": "Public course",
     "9": "Save",
     "10": "Discard"
   },
@@ -57,6 +58,7 @@
   },
   "lobbies": {
     "1": "Created courses",
+    "2": "Public courses",
     "3": "Create new course",
     "4": "Join By Code",
     "5": "Join",
@@ -90,6 +92,7 @@
     "5": "Remember me"
   },
   "navbar": {
+    "1": "Public courses",
     "2": "Courses",
     "3": "Review",
     "4": "Verify",

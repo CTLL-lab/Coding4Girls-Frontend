@@ -2,7 +2,7 @@
   <div class="row mt-4 mb-4">
     <div class="col-1"></div>
     <div class="col-10">
-      <div class="form-inline">
+      <div class="form-inline" *ngIf="!publicLobbiesView">
         <div class="form-group mr-sm-1 mb-2">
           <label for="lobbycode" class="sr-only">{{
             'lobbies.4' | translate
@@ -30,10 +30,28 @@
           {{ 'lobbies.3' | translate }}
         </button>
       </div>
-      <h2 class="font-weight-bold mt-3 mb-3 text-center">
-        {{ 'lobbies.1' | translate }}
-      </h2>
 
+      <h2 class="font-weight-bold mt-3 mb-3 text-center">
+        {{
+          publicLobbiesView
+            ? ('lobbies.2' | translate)
+            : ('lobbies.1' | translate)
+        }}
+      </h2>
+      <div class="form-inline justify-content-center" *ngIf="publicLobbiesView">
+        <div class="form-group mr-sm-1 mb-2 ">
+          <label for="searchInput"> <i class="fas fa-search fa-lg"></i> </label>
+          <input
+            id="searchInput"
+            class="form-control ml-3"
+            name="code"
+            placeholder=""
+            size="50"
+            [(ngModel)]="searchInput"
+            (keyup.enter)="UserWantsToSearch()"
+          />
+        </div>
+      </div>
       <ul class="list-group">
         <div
           class="list-group-item  flex-column align-items-center"
@@ -115,6 +133,23 @@
     </div>
     <div class="col-1"></div>
   </div>
+  <nav
+    aria-label="Page navigation example"
+    class="text-center"
+    *ngIf="this.publicLobbiesView"
+  >
+    <ul class="pagination justify-content-center">
+      <li
+        class="page-item"
+        [ngClass]="{ active: page == i + 1 }"
+        *ngFor="let _ of ArrayGen(pages); let i = index"
+        [routerLink]="['.']"
+        [queryParams]="{ page: i + 1, search: searchInput }"
+      >
+        <a class="page-link">{{ i + 1 }}</a>
+      </li>
+    </ul>
+  </nav>
 </div>
 
 <ng-template #cloneModal>

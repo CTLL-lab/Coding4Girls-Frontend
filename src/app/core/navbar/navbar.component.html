@@ -15,7 +15,11 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item" [routerLinkActive]="['active']">
+        <li
+          class="nav-item"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <a
             class="nav-link"
             href="#"
@@ -23,6 +27,16 @@
             [ngClass]="{ disabled: this.user == null }"
             *ngIf="this.user != null"
             ><span>{{ 'navbar.2' | translate }}</span></a
+          >
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a
+            class="nav-link"
+            href="#"
+            [routerLink]="['lobbies', 'public']"
+            [ngClass]="{ disabled: this.user == null }"
+            *ngIf="this.user != null"
+            ><span>{{ 'navbar.1' | translate }}</span></a
           >
         </li>
       </ul>

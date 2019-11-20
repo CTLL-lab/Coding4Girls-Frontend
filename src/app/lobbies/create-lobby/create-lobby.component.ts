@@ -25,7 +25,8 @@ export class CreateLobbyComponent implements OnInit {
     description: '',
     outcome: '',
     code: '',
-    htmlAfter: null
+    htmlAfter: null,
+    public: false
   };
   public role: string;
   public userPriviledged = false;
@@ -98,7 +99,8 @@ export class CreateLobbyComponent implements OnInit {
         ...this.lobbyDetails,
         snapTemplate: snapTemplateXML,
         instructions: this.lobbyDetails.htmlAfter,
-        notes: this.notesService.notes
+        notes: this.notesService.notes,
+        public: this.lobbyDetails.public
       })
       .subscribe(
         r => {

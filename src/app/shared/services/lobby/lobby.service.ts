@@ -7,6 +7,26 @@ import { map, catchError } from 'rxjs/operators';
 export class LobbyService {
   constructor(private http: HttpClient) {}
 
+  GetPublicLobbies(page = undefined) {
+    let queryString = '';
+    if (page) {
+      queryString += '?_page=' + (page - 1);
+    }
+    return this.http
+      .get(apiURL + '/lobbies/public' + queryString, { observe: 'response' })
+      .pipe(map(x => x.body));
+  }
+
+  SearchPublicLobby(query: string, page = undefined) {
+    let queryString = '?search=' + query;
+    if (page) {
+      queryString += '&_page=' + (page - 1);
+    }
+    return this.http
+      .get(apiURL + '/lobbies/public' + queryString, { observe: 'response' })
+      .pipe(map(x => x.body));
+  }
+
   getUserLobbies(userID?: string) {
     if (userID != undefined) {
       return this.http
@@ -15,7 +35,6 @@ export class LobbyService {
         })
         .pipe(map(x => x.body));
     }
-    console.log('fetching /me/lobbies');
     return this.http
       .get(apiURL + '/me/lobbies', { observe: 'response' })
       .pipe(map(x => x.body));
