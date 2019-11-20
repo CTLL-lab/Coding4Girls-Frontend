@@ -4,27 +4,33 @@
     [translate]="formElement.translation"
   ></label>
 
-  <div [ngSwitch]="formElement.controlType">
+  <div [ngSwitch]="formElement.controlType" class="form-group">
     <input
       *ngSwitchCase="'textbox'"
       [formControlName]="formElement.key"
       [id]="formElement.key"
       [type]="formElement.type"
+      class="form-control"
     />
     <textarea
       *ngSwitchCase="'textarea'"
       [formControlName]="formElement.key"
       [id]="formElement.key"
+      class="form-control"
+      rows="4"
+      cols="75"
     ></textarea>
     <select
       [id]="formElement.key"
       *ngSwitchCase="'dropdown'"
       [formControlName]="formElement.key"
+      class="form-control"
     >
       <option
         *ngFor="let opt of formElement.options"
         [value]="opt.key"
         [translate]="opt.translation"
+        class="form-control"
       ></option>
     </select>
   </div>
