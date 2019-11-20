@@ -43,6 +43,19 @@
               {{ 'variables.7' | translate }}
             </div>
           </div>
+          <div class="form-row mb-2" *ngIf="options.hasHints">
+            <label class="col-sm-2 col-form-label" [for]="'hint'">
+              {{ 'variables.13' | translate }}
+            </label>
+            <div class="col-auto">
+              <input
+                [id]="'hint'"
+                type="text"
+                class="form-control"
+                [formControlName]="'hint'"
+              />
+            </div>
+          </div>
           <div
             *ngFor="
               let answer of question.get('answers')['controls'];

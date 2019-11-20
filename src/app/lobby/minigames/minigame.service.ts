@@ -328,7 +328,8 @@ export class MinigameService {
           numberOfQuestions: 5,
           multipleCorrectAnswers: true,
           allowsImageUpload: true,
-          numberOfAnswers: 4
+          numberOfAnswers: 4,
+          hasHints: true
         },
         variables: [
           {

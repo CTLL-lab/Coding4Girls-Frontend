@@ -168,7 +168,8 @@
     "9": "Question",
     "10": "Answer",
     "11": "Boolean",
-    "12": "Score"
+    "12": "Score",
+    "13": "Hint"
   },
   "privacy": {
     "1": "Privacy Policy",

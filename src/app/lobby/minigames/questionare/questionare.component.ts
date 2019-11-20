@@ -24,6 +24,7 @@ export class QuestionareComponent implements OnInit {
     multipleCorrectAnswers: boolean;
     allowsImageUpload: boolean;
     numberOfAnswers: number;
+    hasHints: boolean;
   };
   @Input() form: FormGroup;
 
@@ -53,6 +54,9 @@ export class QuestionareComponent implements OnInit {
             question: new FormControl(''),
             answers: new FormArray([])
           });
+          if (this.options.hasHints) {
+            question.addControl('hint', new FormControl(''));
+          }
           if (this.options.allowsImageUpload) {
             question.addControl('questionImage', new FormControl(''));
           }
@@ -95,6 +99,12 @@ export class QuestionareComponent implements OnInit {
       answers: new FormArray([])
     });
     // if we can have pictures add a new form control for that
+    if (this.options.hasHints) {
+      question.addControl(
+        'hint',
+        new FormControl(questionObj ? questionObj.hint : '')
+      );
+    }
     if (this.options.allowsImageUpload) {
       question.addControl(
         'questionImage',
