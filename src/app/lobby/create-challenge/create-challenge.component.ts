@@ -265,6 +265,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         )
       ]).subscribe(x => {
         this.storePreferences();
+        this.notifications.showSuccess('');
         this.router.navigate(['/lobby/' + this.lobbyID]);
       });
     } catch (err) {
