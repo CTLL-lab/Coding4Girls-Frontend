@@ -233,6 +233,14 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         world.children[0].stage
       );
     }
+
+    // check our current form
+    this.currentMinigameForm.updateValueAndValidity();
+    if (!this.currentMinigameForm.valid) {
+      this.notifications.showError('');
+      return;
+    }
+
     try {
       forkJoin([
         this.challengeService.editTeamInfo(

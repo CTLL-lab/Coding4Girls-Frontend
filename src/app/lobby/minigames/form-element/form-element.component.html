@@ -21,10 +21,11 @@
       cols="75"
     ></textarea>
     <select
-      [id]="formElement.key"
+      [id]="formElement?.key"
       *ngSwitchCase="'dropdown'"
-      [formControlName]="formElement.key"
+      [formControlName]="formElement?.key"
       class="form-control"
+      required
     >
       <option
         *ngFor="let opt of formElement.options"

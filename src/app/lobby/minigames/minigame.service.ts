@@ -126,10 +126,36 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
+          },
+          {
+            label: 'Score',
+            type: 'number',
+            value: 500,
+            key: 'score',
+            controlType: 'textbox',
+            translation: 'variables.12'
+          },
+          {
+            label: 'Timer/Score',
+            key: 'condition',
+            controlType: 'dropdown',
+            // translation: 'variables.2',
+            options: [
+              {
+                key: 'timer',
+                value: 'Timer',
+                translation: 'variables.1'
+              },
+              {
+                key: 'score',
+                value: 'Score',
+                translation: 'variables.12'
+              }
+            ]
           }
         ]
       }),

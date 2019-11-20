@@ -122,8 +122,8 @@
         <app-minigame-vars
           *ngIf="
             currentMinigameObject &&
-            (selectedMiniGameCategory &&
-              selectedMiniGameCategory.categoryName != 'None')
+            selectedMiniGameCategory &&
+            selectedMiniGameCategory.categoryName != 'None'
           "
           [minigame]="currentMinigameObject"
           [varsForm]="currentMinigameForm"
