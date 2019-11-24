@@ -7,10 +7,19 @@
     ></app-form-element>
   </div>
   <div class="form-header" formArrayName="questions">
-    <div *ngFor="let question of QuestionsForm.controls; let i = index">
-      <div class="form-group row" class="w-100 mb-5">
+    <div
+      *ngFor="let question of QuestionsForm.controls; let i = index"
+      class="border rounded p-2"
+    >
+      <div *ngIf="!this.options.fixedNumberOfQuestions">
+        <i
+          class="fas fa-minus-circle fa-lg text-danger"
+          (click)="removeQuestion(i)"
+        ></i>
+      </div>
+      <div class="form-group  w-100 mb-5">
         <div [formGroupName]="i">
-          <div class="form-row mb-1">
+          <div class="form-row mb-1 ">
             <!-- Question -->
             <label class="col-sm-2 col-form-label" [for]="'q' + (i + 1)">
               {{ 'variables.9' | translate }} {{ i + 1 }}

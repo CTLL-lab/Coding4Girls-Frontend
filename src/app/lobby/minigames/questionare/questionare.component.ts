@@ -139,6 +139,12 @@ export class QuestionareComponent implements OnInit {
     this.QuestionsForm.push(question);
   }
 
+  removeQuestion(index: number) {
+    if (confirm('Are you sure?')) {
+      this.QuestionsForm.removeAt(index);
+    }
+  }
+
   fileChange(event: any, i, j) {
     const file: File = event.target.files[0];
     this.uploader.uploadImage(file).subscribe(r => {
