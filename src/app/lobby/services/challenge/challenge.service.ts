@@ -17,7 +17,8 @@ export class ChallengeService {
     minigamevariables: Object,
     snapTemplate: string,
     pageAfter: string,
-    minigameCategory: string
+    minigameCategory: string,
+    tag: string
   ) {
     if (minigamevariables['timer'] == '') {
       minigamevariables['timer'] = '180';
@@ -29,6 +30,9 @@ export class ChallengeService {
       if (minigamevariables['questions'].length == 0) {
         return;
       }
+    }
+    if (tag == 'None') {
+      tag = null;
     }
     return this.http.post(
       apiURL + '/challenges',
@@ -40,7 +44,8 @@ export class ChallengeService {
         variables: minigamevariables,
         snapTemplate: snapTemplate,
         pageAfter: pageAfter,
-        miniGameCategory: minigameCategory
+        miniGameCategory: minigameCategory,
+        tag: tag
       },
       { observe: 'response' }
     );
@@ -52,18 +57,24 @@ export class ChallengeService {
     challengeDescription: string,
     minigame: number,
     minigamevariables: Object,
-    minigameCategory: string
+    minigameCategory: string,
+    tag: string
   ) {
-    if (minigamevariables['timer'] == '') {
-      minigamevariables['timer'] = '180';
-    }
-    if (minigamevariables['opfamily'] == '') {
-      minigamevariables['opfamily'] = 'basicop';
-    }
-    if (minigamevariables['questions']) {
-      if (minigamevariables['questions'].length == 0) {
-        return;
+    if (minigamevariables != null) {
+      if (minigamevariables['timer'] == '') {
+        minigamevariables['timer'] = '180';
       }
+      if (minigamevariables['opfamily'] == '') {
+        minigamevariables['opfamily'] = 'basicop';
+      }
+      if (minigamevariables['questions']) {
+        if (minigamevariables['questions'].length == 0) {
+          return;
+        }
+      }
+    }
+    if (tag == 'None') {
+      tag = null;
     }
     return this.http.put(
       apiURL + '/challenges/' + challengeID,
@@ -72,7 +83,8 @@ export class ChallengeService {
         description: challengeDescription,
         minigame: minigame,
         variables: minigamevariables,
-        miniGameCategory: minigameCategory
+        miniGameCategory: minigameCategory,
+        tag: tag
       },
       { observe: 'response' }
     );

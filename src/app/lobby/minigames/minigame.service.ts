@@ -116,6 +116,27 @@ export class MinigameService {
 
   MiniGames: MinigameItem[];
 
+  MiniGameTags = [
+    'None',
+    'Loops',
+    'Conditionals',
+    'Data types',
+    'Data structures',
+    'Sequence of statements',
+    'Sounds',
+    'Movement',
+    'Looks',
+    'Drawing',
+    'Simultaneous sounds/movements/characters/interactions',
+    '4 basic operations',
+    'Modulo, roundings',
+    'Advanced, sin, cos, sqrt, power, roundings',
+    'AND/OR/NOT, booleans, ==',
+    'Random',
+    'Simultaneous sounds/movements/characters/interactions',
+    'Events'
+  ];
+
   constructor() {
     this.MiniGames = [
       new MinigameItem(SimpleComponent, {

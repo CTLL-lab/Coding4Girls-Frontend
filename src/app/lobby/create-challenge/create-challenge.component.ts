@@ -1,24 +1,24 @@
-import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/authentication/services/user/user.service';
-import { ChallengeService } from '../services/challenge/challenge.service';
-import { TranslateService } from '@ngx-translate/core';
-import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
-import Quill from 'quill';
-import ImageResize from 'quill-image-resize-module';
-import { forkJoin, BehaviorSubject, Subscription } from 'rxjs';
-import { MinigameService } from '../minigames/minigame.service';
-import { MinigameItem } from '../minigames/minigame-item';
-import { FormGroup } from '@angular/forms';
-import { BsModalService } from 'ngx-bootstrap';
-import { LobbyService } from 'src/app/shared/services/lobby/lobby.service';
-import { fully_priviledged_roles } from 'src/app/config';
+import { Component, OnInit, OnDestroy, TemplateRef } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserService } from "src/app/authentication/services/user/user.service";
+import { ChallengeService } from "../services/challenge/challenge.service";
+import { TranslateService } from "@ngx-translate/core";
+import { NotificationsToasterService } from "src/app/shared/services/toaster/notifications-toaster.service";
+import Quill from "quill";
+import ImageResize from "quill-image-resize-module";
+import { forkJoin, BehaviorSubject, Subscription } from "rxjs";
+import { MinigameService } from "../minigames/minigame.service";
+import { MinigameItem } from "../minigames/minigame-item";
+import { FormGroup } from "@angular/forms";
+import { BsModalService } from "ngx-bootstrap";
+import { LobbyService } from "src/app/shared/services/lobby/lobby.service";
+import { fully_priviledged_roles } from "src/app/config";
 
-Quill.register('modules/imageResize', ImageResize);
+Quill.register("modules/imageResize", ImageResize);
 @Component({
-  selector: 'app-create-challenge',
-  templateUrl: './create-challenge.component.html',
-  styleUrls: ['./create-challenge.component.css'],
+  selector: "app-create-challenge",
+  templateUrl: "./create-challenge.component.html",
+  styleUrls: ["./create-challenge.component.css"],
   providers: [ChallengeService]
 })
 export class CreateChallengeComponent implements OnInit, OnDestroy {
@@ -30,8 +30,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   public currentDate: Date = new Date();
   public pageTitle: string;
 
-  public lobbyID = this.route.snapshot.paramMap.get('id');
-  public challengeID = this.route.snapshot.paramMap.get('id');
+  public lobbyID = this.route.snapshot.paramMap.get("id");
+  public challengeID = this.route.snapshot.paramMap.get("id");
   public areDatesValid: boolean;
   public name: string;
   public description: string;
@@ -43,8 +43,10 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   mode: string;
   public minigameType: string;
   public MiniGameHeaders: Array<string> = [];
+  public MiniGameTags: Array<string> = [];
   public MiniGameCategories = this.minigamesService.MiniGamesCategories;
   public SelectableMiniGames = this.minigamesService.MiniGames.map(x => x.data);
+  public tag: string;
 
   public htmlAfter = {};
 
@@ -55,25 +57,25 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   public quillModules = {
     imageResize: {},
     toolbar: [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
 
       [{ header: 1 }, { header: 2 }], // custom button values
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-      [{ direction: 'rtl' }], // text direction
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      [{ direction: "rtl" }], // text direction
 
-      [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
       [{ color: [] }, { background: [] }], // dropdown with defaults from theme
       [{ font: [] }],
       [{ align: [] }],
 
-      ['clean'], // remove formatting button
+      ["clean"], // remove formatting button
 
-      ['link', 'image', 'video', 'formula'] // link and image, video
+      ["link", "image", "video", "formula"] // link and image, video
     ]
   };
 
@@ -89,7 +91,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private lobbyService: LobbyService
   ) {
-    window['world'] = this.worldBehaviorSubject;
+    window["world"] = this.worldBehaviorSubject;
+    this.MiniGameTags = this.minigamesService.MiniGameTags;
     this.MiniGameCategories = this.minigamesService.getMinigamesCategories();
     for (let key in this.MiniGameCategories) {
       this.MiniGameHeaders.push(key);
@@ -97,12 +100,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (this.route.snapshot.url[2].toString() == 'edit') {
-      this.mode = 'edit';
-      this.pageTitle = 'edit-team.1';
+    if (this.route.snapshot.url[2].toString() == "edit") {
+      this.mode = "edit";
+      this.pageTitle = "edit-team.1";
     } else {
-      this.mode = 'create';
-      this.pageTitle = 'create-team.1';
+      this.mode = "create";
+      this.pageTitle = "create-team.1";
     }
     this.populateComponent(this.mode);
   }
@@ -129,10 +132,10 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
   populateComponent(mode: string) {
     switch (mode) {
-      case 'edit':
+      case "edit":
         this.populateComponentForEdit();
         break;
-      case 'create':
+      case "create":
       default:
         this.populateComponentForCreate();
         break;
@@ -141,11 +144,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
 
   populateComponentForEdit() {
     this.challengeService.getTeamDetails(this.challengeID).subscribe(x => {
-      this.name = x['data']['challenge']['name'];
-      this.description = x['data']['challenge']['description'];
-      this.currentMinigame = Number(x['data']['challenge']['minigame']);
-      this.lobbyID = x['data']['challenge']['lobbyid'];
-      this.challengeMinigameVariables = x['data']['challenge']['variables'];
+      this.name = x["data"]["challenge"]["name"];
+      this.description = x["data"]["challenge"]["description"];
+      this.currentMinigame = Number(x["data"]["challenge"]["minigame"]);
+      this.lobbyID = x["data"]["challenge"]["lobbyid"];
+      this.challengeMinigameVariables = x["data"]["challenge"]["variables"];
+      this.tag = x["data"]["challenge"]["tag"];
       this.checkIfCanSaveAndDelete();
       this.worldSubscription = this.worldBehaviorSubject.subscribe(x => {
         if (x == null) {
@@ -155,7 +159,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         this.challengeService
           .GetChallengeSnap(this.challengeID)
           .subscribe((y: string) => {
-            if (y.startsWith('<project')) {
+            if (y.startsWith("<project")) {
               x.children[0].rawOpenProjectString(y);
             }
           });
@@ -165,7 +169,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       for (let key in this.MiniGameCategories) {
         for (let category of this.MiniGameCategories[key]) {
           if (
-            category.categoryName == x['data']['challenge']['minigame_category']
+            category.categoryName == x["data"]["challenge"]["minigame_category"]
           ) {
             this.selectMiniGameCategory(category, this.currentMinigame);
             if (!this.challengeMinigameVariables) {
@@ -183,20 +187,20 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   populateComponentForCreate() {
     try {
       const preferences = JSON.parse(
-        localStorage.getItem('challenge-preferences-' + this.lobbyID)
+        localStorage.getItem("challenge-preferences-" + this.lobbyID)
       );
-      this.name = preferences['name'];
-      this.description = preferences['description'];
+      this.name = preferences["name"];
+      this.description = preferences["description"];
     } catch {
-      this.name = '';
-      this.description = '';
+      this.name = "";
+      this.description = "";
     }
     this.checkIfCanSaveAndDelete();
   }
   checkIfCanSaveAndDelete() {
     if (this.lobbyID) {
       this.lobbyService.getLobbyDetails(this.lobbyID).subscribe(x => {
-        const lobby = x['data']['lobby'];
+        const lobby = x["data"]["lobby"];
         if (
           lobby.createdby == this.user.GetUserID() ||
           fully_priviledged_roles.includes(this.user.getRole())
@@ -226,7 +230,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     if (this.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
-      snapTemplateXML = '';
+      snapTemplateXML = "";
     } else {
       world.children[0].setProjectName(this.name);
       snapTemplateXML = world.children[0].serializer.serialize(
@@ -237,7 +241,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     // check our current form
     this.currentMinigameForm.updateValueAndValidity();
     if (!this.currentMinigameForm.valid) {
-      this.notifications.showError('');
+      this.notifications.showError("");
       return;
     }
 
@@ -247,13 +251,14 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           this.challengeID,
           this.name,
           this.description,
-          this.selectedMiniGameCategory['categoryName'] == 'None'
+          this.selectedMiniGameCategory["categoryName"] == "None"
             ? null
             : this.currentMinigame,
-          this.selectedMiniGameCategory['categoryName'] == 'None'
+          this.selectedMiniGameCategory["categoryName"] == "None"
             ? null
             : this.currentMinigameForm.value,
-          this.selectedMiniGameCategory.categoryName
+          this.selectedMiniGameCategory.categoryName,
+          this.tag
         ),
         this.challengeService.EditChallengePage(
           this.challengeID,
@@ -265,11 +270,12 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         )
       ]).subscribe(x => {
         this.storePreferences();
-        this.notifications.showSuccess('');
-        this.router.navigate(['/lobby/' + this.lobbyID]);
+        this.notifications.showSuccess("");
+        this.router.navigate(["/lobby/" + this.lobbyID]);
       });
     } catch (err) {
-      this.translationService.get('in-code.3').subscribe(k => {
+      console.log(err);
+      this.translationService.get("in-code.3").subscribe(k => {
         this.notifications.showError(k);
       });
     }
@@ -289,7 +295,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     if (this.isSnapCanvasEmpty(world)) {
       // Snap will produce some xml even with no blocks
       // so to save space in database we store an empty string
-      snapTemplateXML = '';
+      snapTemplateXML = "";
     } else {
       world.children[0].setProjectName(this.name);
       snapTemplateXML = world.children[0].serializer.serialize(
@@ -302,38 +308,39 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           this.name,
           this.description,
           this.lobbyID,
-          this.selectedMiniGameCategory['categoryName'] == 'None'
+          this.selectedMiniGameCategory["categoryName"] == "None"
             ? null
             : this.currentMinigame,
-          this.selectedMiniGameCategory['categoryName'] == 'None'
+          this.selectedMiniGameCategory["categoryName"] == "None"
             ? {}
             : this.currentMinigameForm.value,
           snapTemplateXML,
           JSON.stringify(this.htmlAfter),
-          this.selectedMiniGameCategory.categoryName
+          this.selectedMiniGameCategory.categoryName,
+          this.tag
         )
         .subscribe(r => {
           if (r.status == 201) {
-            this.translationService.get('in-code.2').subscribe(k => {
+            this.translationService.get("in-code.2").subscribe(k => {
               this.notifications.showSuccess(k);
             });
             this.storePreferences();
-            this.router.navigate(['/lobby/' + this.lobbyID]);
+            this.router.navigate(["/lobby/" + this.lobbyID]);
           } else {
-            this.translationService.get('in-code.3').subscribe(k => {
+            this.translationService.get("in-code.3").subscribe(k => {
               this.notifications.showError(k);
             });
           }
         });
     } catch (err) {
-      this.translationService.get('in-code.3').subscribe(k => {
+      this.translationService.get("in-code.3").subscribe(k => {
         this.notifications.showError(k);
       });
     }
   }
   storePreferences() {
     localStorage.setItem(
-      'challenge-preferences-' + this.lobbyID,
+      "challenge-preferences-" + this.lobbyID,
       JSON.stringify({
         name: this.name,
         description: this.description
@@ -341,17 +348,17 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     );
   }
   goBack() {
-    this.router.navigateByUrl('/lobby/' + this.lobbyID);
+    this.router.navigateByUrl("/lobby/" + this.lobbyID);
   }
 
   selectMiniGameCategory(category: object, miniGameID?: number) {
     this.selectedMiniGameCategory = category;
 
-    if (category['categoryName'] == 'None') {
+    if (category["categoryName"] == "None") {
       return;
     }
     this.MiniGames = [];
-    for (let minigame of category['miniGames']) {
+    for (let minigame of category["miniGames"]) {
       this.MiniGames.push(this.SelectableMiniGames.find(x => x.id == minigame));
     }
     this.changeMinigame(miniGameID ? miniGameID : this.MiniGames[0].id);
@@ -379,11 +386,11 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     this.challengeService.deleteChallenge(this.challengeID).subscribe(
       x => {
         this.closeAllModals();
-        this.notifications.showSuccess('');
+        this.notifications.showSuccess("");
         this.goBack();
       },
       x => {
-        this.notifications.showError('');
+        this.notifications.showError("");
       }
     );
   }
@@ -396,6 +403,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     for (let i = 1; i <= this.modalService.getModalsCount(); i++) {
       this.modalService.hide(i);
     }
-    document.body.classList.remove('modal-open');
+    document.body.classList.remove("modal-open");
   }
 }

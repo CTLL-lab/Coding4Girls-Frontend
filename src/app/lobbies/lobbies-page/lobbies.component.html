@@ -5,7 +5,7 @@
       <div class="form-inline" *ngIf="!publicLobbiesView">
         <div class="form-group mr-sm-1 mb-2">
           <label for="lobbycode" class="sr-only">{{
-            'lobbies.4' | translate
+            "lobbies.4" | translate
           }}</label>
           <input
             id="code"
@@ -20,22 +20,22 @@
           (click)="joinLobby(lobbycode.value)"
           class="btn btn-success mr-2 mb-2"
         >
-          {{ 'lobbies.5' | translate }}
+          {{ "lobbies.5" | translate }}
         </button>
         <button
           routerLink="/lobbies/new"
           class="btn btn-primary mb-2"
           *ngIf="userPriviledged"
         >
-          {{ 'lobbies.3' | translate }}
+          {{ "lobbies.3" | translate }}
         </button>
       </div>
 
       <h2 class="font-weight-bold mt-3 mb-3 text-center">
         {{
           publicLobbiesView
-            ? ('lobbies.2' | translate)
-            : ('lobbies.1' | translate)
+            ? ("lobbies.2" | translate)
+            : ("lobbies.1" | translate)
         }}
       </h2>
       <div class="form-inline justify-content-center" *ngIf="publicLobbiesView">
@@ -87,13 +87,18 @@
           <div class="row">
             <div class="col-9">
               <p class="mb-1">{{ lobby.description }}</p>
+              <span
+                class="badge badge-pill badge-primary mr-1"
+                *ngFor="let tag of lobby.tags"
+                >{{ tag }}</span
+              >
             </div>
             <div class="col-3">
               <div *ngIf="lobby.verificationneeded && userPriviledged">
                 <div class="row mb-1">
                   <div class="col">
                     <span class="badge badge-pill badge-info float-right">{{
-                      'navbar.4' | translate
+                      "navbar.4" | translate
                     }}</span>
                   </div>
                 </div>
@@ -102,7 +107,7 @@
                 <div class="row mb-1">
                   <div class="col">
                     <span class="badge badge-pill badge-danger float-right">{{
-                      'navbar.3' | translate
+                      "navbar.3" | translate
                     }}</span>
                   </div>
                 </div>
@@ -111,7 +116,7 @@
                 <div class="row mb-1">
                   <div class="col">
                     <span class="badge badge-pill badge-warning float-right">{{
-                      'navbar.10' | translate
+                      "navbar.10" | translate
                     }}</span>
                   </div>
                 </div>
@@ -121,7 +126,7 @@
                   <div class="col">
                     <span
                       class="badge badge-pill badge-secondary float-right"
-                      >{{ 'navbar.11' | translate }}</span
+                      >{{ "navbar.11" | translate }}</span
                     >
                   </div>
                 </div>
@@ -195,13 +200,13 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-success" (click)="CloneCourse()">
-        {{ 'create-lobby.9' | translate }}
+        {{ "create-lobby.9" | translate }}
       </button>
       <button
         class="btn btn-danger"
         (click)="this.LobbyCloneForm.get('id').setValue(null); closeAllModals()"
       >
-        {{ 'create-lobby.10' | translate }}
+        {{ "create-lobby.10" | translate }}
       </button>
     </div>
   </div>
