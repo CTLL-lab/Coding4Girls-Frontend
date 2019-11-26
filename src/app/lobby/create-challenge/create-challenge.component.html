@@ -174,7 +174,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let level of levels.controls; let i = index">
-              <th scope="row">{{ i + 1 }}</th>
+              <th scope="row">
+                {{ i + 1 }}/ {{ level.get('id').value | json }}
+              </th>
               <td>
                 <button
                   class="btn btn-primary btn-sm"
@@ -263,7 +265,7 @@
         <div class=" mb-4" role="group">
           <button
             class="btn btn-success"
-            type="submit"
+            type="button"
             (click)="this.mode == 'edit' ? editTeam() : createTeam()"
             *ngIf="canSaveAndDelete"
           >
@@ -271,7 +273,7 @@
           </button>
           <button
             class="btn btn-danger float-right"
-            type="submit"
+            type="button"
             *ngIf="this.mode == 'edit' && canSaveAndDelete"
             (click)="showModal(deleteConfirmation)"
           >

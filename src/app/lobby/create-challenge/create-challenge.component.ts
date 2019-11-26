@@ -112,7 +112,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.levels);
     if (this.route.snapshot.url[2].toString() == 'edit') {
       this.mode = 'edit';
       this.pageTitle = 'edit-team.1';
@@ -127,7 +126,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   public createNewLevel(
     instructions = '',
     snap = '',
-    snapSolution = ''
+    snapSolution = '',
+    id = null
   ): FormGroup {
     let order;
     try {
@@ -136,6 +136,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       order = 1;
     }
     return this.fb.group({
+      id: id,
       instructions: instructions,
       snap: snap,
       snapSolution: snapSolution,
@@ -176,6 +177,20 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   populateComponentForEdit() {
+    this.challengeService.GetChallengeLevels(this.challengeID).subscribe(x => {
+      const incomingLevels = x['data']['levels'].sort((a, b) => a.ord - b.ord);
+      incomingLevels.forEach(x => {
+        this.levels.push(
+          this.createNewLevel(
+            x['instructions'] ? JSON.stringify(x['instructions']) : '',
+            x['snap'] || '',
+            x['snap_solution'] || '',
+            x['id']
+          )
+        );
+      });
+    });
+
     this.challengeService.getTeamDetails(this.challengeID).subscribe(x => {
       this.name = x['data']['challenge']['name'];
       this.description = x['data']['challenge']['description'];
@@ -183,18 +198,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       this.lobbyID = x['data']['challenge']['lobbyid'];
       this.challengeMinigameVariables = x['data']['challenge']['variables'];
       this.tag = x['data']['challenge']['tag'];
-      const incomingLevels: any[] = x['data']['challenge']['levels'];
       this.checkIfCanSaveAndDelete();
-      incomingLevels.forEach(x => {
-        console.log(x);
-        this.levels.push(
-          this.createNewLevel(
-            x['instructions'] ? JSON.stringify(x['instructions']) : '',
-            x['snap'] || '',
-            x['snap_solution'] || ''
-          )
-        );
-      });
 
       for (let key in this.MiniGameCategories) {
         for (let category of this.MiniGameCategories[key]) {
@@ -242,29 +246,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
   }
 
   editTeam() {
-    // Get Snap instance
-    const world = this.worldBehaviorSubject.value;
-
-    // If not initiated yet, we wait
-    // because this code runs when the user clicks the Save button
-    // in edit team
-    if (world == null) {
-      return;
-    }
-
-    let snapTemplateXML: string;
-
-    if (this.isSnapCanvasEmpty(world)) {
-      // Snap will produce some xml even with no blocks
-      // so to save space in database we store an empty string
-      snapTemplateXML = '';
-    } else {
-      world.children[0].setProjectName(this.name);
-      snapTemplateXML = world.children[0].serializer.serialize(
-        world.children[0].stage
-      );
-    }
-
     // check our current form
     this.currentMinigameForm.updateValueAndValidity();
     if (!this.currentMinigameForm.valid) {
@@ -273,7 +254,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     }
 
     try {
-      forkJoin([
+      const observables = [
         this.challengeService.editTeamInfo(
           this.challengeID,
           this.name,
@@ -286,16 +267,23 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
             : this.currentMinigameForm.value,
           this.selectedMiniGameCategory.categoryName,
           this.tag
-        ),
-        this.challengeService.EditChallengePage(
-          this.challengeID,
-          this.htmlAfter
-        ),
-        this.challengeService.EditChallengeSnap(
-          this.challengeID,
-          snapTemplateXML
         )
-      ]).subscribe(x => {
+      ];
+      this.levels.value.map(x => {
+        console.log(x);
+        if (x.id) {
+          observables.push(
+            this.challengeService.EditChallengeLevel(this.challengeID, x)
+          );
+        } else {
+          observables.push(
+            this.challengeService.CreateChallengeLevel(this.challengeID, x)
+          );
+        }
+      });
+
+      console.log(observables);
+      forkJoin(observables).subscribe(x => {
         this.storePreferences();
         this.notifications.showSuccess('');
         this.router.navigate(['/lobby/' + this.lobbyID]);
@@ -395,20 +383,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     this.minigameVariables.push([]);
   }
 
-  // Takes the world as argument and uses the serializer
-  // to find if the canvas is empty or not
-  isSnapCanvasEmpty(a): boolean {
-    // Load the current project to the serializer
-    a.children[0].serializer.store(a.children[0].stage);
-    const numberOfContents = a.children[0].serializer.contents.length;
-    a.children[0].serializer.flush();
-    // An empty project has 15 contents. So if we have 15, the user didn't add any blocks
-    if (numberOfContents == 15) {
-      return true;
-    }
-    return false;
-  }
-
   deleteChallenge() {
     this.challengeService.deleteChallenge(this.challengeID).subscribe(
       x => {
@@ -459,10 +433,6 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
             )
           : '';
     } catch (err) {
-      console.log(
-        this.levels.at(this.currentLevelEditing).get('instructions').value
-      );
-
       console.log(err);
     }
   }

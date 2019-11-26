@@ -4,6 +4,7 @@ import { apiURL } from 'src/app/config';
 import { UserService } from 'src/app/authentication/services/user/user.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Level } from 'src/app/teamModel';
 
 @Injectable()
 export class ChallengeService {
@@ -76,18 +77,20 @@ export class ChallengeService {
     if (tag == 'None') {
       tag = null;
     }
-    return this.http.put(
-      apiURL + '/challenges/' + challengeID,
-      {
-        name: challengeName,
-        description: challengeDescription,
-        minigame: minigame,
-        variables: minigamevariables,
-        miniGameCategory: minigameCategory,
-        tag: tag
-      },
-      { observe: 'response' }
-    );
+    return this.http
+      .put(
+        apiURL + '/challenges/' + challengeID,
+        {
+          name: challengeName,
+          description: challengeDescription,
+          minigame: minigame,
+          variables: minigamevariables,
+          miniGameCategory: minigameCategory,
+          tag: tag
+        },
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
   }
 
   deleteChallenge(challengeID: string) {
@@ -242,6 +245,32 @@ export class ChallengeService {
           observe: 'response'
         }
       )
+      .pipe(map(x => x.body));
+  }
+
+  GetChallengeLevels(challengeID: string) {
+    return this.http
+      .get(apiURL + '/challenges/' + challengeID + '/levels', {
+        observe: 'response'
+      })
+      .pipe(map(x => x.body));
+  }
+
+  EditChallengeLevel(challengeID: string, level: any) {
+    return this.http
+      .put(
+        apiURL + '/challenges/' + challengeID + '/levels/' + level.id,
+        level,
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
+  }
+
+  CreateChallengeLevel(challengeID: string, level: any) {
+    return this.http
+      .post(apiURL + '/challenges/' + challengeID + '/levels', level, {
+        observe: 'response'
+      })
       .pipe(map(x => x.body));
   }
 }
