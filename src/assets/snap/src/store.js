@@ -1666,7 +1666,7 @@ StageMorph.prototype.toXML = function (serializer) {
     return serializer.format(
         '<project name="@" app="@" version="@">' +
             '<notes>$</notes>' +
-            '<thumbnail>$</thumbnail>' +
+            // '<thumbnail>$</thumbnail>' +
             '<stage name="@" width="@" height="@" ' +
             'costume="@" color="@,@,@,@" tempo="@" threadsafe="@" ' +
             '%' +
@@ -1676,7 +1676,7 @@ StageMorph.prototype.toXML = function (serializer) {
             'inheritance="@" ' +
             'sublistIDs="@" ' +
             'scheduled="@" ~>' +
-            '<pentrails>$</pentrails>' +
+            // '<pentrails>$</pentrails>' +
             '<costumes>%</costumes>' +
             '<sounds>%</sounds>' +
             '<variables>%</variables>' +
@@ -1693,7 +1693,7 @@ StageMorph.prototype.toXML = function (serializer) {
         serializer.app,
         serializer.version,
         (ide && ide.projectNotes) ? ide.projectNotes : '',
-        thumbdata,
+        // thumbdata,
         this.name,
         StageMorph.prototype.dimensions.x,
         StageMorph.prototype.dimensions.y,
@@ -1712,7 +1712,7 @@ StageMorph.prototype.toXML = function (serializer) {
         this.enableInheritance,
         this.enableSublistIDs,
         StageMorph.prototype.frameRate !== 0,
-        normalizeCanvas(this.trailsCanvas, true).toDataURL('image/png'),
+        // normalizeCanvas(this.trailsCanvas, true).toDataURL('image/png'),
         serializer.store(this.costumes, this.name + '_cst'),
         serializer.store(this.sounds, this.name + '_snd'),
         serializer.store(this.variables),
