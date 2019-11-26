@@ -24,7 +24,6 @@ export class SolutionPageComponent implements OnInit {
     private router: Router
   ) {
     window['world'] = this.worldBehaviorSubject;
-    console.log(this.route.snapshot);
   }
   goBack() {
     if (this.route.snapshot.data['comparison']) {
