@@ -16,8 +16,6 @@ export class ChallengeService {
     lobbyId: string,
     minigame: number,
     minigamevariables: Object,
-    snapTemplate: string,
-    pageAfter: string,
     minigameCategory: string,
     tag: string
   ) {
@@ -43,8 +41,6 @@ export class ChallengeService {
         lobbyid: lobbyId,
         minigame: minigame,
         variables: minigamevariables,
-        snapTemplate: snapTemplate,
-        pageAfter: pageAfter,
         miniGameCategory: minigameCategory,
         tag: tag
       },
@@ -263,6 +259,14 @@ export class ChallengeService {
         level,
         { observe: 'response' }
       )
+      .pipe(map(x => x.body));
+  }
+
+  DeleteChallengeLevel(challengeID: string, level: any) {
+    return this.http
+      .delete(apiURL + '/challenges/' + challengeID + '/levels/' + level.id, {
+        observe: 'response'
+      })
       .pipe(map(x => x.body));
   }
 
