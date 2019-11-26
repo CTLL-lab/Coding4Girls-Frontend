@@ -162,54 +162,104 @@
           </div>
         </div>
 
-        <div class="form-group row">
-          <ul class="nav nav-tabs" id="challengePages" role="tablist">
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                data-toggle="list"
-                href="#pageAfterChallenge"
-                role="tab"
-                [translate]="'edit-team.6'"
-              ></a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link "
-                data-toggle="list"
-                href="#snap"
-                role="tab"
-                [translate]="'edit-team.7'"
-              ></a>
-            </li>
-          </ul>
-
-          <div class="tab-content">
-            <div
-              class="tab-pane fade show active"
-              id="pageAfterChallenge"
-              role="tabpanel"
-            >
-              <quill-editor
-                [styles]="{ height: '500px' }"
-                [format]="'object'"
-                [(ngModel)]="htmlAfter"
-                [modules]="quillModules"
-                name="pageBeforeChallengeQuill"
-              ></quill-editor>
-            </div>
-
-            <div class="tab-pane fade " id="snap" role="tabpanel">
-              <div class="row">
-                <iframe
-                  src="/assets/snap/snap.html"
-                  width="1200"
-                  height="1000"
-                ></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" [translate]="'edit-team.6'"></th>
+              <th scope="col" [translate]="'edit-team.7'"></th>
+              <th scope="col" [translate]="'edit-team.8'"></th>
+              <th scope="col" *ngIf="levels.controls.length > 1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let level of levels.controls; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <button
+                  class="btn btn-primary btn-sm"
+                  (click)="
+                    currentLevelEditing = i;
+                    prepareToOpenInstructionsModal();
+                    showModal(instructionsModal, {
+                      size: 'lg',
+                      backdrop: 'static'
+                    })
+                  "
+                >
+                  {{ 'edit-team.12' | translate }}
+                </button>
+                <br />
+                <small
+                  i
+                  *ngIf="
+                    levels.at(i).get('instructions').value == '' ||
+                    levels.at(i).get('instructions').value == '{}'
+                  "
+                >
+                  <i>{{ 'edit-team.9' | translate }}</i>
+                </small>
+              </td>
+              <td>
+                <button
+                  class="btn btn-info btn-sm"
+                  (click)="
+                    currentLevelEditing = i;
+                    currentSnapModalIsTemplate = true;
+                    showModal(snapModal, {
+                      size: 'xl',
+                      backdrop: 'static'
+                    });
+                    loadSnap()
+                  "
+                >
+                  {{ 'edit-team.12' | translate }}</button
+                ><br />
+                <small i *ngIf="levels.at(i).get('snap').value == ''">
+                  <i>{{ 'edit-team.9' | translate }}</i>
+                </small>
+              </td>
+              <td>
+                <button
+                  class="btn btn-secondary btn-sm"
+                  (click)="
+                    currentLevelEditing = i;
+                    currentSnapModalIsTemplate = false;
+                    showModal(snapModal, {
+                      size: 'xl',
+                      backdrop: 'static'
+                    });
+                    loadSnap()
+                  "
+                >
+                  {{ 'edit-team.12' | translate }}</button
+                ><br />
+                <small i *ngIf="levels.at(i).get('snapSolution').value == ''">
+                  <i>{{ 'edit-team.9' | translate }}</i>
+                </small>
+              </td>
+              <td>
+                <i
+                  class="fas fa-minus-circle text-danger fa-2x"
+                  *ngIf="levels.controls.length > 1"
+                  (click)="levels.removeAt(i)"
+                ></i>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>
+                <i
+                  class="fas fa-plus-circle fa-2x"
+                  (click)="levels.push(this.createNewLevel())"
+                ></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <div class=" mb-4" role="group">
           <button
             class="btn btn-success"
@@ -242,6 +292,80 @@
       </button>
       <button class="btn btn-success" (click)="closeAllModals()">
         {{ 'in-code.26' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #instructionsModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ 'edit-team.6' | translate }}</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="closeAllModals()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <quill-editor
+        [styles]="{ height: '500px' }"
+        [format]="'object'"
+        [(ngModel)]="quillService.currentInstructions"
+        [modules]="quillModules"
+        name="pageBeforeChallengeQuill"
+      ></quill-editor>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="closeAllModals()">
+        {{ 'edit-team.11' | translate }}
+      </button>
+      <button
+        class="btn btn-success"
+        (click)="saveInstructionsForCurrentLevel(); this.closeAllModals()"
+      >
+        {{ 'edit-team.10' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #snapModal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        {{
+          currentSnapModalIsTemplate
+            ? ('edit-team.7' | translate)
+            : ('edit-team.8' | translate)
+        }}
+      </h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="closeAllModals()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <iframe src="/assets/snap/snap.html" width="100%" height="800"></iframe>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="closeAllModals()">
+        {{ 'edit-team.11' | translate }}
+      </button>
+      <button
+        class="btn btn-success"
+        (click)="saveSnapForCurrentLevel(); this.closeAllModals()"
+      >
+        {{ 'edit-team.10' | translate }}
       </button>
     </div>
   </div>

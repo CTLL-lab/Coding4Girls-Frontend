@@ -1,4 +1,4 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "window.title": "Coding4Girls"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "window.title": "Coding4Girls"
 }

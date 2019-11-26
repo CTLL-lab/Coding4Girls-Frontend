@@ -17,6 +17,8 @@ import { NotesModule } from './canvas/notes/notes.module';
 import { ChallengeService } from '../lobby/services/challenge/challenge.service';
 import { NotesProviderService } from './canvas/notes/services/notes/notes-provider.service';
 import { UploaderService } from './services/uploader/uploader.service';
+import { SnapService } from './snap/snap.service';
+import { QuillService } from './quill/quill.service';
 
 @NgModule({
   imports: [
@@ -53,7 +55,9 @@ export class SharedModule {
         LobbyService,
         SocketioService,
         UploaderService,
-        NotesProviderService
+        NotesProviderService,
+        SnapService,
+        QuillService
       ]
     };
   }

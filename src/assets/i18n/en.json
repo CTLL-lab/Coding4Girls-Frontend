@@ -26,8 +26,11 @@
     "5": "Mini Game",
     "6": "Instructions",
     "7": "Snap template",
+    "8": "Snap solution",
+    "9": "Empty",
     "10": "Save",
-    "11": "Discard"
+    "11": "Discard",
+    "12": "Edit"
   },
   "in-code": {
     "1": "New course created",
