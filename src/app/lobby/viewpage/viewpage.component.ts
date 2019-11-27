@@ -23,6 +23,7 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
 export class ViewpageComponent implements OnInit, OnDestroy {
   public lobbyID: string;
   public challengeID: string;
+  public levelID: string;
   public type: string;
 
   // Quill
@@ -70,6 +71,7 @@ export class ViewpageComponent implements OnInit, OnDestroy {
     }
     if (params.lid == undefined && params.cid) {
       this.challengeID = params.cid;
+      this.levelID = params.lvl;
     }
 
     // the observable we will call
@@ -80,7 +82,7 @@ export class ViewpageComponent implements OnInit, OnDestroy {
       if (params.lid) {
         obs = this.lobby.GetLobbyInstructionsPage(params.lid);
       } else if (params.cid) {
-        obs = this.challenge.GetChallengePage(params.cid);
+        obs = this.challenge.GetChallengePage(params.cid, params.lvl);
       }
       obs.subscribe(x => {
         this.quillContent = x;

@@ -188,11 +188,14 @@ export class ChallengeService {
     return this.http.get(apiURL + '/mini_games');
   }
 
-  GetChallengePage(challengeID: string) {
+  GetChallengePage(challengeID: string, levelID: string) {
     return this.http
-      .get(apiURL + '/challenges/' + challengeID + '/page', {
-        observe: 'response'
-      })
+      .get(
+        apiURL + '/challenges/' + challengeID + '/levels/' + levelID + '/page',
+        {
+          observe: 'response'
+        }
+      )
       .pipe(map(x => x.body));
   }
 
