@@ -65,6 +65,7 @@ export class SolutionsComponent implements OnInit {
                 lname: element.lname,
                 challengeName: element.name,
                 submitted: element.last_update != null,
+                order: element.order,
                 link:
                   element.last_update != null
                     ? '<a href="/#/lobby/' +
@@ -73,6 +74,8 @@ export class SolutionsComponent implements OnInit {
                       element.userid +
                       '/' +
                       element.challengeid +
+                      '/' +
+                      element.level_id +
                       '">Solution</a>'
                     : ''
               };
@@ -127,6 +130,7 @@ class ChallengeSolutionsState implements SolutionsComponentState {
     { name: 'First name', prop: 'fname' },
     { name: 'Last name', prop: 'lname' },
     { name: 'Challenge name', prop: 'challengeName' },
+    { name: 'Level', prop: 'order' },
     { name: 'Solution link', prop: 'link' }
   ];
 }

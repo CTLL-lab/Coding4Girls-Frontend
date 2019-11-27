@@ -37,7 +37,7 @@ const routes: Routes = [
     data: { lobby: true, comparison: true }
   },
   {
-    path: ':id/solutions/:userID/:challengeID',
+    path: ':id/solutions/:userID/:challengeID/:levelID',
     component: SolutionPageComponent,
     data: { challenge: true }
   },

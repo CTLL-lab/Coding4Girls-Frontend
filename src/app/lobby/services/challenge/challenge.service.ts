@@ -228,7 +228,11 @@ export class ChallengeService {
       .pipe(map(x => x.body));
   }
 
-  GetChallengeSnapSolutionFromUser(challengeID: string, userID: string) {
+  GetChallengeSnapSolutionFromUser(
+    challengeID: string,
+    levelID: string,
+    userID: string
+  ) {
     return this.http
       .get(
         apiURL +
@@ -236,7 +240,8 @@ export class ChallengeService {
           userID +
           '/challenges/' +
           challengeID +
-          '/solution',
+          '/solution/' +
+          levelID,
         {
           observe: 'response'
         }

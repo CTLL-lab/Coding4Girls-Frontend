@@ -17,6 +17,7 @@ export class SolutionPageComponent implements OnInit {
   private userID = this.route.snapshot.paramMap.get('userID');
   private challengeID = this.route.snapshot.paramMap.get('challengeID');
   private lobbyID = this.route.snapshot.paramMap.get('id');
+  private levelID = this.route.snapshot.paramMap.get('levelID');
   constructor(
     private route: ActivatedRoute,
     private challengeService: ChallengeService,
@@ -53,7 +54,11 @@ export class SolutionPageComponent implements OnInit {
           });
       } else {
         this.challengeService
-          .GetChallengeSnapSolutionFromUser(this.challengeID, this.userID)
+          .GetChallengeSnapSolutionFromUser(
+            this.challengeID,
+            this.levelID,
+            this.userID
+          )
           .subscribe(y => {
             x.children[0].openProjectString(
               y['data']['solution']['snap_solution']
