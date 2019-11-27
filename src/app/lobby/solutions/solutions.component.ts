@@ -41,7 +41,9 @@ export class SolutionsComponent implements OnInit {
               submitted: element.last_update != null,
               link:
                 element.last_update != null
-                  ? '<a href="/#/lobby/24/solutions/' +
+                  ? '<a href="/#/lobby/' +
+                    this.lobbyID +
+                    '/solutions/' +
                     element.userid +
                     '/">Solution</a>'
                   : ''
@@ -65,7 +67,9 @@ export class SolutionsComponent implements OnInit {
                 submitted: element.last_update != null,
                 link:
                   element.last_update != null
-                    ? '<a href="/#/lobby/24/solutions/' +
+                    ? '<a href="/#/lobby/' +
+                      this.lobbyID +
+                      '/solutions/' +
                       element.userid +
                       '/' +
                       element.challengeid +
