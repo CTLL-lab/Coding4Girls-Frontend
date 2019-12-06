@@ -25,6 +25,7 @@ export class CreateLobbyComponent implements OnInit {
     description: '',
     outcome: '',
     code: '',
+    tag: '',
     htmlAfter: null,
     public: false
   };
