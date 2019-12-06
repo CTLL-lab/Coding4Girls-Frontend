@@ -129,11 +129,18 @@ export class LobbyService {
       .pipe(map(x => x.body));
   }
 
-  CloneLobby(lobbyID: string, name: string, description: string, code: string) {
+  CloneLobby(
+    lobbyID: string,
+    name: string,
+    description: string,
+    code: string,
+    tag: string
+  ) {
     return this.http.post(apiURL + '/lobbies/' + lobbyID + '/clone', {
       code,
       name,
-      description
+      description,
+      tag
     });
   }
 }

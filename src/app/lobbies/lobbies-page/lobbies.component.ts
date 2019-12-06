@@ -73,11 +73,16 @@ export class LobbiesComponent implements OnInit, OnDestroy {
       this.role = this.userService.getRole();
       this.userPriviledged = priviledged_roles.includes(this.role);
     });
+    this.createCloneForm();
+  }
+
+  private createCloneForm() {
     this.LobbyCloneForm = this.fb.group({
       id: [''],
       name: [''],
       description: [''],
-      code: ['']
+      code: [''],
+      tag: ['']
     });
   }
 
@@ -164,7 +169,13 @@ export class LobbiesComponent implements OnInit, OnDestroy {
   CloneCourse() {
     const lobby = this.LobbyCloneForm.value;
     this.lobbyService
-      .CloneLobby(lobby.id, lobby.name, lobby.description, lobby.code)
+      .CloneLobby(
+        lobby.id,
+        lobby.name,
+        lobby.description,
+        lobby.code,
+        lobby.tag
+      )
       .subscribe(
         x => {
           this.notifications.showSuccess('');
