@@ -70,10 +70,10 @@ export class LobbySettingsComponent implements OnInit {
   ngOnInit() {
     this.role = this.user.getRole();
     this.isUserPriviledged = priviledged_roles.includes(this.role);
-    this.lobbyDetailsOrig = this.lobbyDetails;
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {
       this.lobbyDetails = r['data']['lobby'];
+      this.lobbyDetailsOrig = this.lobbyDetails;
     });
 
     // Populate quill text editor
@@ -93,8 +93,6 @@ export class LobbySettingsComponent implements OnInit {
       });
       this.worldSubscription.unsubscribe();
     });
-
-    this.lobbyDetailsOrig = this.lobbyDetails;
   }
   goBack() {
     this.router.navigateByUrl('/lobby/' + this.id);
