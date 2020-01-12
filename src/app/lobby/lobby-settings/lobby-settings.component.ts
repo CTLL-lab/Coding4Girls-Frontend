@@ -8,6 +8,7 @@ import { priviledged_roles } from 'src/app/config';
 import { BehaviorSubject, Subscription, forkJoin } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap';
 import { fully_priviledged_roles } from '../../config';
+import { SnapService } from 'src/app/shared/snap/snap.service';
 @Component({
   selector: 'app-lobby-settings',
   templateUrl: './lobby-settings.component.html',
@@ -17,8 +18,6 @@ import { fully_priviledged_roles } from '../../config';
 export class LobbySettingsComponent implements OnInit {
   public fullyPriviledgedRoles = fully_priviledged_roles;
 
-  public world: BehaviorSubject<any> = new BehaviorSubject(null);
-
   public lobbyDetails = null;
   public id: string;
   public role: string;
@@ -27,7 +26,6 @@ export class LobbySettingsComponent implements OnInit {
 
   // Snap
   public snapTemplate = null;
-  private worldSubscription: Subscription;
   // Quill
   public htmlPage = {};
   public quillModules = {
@@ -62,10 +60,9 @@ export class LobbySettingsComponent implements OnInit {
     private router: Router,
     public notifications: NotificationsToasterService,
     private translationService: TranslateService,
-    private modalService: BsModalService
-  ) {
-    window['world'] = this.world;
-  }
+    private modalService: BsModalService,
+    private snapService: SnapService
+  ) {}
 
   ngOnInit() {
     this.role = this.user.getRole();
@@ -82,42 +79,15 @@ export class LobbySettingsComponent implements OnInit {
     });
 
     // Populate snap
-    this.worldSubscription = this.world.subscribe(x => {
-      if (x == null) {
-        return;
-      }
-      this.lobbyService.GetLobbySnapTemplate(this.id).subscribe((y: string) => {
-        if (y.startsWith('<project')) {
-          x.children[0].rawOpenProjectString(y);
-        }
-      });
-      this.worldSubscription.unsubscribe();
+    this.lobbyService.GetLobbySnapTemplate(this.id).subscribe((y: string) => {
+      this.snapService.LoadProject(y);
     });
   }
   goBack() {
     this.router.navigateByUrl('/lobby/' + this.id);
   }
   saveChanges() {
-    // Get Snap instance
-    const world = this.world.value;
-
-    // If not initiated yet, we wait
-    if (world == null) {
-      return;
-    }
-
-    let snapTemplateXML: string;
-
-    if (this.isSnapCanvasEmpty(world)) {
-      // Snap will produce some xml even with no blocks
-      // so to save space in database we store an empty string
-      snapTemplateXML = '';
-    } else {
-      world.children[0].setProjectName(this.lobbyDetails.name);
-      snapTemplateXML = world.children[0].serializer.serialize(
-        world.children[0].stage
-      );
-    }
+    const snapTemplateXML = this.snapService.GetCurrentSnapData();
 
     forkJoin([
       this.lobbyService.saveLobbySettings(this.lobbyDetails),
@@ -157,19 +127,5 @@ export class LobbySettingsComponent implements OnInit {
       this.modalService.hide(i);
     }
     document.body.classList.remove('modal-open');
-  }
-
-  // Takes the world as argument and uses the serializer
-  // to find if the canvas is empty or not
-  isSnapCanvasEmpty(a): boolean {
-    // Load the current project to the serializer
-    a.children[0].serializer.store(a.children[0].stage);
-    const numberOfContents = a.children[0].serializer.contents.length;
-    a.children[0].serializer.flush();
-    // An empty project has 15 contents. So if we have 15, the user didn't add any blocks
-    if (numberOfContents == 15) {
-      return true;
-    }
-    return false;
   }
 }
