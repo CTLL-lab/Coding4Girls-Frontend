@@ -190,7 +190,17 @@ export class MinigameService {
           multipleCorrectAnswers: false,
           allowsImageUpload: false,
           numberOfAnswers: 2
-        }
+        },
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox',
+            translation: 'variables.1'
+          }
+        ]
       }),
       new MinigameItem(SimpleComponent, {
         name: 'Inventory/Marble',
@@ -214,7 +224,7 @@ export class MinigameService {
             translation: 'edit-team.6'
           }
         ]
-      }), // null because no variables
+      }),
       new MinigameItem(QuestionareComponent, {
         name: 'Stepping Game',
         translation: 'minigame.4',
@@ -225,7 +235,17 @@ export class MinigameService {
           multipleCorrectAnswers: false,
           allowsImageUpload: false,
           numberOfAnswers: 1
-        }
+        },
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox',
+            translation: 'variables.1'
+          }
+        ]
       }), // questions
       new MinigameItem(SimpleComponent, {
         name: 'Sound Game',
@@ -317,6 +337,16 @@ export class MinigameService {
         name: 'Stepping Game',
         id: 9,
         translation: 'minigame.4',
+        variables: [
+          {
+            label: 'Timer',
+            type: 'number',
+            value: 0,
+            key: 'timer',
+            controlType: 'textbox',
+            translation: 'variables.1'
+          }
+        ],
         options: {
           fixedNumberOfQuestions: false,
           numberOfQuestions: 5,
