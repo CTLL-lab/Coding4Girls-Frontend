@@ -546,7 +546,7 @@ IDE_Morph.prototype.openIn = function(world) {
   this.warnAboutIE();
 
   world.randomNumber = Math.random();
-  parent.world.next(world);
+  // parent.world.next(world);
 };
 
 // IDE_Morph construction
