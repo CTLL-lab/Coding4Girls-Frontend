@@ -159,25 +159,25 @@ export class MinigameService {
             key: 'score',
             controlType: 'textbox',
             translation: 'variables.12'
-          },
-          {
-            label: 'Timer/Score',
-            key: 'condition',
-            controlType: 'dropdown',
-            // translation: 'variables.2',
-            options: [
-              {
-                key: 'timer',
-                value: 'Timer',
-                translation: 'variables.1'
-              },
-              {
-                key: 'score',
-                value: 'Score',
-                translation: 'variables.12'
-              }
-            ]
           }
+          // {
+          //   label: 'Timer/Score',
+          //   key: 'condition',
+          //   controlType: 'dropdown',
+          //   // translation: 'variables.2',
+          //   options: [
+          //     {
+          //       key: 'timer',
+          //       value: 'Timer',
+          //       translation: 'variables.1'
+          //     },
+          //     {
+          //       key: 'score',
+          //       value: 'Score',
+          //       translation: 'variables.12'
+          //     }
+          //   ]
+          // }
         ]
       }),
       new MinigameItem(QuestionareComponent, {
@@ -274,6 +274,14 @@ export class MinigameService {
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
+          },
+          {
+            label: 'Score',
+            type: 'number',
+            value: 500,
+            key: 'score',
+            controlType: 'textbox',
+            translation: 'variables.12'
           }
         ]
       }),
@@ -356,7 +364,7 @@ export class MinigameService {
         }
       }),
       new MinigameItem(SimpleComponent, {
-        name: 'Slot Machine',
+        name: 'Dice',
         id: 10,
         translation: 'minigame.9',
         variables: [
@@ -367,6 +375,14 @@ export class MinigameService {
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
+          },
+          {
+            label: 'Score',
+            type: 'number',
+            value: 500,
+            key: 'score',
+            controlType: 'textbox',
+            translation: 'variables.12'
           }
         ]
       }),
