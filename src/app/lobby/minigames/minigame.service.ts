@@ -240,7 +240,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -255,7 +255,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -270,7 +270,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -293,7 +293,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -308,7 +308,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -349,7 +349,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -371,7 +371,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
@@ -402,7 +402,7 @@ export class MinigameService {
           {
             label: 'Timer',
             type: 'number',
-            value: 0,
+            value: 120,
             key: 'timer',
             controlType: 'textbox',
             translation: 'variables.1'
