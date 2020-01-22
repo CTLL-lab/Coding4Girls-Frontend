@@ -1,23 +1,33 @@
 <div class="container">
-  <div class="row mt-4 mb-2">
+  <div class="row mt-4 mb-1">
     <div class="col">
       <h1 class="text-center font-weight-bold">
-        {{ lobbyDetails?.name }} ({{ lobbyDetails?.code }})
+        {{ lobbyDetails?.name }}
       </h1>
-      <h2 align="center" class="font-weight-normal">
+      <h2 class="text-center font-weight-normal">
         {{ lobbyDetails?.description }}
       </h2>
-      <p align="center" class="font-italic">
-        <span>{{ 'lobby-page.1' | translate }}</span>
-        {{ lobbyDetails?.creatorusername }}
-      </p>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="container text-center">
+      <span
+        class="badge badge-pill badge-warning mr-1"
+        *ngFor="let tag of lobbyDetails?.tag?.split(';')"
+        >{{ tag }}</span
+      >
+      <span
+        class="badge badge-pill badge-primary mr-1"
+        *ngFor="let tag of lobbyDetails?.challengetags"
+        >{{ tag }}</span
+      >
     </div>
   </div>
   <div class="row">
     <div class="col text-center">
       <button
         type="button"
-        class="btn btn-dark"
+        class="btn btn-dark mr-1"
         routerLink="/lobby/{{ id }}/settings"
         *ngIf="lobbyDetails != null"
       >
@@ -26,7 +36,7 @@
       <button
         routerLink="/lobby/{{ id }}/team/new"
         type="button"
-        class="btn btn-dark"
+        class="btn btn-dark mr-1"
         *ngIf="
           this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
@@ -37,7 +47,7 @@
       <button
         routerLink="/lobby/{{ id }}/solutions/challenges"
         type="button"
-        class="btn btn-dark"
+        class="btn btn-dark mr-1"
         *ngIf="
           this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
@@ -48,7 +58,7 @@
       <button
         routerLink="/lobby/{{ id }}/solutions"
         type="button"
-        class="btn btn-dark"
+        class="btn btn-dark mr-1"
         *ngIf="
           this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
@@ -59,7 +69,7 @@
       <button
         routerLink="/lobby/{{ id }}/brainstorm"
         type="button"
-        class="btn btn-dark"
+        class="btn btn-dark mr-1"
         *ngIf="
           this.lobbyDetails?.createdby == this.userService.GetUserID() ||
           fullyPriviledgedRoles.includes(this.userService.getRole())
@@ -69,7 +79,7 @@
       </button>
     </div>
   </div>
-  <div class="row mb-4">
+  <div class="row mb-4 mt-4">
     <div class="col">
       <h2 class="text-center font-weight-bold">
         <span>{{ 'lobby-page.6' | translate }}</span>
@@ -77,12 +87,31 @@
     </div>
   </div>
   <div class="row">
-    <!-- Members -->
+    <!-- Left sidebar -->
     <div class="col-sm-4">
+      <!-- Creator -->
+      <div class="container" *ngIf="lobbyDetails?.creatorusername">
+        <h5>
+          <i class="fas fa-user-tie mr-2"></i>
+          <span class="font-weight-light">{{
+            lobbyDetails?.creatorusername
+          }}</span>
+        </h5>
+      </div>
       <div class="container">
-        <h2 [translate]="'lobby-page.14'"></h2>
-        <ul>
+        <h5>
+          <i class="fas fa-key mr-2"></i>
+          <span class="font-weight-light">{{ lobbyDetails?.code }}</span>
+        </h5>
+      </div>
+
+      <!-- Members -->
+      <div class="container">
+        <!-- {{ 'lobby-page.14' | translate }} -->
+        <h5><i class="fas fa-users"></i></h5>
+        <ul class="fa-ul">
           <li *ngFor="let member of members">
+            <span class="fa-li"><i class="fas fa-user"></i></span>
             {{ member.username }}
           </li>
         </ul>
