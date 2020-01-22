@@ -127,7 +127,7 @@
         <div class="mt-4" role="group" aria-label="Basic example">
           <button
             class="btn btn-success"
-            (click)="saveChanges()"
+            (click)="saveClicked(makePublicConfirmation)"
             *ngIf="
               this.lobbyDetails.createdby == this.user.GetUserID() ||
               fullyPriviledgedRoles.includes(this.user.getRole())
@@ -156,6 +156,26 @@
     <div class="modal-footer">
       <button class="btn btn-danger" (click)="deleteLobby()">
         {{ 'in-code.25' | translate }}
+      </button>
+      <button class="btn btn-success" (click)="closeAllModals()">
+        {{ 'in-code.26' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #makePublicConfirmation>
+  <div class="modal-content">
+    <div class="modal-header">{{ 'in-code.24' | translate }}</div>
+    <div class="modal-body">
+      <p [translate]="'lobby-settings.5'"></p>
+    </div>
+    <div class="modal-footer">
+      <button
+        class="btn btn-danger mr-auto"
+        (click)="saveChanges(); closeAllModals()"
+      >
+        {{ 'lobby-settings.10' | translate }}
       </button>
       <button class="btn btn-success" (click)="closeAllModals()">
         {{ 'in-code.26' | translate }}

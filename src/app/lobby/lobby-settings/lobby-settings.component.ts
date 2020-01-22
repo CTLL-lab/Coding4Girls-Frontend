@@ -70,7 +70,7 @@ export class LobbySettingsComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {
       this.lobbyDetails = r['data']['lobby'];
-      this.lobbyDetailsOrig = this.lobbyDetails;
+      this.lobbyDetailsOrig = { ...this.lobbyDetails };
     });
 
     // Populate quill text editor
@@ -127,5 +127,18 @@ export class LobbySettingsComponent implements OnInit {
       this.modalService.hide(i);
     }
     document.body.classList.remove('modal-open');
+  }
+
+  verificationForMakingLobbyPublic(): boolean {
+    return false;
+  }
+
+  saveClicked(modalToShow) {
+    if (this.lobbyDetails.public && !this.lobbyDetailsOrig.public) {
+      console.log('making a lobby public');
+      this.modalService.show(modalToShow);
+    } else {
+      this.saveChanges();
+    }
   }
 }
