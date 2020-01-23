@@ -28,6 +28,7 @@ export class LobbySettingsComponent implements OnInit {
   public snapTemplate = null;
   // Quill
   public htmlPage = {};
+  public htmlPageAfter = {};
   public quillModules = {
     imageResize: {},
     toolbar: [
@@ -76,6 +77,11 @@ export class LobbySettingsComponent implements OnInit {
     // Populate quill text editor
     this.lobbyService.GetLobbyInstructionsPage(this.id).subscribe(x => {
       this.htmlPage = x;
+      console.log(x);
+    });
+
+    this.lobbyService.GetLobbyInstructionsAfterPage(this.id).subscribe(x => {
+      this.htmlPageAfter = x;
     });
 
     // Populate snap
@@ -92,7 +98,11 @@ export class LobbySettingsComponent implements OnInit {
     forkJoin([
       this.lobbyService.saveLobbySettings(this.lobbyDetails),
       this.lobbyService.EditLobbySnapTemplate(this.id, snapTemplateXML),
-      this.lobbyService.EditLobbyInstructionsPage(this.id, this.htmlPage)
+      this.lobbyService.EditLobbyInstructionsPages(
+        this.id,
+        this.htmlPage,
+        this.htmlPageAfter
+      )
     ]).subscribe(
       r => {
         this.translationService.get('in-code.9').subscribe(k => {

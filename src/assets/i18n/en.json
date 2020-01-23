@@ -31,7 +31,8 @@
     "9": "Empty",
     "10": "Save",
     "11": "Discard",
-    "12": "Edit"
+    "12": "Edit",
+    "13": "Final Instructions"
   },
   "in-code": {
     "1": "New course created",

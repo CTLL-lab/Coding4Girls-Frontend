@@ -103,6 +103,14 @@ export class LobbyService {
       .pipe(map(x => x.body));
   }
 
+  GetLobbyInstructionsAfterPage(lobbyID: string) {
+    return this.http
+      .get(apiURL + '/lobbies/' + lobbyID + '/page/after', {
+        observe: 'response'
+      })
+      .pipe(map(x => x.body));
+  }
+
   EditLobbySnapTemplate(lobbyID: string, snap: string) {
     return this.http
       .put(
@@ -118,6 +126,20 @@ export class LobbyService {
       .put(
         apiURL + '/lobbies/' + lobbyID + '/page',
         { pageAfter: page },
+        { observe: 'response' }
+      )
+      .pipe(map(x => x.body));
+  }
+
+  EditLobbyInstructionsPages(
+    lobbyID: string,
+    pageBefore: Object,
+    pageAfter: Object
+  ) {
+    return this.http
+      .put(
+        apiURL + '/lobbies/' + lobbyID + '/page',
+        { pageBefore, pageAfter },
         { observe: 'response' }
       )
       .pipe(map(x => x.body));
