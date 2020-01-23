@@ -16,6 +16,7 @@ import { NotificationsToasterService } from 'src/app/shared/services/toaster/not
 // Accepted query params for this component
 // t <- type of the page to show
 //    instructions <- load lobby or challenge instructions
+//    instructionsAfter <- load lobby pageAfter
 //    snap <- load snap for lobby or challenge
 //    canvas <- load brainstorm canvas (only lobby)
 // lid <- lobby ID
@@ -78,7 +79,12 @@ export class ViewpageComponent implements OnInit, OnDestroy {
     let obs: Observable<any>;
 
     // If we want to show instructions
-    if (this.type == 'instructions') {
+    if (this.type == 'instructionsAfter') {
+      obs = this.lobby.GetLobbyInstructionsAfterPage(params.lid);
+      obs.subscribe(x => {
+        this.quillContent = x;
+      });
+    } else if (this.type == 'instructions') {
       if (params.lid) {
         obs = this.lobby.GetLobbyInstructionsPage(params.lid);
       } else if (params.cid) {

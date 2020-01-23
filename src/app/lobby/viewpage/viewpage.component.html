@@ -1,5 +1,5 @@
 <quill-view
-  *ngIf="type == 'instructions'"
+  *ngIf="type == 'instructions' || type == 'instructionsAfter'"
   [content]="quillContent"
   [format]="'object'"
   [modules]="quillModules"
