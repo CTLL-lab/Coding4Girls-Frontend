@@ -48,9 +48,11 @@ export class SolutionPageComponent implements OnInit {
         this.answersService
           .GetLobbySolutionForUser(this.userID, this.lobbyID)
           .subscribe(y => {
-            x.children[0].openProjectString(
-              y['data']['solution']['snap_solution']
-            );
+            if (y['data']['solution']['snap_solution']) {
+              x.children[0].openProjectString(
+                y['data']['solution']['snap_solution']
+              );
+            }
           });
       } else {
         this.challengeService
@@ -60,9 +62,11 @@ export class SolutionPageComponent implements OnInit {
             this.userID
           )
           .subscribe(y => {
-            x.children[0].openProjectString(
-              y['data']['solution']['snap_solution']
-            );
+            if (y['data']['solution']['snap_solution']) {
+              x.children[0].openProjectString(
+                y['data']['solution']['snap_solution']
+              );
+            }
           });
         this.worldSubscription.unsubscribe();
       }
