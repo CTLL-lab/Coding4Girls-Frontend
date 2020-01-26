@@ -120,7 +120,7 @@
         <a
           *ngFor="let language of languages_available; let i = index"
           class="dropdown-item"
-          (click)="changeLanguageTo(language)"
+          (click)="changeLanguageTo(language.code)"
         >
           <img
             [src]="languages_available[i].imagePath"
