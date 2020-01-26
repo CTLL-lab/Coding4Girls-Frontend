@@ -34,7 +34,7 @@
             </div>
             <div class="col-auto" *ngIf="options.allowsImageUpload">
               <input
-                id="imagebox"
+                [id]="'imagebox' + 'q' + (i + 1)"
                 type="text"
                 class="form-control"
                 placeholder="Image url"
@@ -58,7 +58,7 @@
             </label>
             <div class="col-auto">
               <input
-                [id]="'hint'"
+                [id]="'hint' + 'q' + (i + 1)"
                 type="text"
                 class="form-control"
                 [formControlName]="'hint'"
@@ -77,7 +77,7 @@
               <!-- Answer -->
               <label
                 class="col-sm-2 col-form-label"
-                [for]="'a' + (j + 1)"
+                [for]="'a' + (j + 1) + 'q' + (i + 1)"
                 *ngIf="
                   !this.options.multipleCorrectAnswers &&
                   this.options.numberOfAnswers > 1
@@ -91,7 +91,7 @@
               </label>
               <label
                 class="col-sm-2 col-form-label"
-                [for]="'a' + (j + 1)"
+                [for]="'a' + (j + 1) + 'q' + (i + 1)"
                 *ngIf="
                   !(
                     !this.options.multipleCorrectAnswers &&
@@ -103,7 +103,7 @@
               </label>
               <div class="col-auto">
                 <input
-                  [id]="'a' + (j + 1)"
+                  [id]="'a' + (j + 1) + 'q' + (i + 1)"
                   type="text"
                   [formControlName]="'answer'"
                   class="form-control"
@@ -111,7 +111,7 @@
               </div>
               <div class="col-auto" *ngIf="options.allowsImageUpload">
                 <input
-                  id="Answerimagebox"
+                  [id]="'Answerimagebox' + 'a' + (j + 1) + 'q' + (i + 1)"
                   type="text"
                   class="form-control"
                   placeholder="Image url"
