@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LobbyPageComponent } from './lobby-page/lobby-page.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateChallengeComponent } from './create-challenge/create-challenge.component';
 import { LobbySettingsComponent } from './lobby-settings/lobby-settings.component';
 
@@ -30,6 +30,7 @@ import { ViewpageComponent } from './viewpage/viewpage.component';
     RouterModule,
     LobbyRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     SortablejsModule.forRoot({}),
     QuillModule,

@@ -169,6 +169,7 @@
               <th scope="col" [translate]="'edit-team.6'"></th>
               <th scope="col" [translate]="'edit-team.7'"></th>
               <th scope="col" [translate]="'edit-team.8'"></th>
+              <th scope="col" [translate]="'edit-team.14'"></th>
               <th scope="col" *ngIf="levels.controls.length > 1"></th>
             </tr>
           </thead>
@@ -224,6 +225,7 @@
               <td>
                 <button
                   class="btn btn-secondary btn-sm"
+                  [disabled]="!level.get('solutionEnabled').value"
                   (click)="
                     currentLevelEditing = i;
                     currentSnapModalIsTemplate = false;
@@ -241,6 +243,22 @@
                 </small>
               </td>
               <td>
+                <form [formGroup]="level">
+                  <div class="custom-control custom-switch">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      [id]="'switch' + i"
+                      [formControlName]="'solutionEnabled'"
+                    />
+                    <label
+                      class="custom-control-label"
+                      [for]="'switch' + i"
+                    ></label>
+                  </div>
+                </form>
+              </td>
+              <td>
                 <i
                   class="fas fa-minus-circle text-danger fa-2x"
                   *ngIf="levels.controls.length > 1"
@@ -250,6 +268,7 @@
             </tr>
             <tr>
               <th scope="row"></th>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>

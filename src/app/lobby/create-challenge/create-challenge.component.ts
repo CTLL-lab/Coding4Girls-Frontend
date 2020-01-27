@@ -128,7 +128,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     instructions = '',
     snap = '',
     snapSolution = '',
-    id = null
+    id = null,
+    solutionEnabled = true
   ): FormGroup {
     let order;
     try {
@@ -141,6 +142,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
       instructions: instructions,
       snap: snap,
       snapSolution: snapSolution,
+      solutionEnabled: solutionEnabled,
       order: order
     });
   }
@@ -186,7 +188,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
             x['instructions'] ? JSON.stringify(x['instructions']) : '',
             x['snap'] || '',
             x['snap_solution'] || '',
-            x['id']
+            x['id'],
+            x['solution_enabled']
           )
         );
       });
