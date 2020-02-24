@@ -4,7 +4,7 @@ import { LobbyService } from '../../shared/services/lobby/lobby.service';
 import { Router } from '@angular/router';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { TranslateService } from '@ngx-translate/core';
-import { priviledged_roles } from 'src/app/config';
+import { priviledged_roles, languages_available } from 'src/app/config';
 import { BehaviorSubject } from 'rxjs';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
@@ -27,12 +27,15 @@ export class CreateLobbyComponent implements OnInit {
     code: '',
     tag: '',
     htmlAfter: null,
-    public: false
+    public: false,
+    language: 'en'
   };
   public role: string;
   public userPriviledged = false;
   public invalidData = [];
 
+  public languageImages = {};
+  public languages = [];
   public quillModules = {
     imageResize: {},
     toolbar: [
@@ -66,6 +69,10 @@ export class CreateLobbyComponent implements OnInit {
     private notesService: NotesProviderService
   ) {
     window['world'] = this.world;
+    for (let lang of languages_available) {
+      this.languageImages[lang.code] = lang.imagePath;
+      this.languages.push(lang.code);
+    }
   }
 
   ngOnInit() {

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LobbyService } from 'src/app/shared/services/lobby/lobby.service';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { TranslateService } from '@ngx-translate/core';
-import { priviledged_roles } from 'src/app/config';
+import { priviledged_roles, languages_available } from 'src/app/config';
 import { BehaviorSubject, Subscription, forkJoin } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap';
 import { fully_priviledged_roles } from '../../config';
@@ -16,6 +16,9 @@ import { SnapService } from 'src/app/shared/snap/snap.service';
   providers: [LobbyService]
 })
 export class LobbySettingsComponent implements OnInit {
+  public languageImages = {};
+  public languages = [];
+
   public fullyPriviledgedRoles = fully_priviledged_roles;
 
   public lobbyDetails = null;
@@ -63,7 +66,12 @@ export class LobbySettingsComponent implements OnInit {
     private translationService: TranslateService,
     private modalService: BsModalService,
     private snapService: SnapService
-  ) {}
+  ) {
+    for (let lang of languages_available) {
+      this.languageImages[lang.code] = lang.imagePath;
+      this.languages.push(lang.code);
+    }
+  }
 
   ngOnInit() {
     this.role = this.user.getRole();

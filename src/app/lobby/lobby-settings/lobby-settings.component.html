@@ -78,6 +78,35 @@
             type="checkbox"
           />
         </div>
+        <div class="form-group">
+          <label for="language" class="font-weight-bold"
+            ><span>{{ 'create-lobby.7' | translate }}</span></label
+          >
+          <div id="language" class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img
+                style="width: 25px;"
+                [src]="languageImages[lobbyDetails.language]"
+                *ngIf="lobbyDetails?.language"
+              />
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                *ngFor="let language of languages"
+                (click)="lobbyDetails.language = language"
+              >
+                <img style="width: 25px;" [src]="languageImages[language]"
+              /></a>
+            </div>
+          </div>
+        </div>
         <div class="form-group row">
           <ul class="nav nav-tabs" id="challengePages" role="tablist">
             <li class="nav-item">
@@ -96,8 +125,7 @@
                 href="#pageAfter"
                 role="tab"
                 [translate]="'edit-team.13'"
-                ></a
-              >
+              ></a>
             </li>
             <li class="nav-item">
               <a

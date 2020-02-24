@@ -51,181 +51,223 @@
             (keyup.enter)="UserWantsToSearch()"
           />
         </div>
+        <div class="form-group mr-sm-1 mb-2" *ngIf="languagesNames">
+          <div class="dropdown">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Language <span *ngIf="languageSearching"> - </span>
+              <img
+                style="width: 25px;"
+                [src]="languages[languageSearching]"
+                *ngIf="languageSearching"
+              />
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a
+                class="dropdown-item"
+                (click)="languageSearching = undefined; UserWantsToSearch()"
+                >All</a
+              >
+              <a
+                class="dropdown-item"
+                *ngFor="let language of languagesNames"
+                (click)="languageSearching = language; UserWantsToSearch()"
+              >
+                <img style="width: 25px;" [src]="languages[language]"
+              /></a>
+            </div>
+          </div>
+        </div>
       </div>
-      <ul class="list-group">
-        <div
-          class="list-group-item  flex-column align-items-center"
-          *ngFor="let lobby of lobbiesJoined"
-          [routerLink]="['/lobby/' + lobby.id]"
+      <div>
+        <ul class="list-group">
+          <div
+            class="list-group-item  flex-column align-items-center"
+            *ngFor="let lobby of lobbiesJoined"
+            [routerLink]="['/lobby/' + lobby.id]"
+          >
+            <div class="d-flex justify-content-between align-center">
+              <h3 id="lobbyName" class="font-weight-bold">
+                {{ lobby.name }}
+              </h3>
+              <div>
+                <i
+                  class="mx-1 fas fa-user-minus mt-2 leave-lobby-icon m"
+                  aria-hidden="true"
+                  *ngIf="user.id != lobby.createdby"
+                  (click)="
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    removeLobby(lobby)
+                  "
+                ></i>
+                <i
+                  class="mx-1 fas fa-copy mt-2 leave-lobby-icon"
+                  (click)="
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    showModal(cloneModal);
+                    this.LobbyCloneForm.get('id').setValue(lobby.id)
+                  "
+                ></i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-9">
+                <p class="mb-1">{{ lobby.description }}</p>
+                <img
+                  [src]="languages[lobby.language]"
+                  style="width: 30px;"
+                  class="img-fluid rounded pointer mr-1"
+                />
+                <span
+                  class="badge badge-pill badge-warning mr-1"
+                  *ngFor="let tag of lobby?.tag?.split(';')"
+                  >{{ tag }}</span
+                >
+                <span
+                  class="badge badge-pill badge-primary mr-1"
+                  *ngFor="let tag of lobby?.challengetags"
+                  >{{ tag }}</span
+                >
+              </div>
+              <div class="col-3">
+                <div *ngIf="lobby.verificationneeded && userPriviledged">
+                  <div class="row mb-1">
+                    <div class="col">
+                      <span class="badge badge-pill badge-info float-right">{{
+                        'navbar.4' | translate
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="lobby.reviewasked">
+                  <div class="row mb-1">
+                    <div class="col">
+                      <span class="badge badge-pill badge-danger float-right">{{
+                        'navbar.3' | translate
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="lobby.helpasked">
+                  <div class="row mb-1">
+                    <div class="col">
+                      <span
+                        class="badge badge-pill badge-warning float-right"
+                        >{{ 'navbar.10' | translate }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="lobby.brainstormasked">
+                  <div class="row mb-1">
+                    <div class="col">
+                      <span
+                        class="badge badge-pill badge-secondary float-right"
+                        >{{ 'navbar.11' | translate }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+      <div class="col-1"></div>
+    </div>
+    <nav
+      aria-label="Page navigation example"
+      class="text-center"
+      *ngIf="this.publicLobbiesView"
+    >
+      <ul class="pagination justify-content-center">
+        <li
+          class="page-item"
+          [ngClass]="{ active: page == i + 1 }"
+          *ngFor="let _ of ArrayGen(pages); let i = index"
+          [routerLink]="['.']"
+          [queryParams]="{ page: i + 1, search: searchInput }"
         >
-          <div class="d-flex justify-content-between align-center">
-            <h3 id="lobbyName" class="font-weight-bold">
-              {{ lobby.name }}
-            </h3>
-            <div>
-              <i
-                class="mx-1 fas fa-user-minus mt-2 leave-lobby-icon m"
-                aria-hidden="true"
-                *ngIf="user.id != lobby.createdby"
-                (click)="
-                  $event.preventDefault();
-                  $event.stopPropagation();
-                  removeLobby(lobby)
-                "
-              ></i>
-              <i
-                class="mx-1 fas fa-copy mt-2 leave-lobby-icon"
-                (click)="
-                  $event.preventDefault();
-                  $event.stopPropagation();
-                  showModal(cloneModal);
-                  this.LobbyCloneForm.get('id').setValue(lobby.id)
-                "
-              ></i>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-9">
-              <p class="mb-1">{{ lobby.description }}</p>
-              <span
-                class="badge badge-pill badge-warning mr-1"
-                *ngFor="let tag of lobby?.tag?.split(';')"
-                >{{ tag }}</span
-              >
-              <span
-                class="badge badge-pill badge-primary mr-1"
-                *ngFor="let tag of lobby?.challengetags"
-                >{{ tag }}</span
-              >
-            </div>
-            <div class="col-3">
-              <div *ngIf="lobby.verificationneeded && userPriviledged">
-                <div class="row mb-1">
-                  <div class="col">
-                    <span class="badge badge-pill badge-info float-right">{{
-                      'navbar.4' | translate
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="lobby.reviewasked">
-                <div class="row mb-1">
-                  <div class="col">
-                    <span class="badge badge-pill badge-danger float-right">{{
-                      'navbar.3' | translate
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="lobby.helpasked">
-                <div class="row mb-1">
-                  <div class="col">
-                    <span class="badge badge-pill badge-warning float-right">{{
-                      'navbar.10' | translate
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <div *ngIf="lobby.brainstormasked">
-                <div class="row mb-1">
-                  <div class="col">
-                    <span
-                      class="badge badge-pill badge-secondary float-right"
-                      >{{ 'navbar.11' | translate }}</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <a class="page-link">{{ i + 1 }}</a>
+        </li>
       </ul>
-    </div>
-    <div class="col-1"></div>
+    </nav>
   </div>
-  <nav
-    aria-label="Page navigation example"
-    class="text-center"
-    *ngIf="this.publicLobbiesView"
-  >
-    <ul class="pagination justify-content-center">
-      <li
-        class="page-item"
-        [ngClass]="{ active: page == i + 1 }"
-        *ngFor="let _ of ArrayGen(pages); let i = index"
-        [routerLink]="['.']"
-        [queryParams]="{ page: i + 1, search: searchInput }"
-      >
-        <a class="page-link">{{ i + 1 }}</a>
-      </li>
-    </ul>
-  </nav>
+
+  <ng-template #cloneModal>
+    <div class="modal-content">
+      <div class="modal-header" [translate]="'lobbies.6'"></div>
+      <div class="modal-body">
+        <form [formGroup]="LobbyCloneForm">
+          <div class="form-group">
+            <label
+              for="exampleInputEmail1"
+              [translate]="'create-lobby.1'"
+            ></label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              aria-describedby="name"
+              formControlName="name"
+            />
+          </div>
+          <div class="form-group">
+            <label
+              for="exampleInputPassword1"
+              [translate]="'create-lobby.3'"
+            ></label>
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              formControlName="description"
+            />
+          </div>
+          <div class="form-group">
+            <label for="code" [translate]="'create-lobby.2'"></label>
+            <input
+              type="text"
+              class="form-control"
+              id="code"
+              formControlName="code"
+            />
+          </div>
+          <div class="form-group">
+            <label for="tag"
+              ><span>{{ 'create-lobby.6' | translate }}</span>
+            </label>
+
+            <input
+              id="tag"
+              class="form-control mb-1"
+              type="text"
+              formControlName="tag"
+              name="tag"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" (click)="CloneCourse()">
+          {{ 'create-lobby.9' | translate }}
+        </button>
+        <button
+          class="btn btn-danger"
+          (click)="
+            this.LobbyCloneForm.get('id').setValue(null); closeAllModals()
+          "
+        >
+          {{ 'create-lobby.10' | translate }}
+        </button>
+      </div>
+    </div>
+  </ng-template>
 </div>
-
-<ng-template #cloneModal>
-  <div class="modal-content">
-    <div class="modal-header" [translate]="'lobbies.6'"></div>
-    <div class="modal-body">
-      <form [formGroup]="LobbyCloneForm">
-        <div class="form-group">
-          <label
-            for="exampleInputEmail1"
-            [translate]="'create-lobby.1'"
-          ></label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            aria-describedby="name"
-            formControlName="name"
-          />
-        </div>
-        <div class="form-group">
-          <label
-            for="exampleInputPassword1"
-            [translate]="'create-lobby.3'"
-          ></label>
-          <input
-            type="text"
-            class="form-control"
-            id="description"
-            formControlName="description"
-          />
-        </div>
-        <div class="form-group">
-          <label for="code" [translate]="'create-lobby.2'"></label>
-          <input
-            type="text"
-            class="form-control"
-            id="code"
-            formControlName="code"
-          />
-        </div>
-        <div class="form-group">
-          <label for="tag"
-            ><span>{{ 'create-lobby.6' | translate }}</span>
-          </label>
-
-          <input
-            id="tag"
-            class="form-control mb-1"
-            type="text"
-            formControlName="tag"
-            name="tag"
-          />
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" (click)="CloneCourse()">
-        {{ 'create-lobby.9' | translate }}
-      </button>
-      <button
-        class="btn btn-danger"
-        (click)="this.LobbyCloneForm.get('id').setValue(null); closeAllModals()"
-      >
-        {{ 'create-lobby.10' | translate }}
-      </button>
-    </div>
-  </div>
-</ng-template>

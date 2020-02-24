@@ -4,7 +4,7 @@ import { LobbyService } from '../../shared/services/lobby/lobby.service';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from 'src/app/authentication/services/user/user';
-import { priviledged_roles } from 'src/app/config';
+import { priviledged_roles, languages_available } from 'src/app/config';
 import { BsModalService } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,10 @@ import { Observable, Subscription } from 'rxjs';
   providers: [LobbyService]
 })
 export class LobbiesComponent implements OnInit, OnDestroy {
+  public languages = {};
+  public languagesNames: string[] = [];
+  public languageSearching: string = undefined;
+
   public publicLobbiesView = false;
   public lobbiesJoined: Array<any> = new Array();
   public showSuccessAlert = false;
@@ -46,6 +50,11 @@ export class LobbiesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    for (let lang of languages_available) {
+      this.languages[lang.code] = lang.imagePath;
+      this.languagesNames.push(lang.code);
+    }
+
     if (this.activatedRoute.snapshot.data.public) {
       this.publicLobbiesView = this.activatedRoute.snapshot.data.public;
     }
@@ -54,10 +63,12 @@ export class LobbiesComponent implements OnInit, OnDestroy {
         if (x['page']) {
           this.page = x['page'];
         }
-        if (x['search']) {
+        if (x['search'] || x['language']) {
+          this.languageSearching = x['language'];
           this.fetcherObs = this.lobbyService.SearchPublicLobby(
             x['search'],
-            this.page
+            this.page,
+            x['language']
           );
         } else {
           this.fetcherObs = this.lobbyService.GetPublicLobbies(this.page);
@@ -215,7 +226,11 @@ export class LobbiesComponent implements OnInit, OnDestroy {
       });
     }
     this.router.navigate(['/lobbies/public'], {
-      queryParams: { search: this.searchInput, page: 1 }
+      queryParams: {
+        search: this.searchInput,
+        page: 1,
+        language: this.languageSearching
+      }
     });
   }
 }

@@ -6,7 +6,7 @@ import { ChallengeBoxOptions } from '../challenge-box/challenge-box.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MinigameService } from '../minigames/minigame.service';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
-import { fully_priviledged_roles } from '../../config';
+import { fully_priviledged_roles, languages_available } from '../../config';
 @Component({
   selector: 'app-lobby-page',
   templateUrl: './lobby-page.component.html',
@@ -40,12 +40,17 @@ export class LobbyPageComponent implements OnInit {
   public challenges = [];
   public members: Array<any>;
 
+  public languageImage: string;
+
   public currentDraggingBox = -1;
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {
       this.lobbyDetails = r['data']['lobby'];
+      this.languageImage = languages_available.find(
+        x => x.code == this.lobbyDetails.language
+      ).imagePath;
     });
     this.lobbyService.GetLobbyChallenges(this.id).subscribe(r => {
       // first we store temporarily the challenges

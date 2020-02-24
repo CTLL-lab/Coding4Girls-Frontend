@@ -17,10 +17,16 @@ export class LobbyService {
       .pipe(map(x => x.body));
   }
 
-  SearchPublicLobby(query: string, page = undefined) {
-    let queryString = '?search=' + query;
+  SearchPublicLobby(query: string, page = undefined, language = undefined) {
+    let queryString = '?';
+    if (query) {
+      queryString += '&search=' + query;
+    }
     if (page) {
       queryString += '&_page=' + (page - 1);
+    }
+    if (language) {
+      queryString += '&language=' + language;
     }
     return this.http
       .get(apiURL + '/lobbies/public' + queryString, { observe: 'response' })
