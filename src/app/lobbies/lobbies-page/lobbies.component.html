@@ -181,24 +181,24 @@
         </ul>
       </div>
       <div class="col-1"></div>
+      <nav
+        aria-label="Page navigation example"
+        class="text-center"
+        *ngIf="this.publicLobbiesView"
+      >
+        <ul class="pagination justify-content-center">
+          <li
+            class="page-item"
+            [ngClass]="{ active: page == i + 1 }"
+            *ngFor="let _ of ArrayGen(pages); let i = index"
+            [routerLink]="['.']"
+            [queryParams]="{ page: i + 1, search: searchInput }"
+          >
+            <a class="page-link">{{ i + 1 }}</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <nav
-      aria-label="Page navigation example"
-      class="text-center"
-      *ngIf="this.publicLobbiesView"
-    >
-      <ul class="pagination justify-content-center">
-        <li
-          class="page-item"
-          [ngClass]="{ active: page == i + 1 }"
-          *ngFor="let _ of ArrayGen(pages); let i = index"
-          [routerLink]="['.']"
-          [queryParams]="{ page: i + 1, search: searchInput }"
-        >
-          <a class="page-link">{{ i + 1 }}</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 
   <ng-template #cloneModal>
