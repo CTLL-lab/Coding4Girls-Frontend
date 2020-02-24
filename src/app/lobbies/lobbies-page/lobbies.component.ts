@@ -30,8 +30,8 @@ export class LobbiesComponent implements OnInit, OnDestroy {
   public LobbyCloneForm: FormGroup;
   public page = 1;
   public pages = 1;
-  public searchInput: String;
-
+  public searchInput: string;
+  public tagSearchInput: string;
   private lobbiesObs: Subscription;
   private userObs: Subscription;
   private paramsObs: Subscription;
@@ -63,12 +63,13 @@ export class LobbiesComponent implements OnInit, OnDestroy {
         if (x['page']) {
           this.page = x['page'];
         }
-        if (x['search'] || x['language']) {
+        if (x['search'] || x['language'] || x['tag']) {
           this.languageSearching = x['language'];
           this.fetcherObs = this.lobbyService.SearchPublicLobby(
             x['search'],
             this.page,
-            x['language']
+            x['language'],
+            x['tag']
           );
         } else {
           this.fetcherObs = this.lobbyService.GetPublicLobbies(this.page);
@@ -229,7 +230,8 @@ export class LobbiesComponent implements OnInit, OnDestroy {
       queryParams: {
         search: this.searchInput,
         page: 1,
-        language: this.languageSearching
+        language: this.languageSearching,
+        tag: this.tagSearchInput
       }
     });
   }

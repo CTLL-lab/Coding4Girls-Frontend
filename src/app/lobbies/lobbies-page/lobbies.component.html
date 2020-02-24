@@ -44,15 +44,26 @@
           <input
             id="searchInput"
             class="form-control ml-3"
-            name="code"
-            placeholder=""
-            size="50"
+            name="searchInput"
+            placeholder="Search by name/description"
+            size="30"
             [(ngModel)]="searchInput"
             (keyup.enter)="UserWantsToSearch()"
           />
         </div>
+        <div class="form-group mr-sm-1 mb-2 ">
+          <input
+            id="tagSearchInput"
+            class="form-control ml-3"
+            name="tagSearchInput"
+            placeholder="Search by tag"
+            size="20"
+            [(ngModel)]="tagSearchInput"
+            (keyup.enter)="UserWantsToSearch()"
+          />
+        </div>
         <div class="form-group mr-sm-1 mb-2" *ngIf="languagesNames">
-          <div class="dropdown">
+          <div class="dropdown ml-3">
             <button
               class="btn btn-secondary dropdown-toggle"
               type="button"

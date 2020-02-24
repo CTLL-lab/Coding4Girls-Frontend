@@ -17,7 +17,12 @@ export class LobbyService {
       .pipe(map(x => x.body));
   }
 
-  SearchPublicLobby(query: string, page = undefined, language = undefined) {
+  SearchPublicLobby(
+    query: string,
+    page = undefined,
+    language = undefined,
+    tag = undefined
+  ) {
     let queryString = '?';
     if (query) {
       queryString += '&search=' + query;
@@ -27,6 +32,9 @@ export class LobbyService {
     }
     if (language) {
       queryString += '&language=' + language;
+    }
+    if (tag) {
+      queryString += '&tag=' + tag;
     }
     return this.http
       .get(apiURL + '/lobbies/public' + queryString, { observe: 'response' })
