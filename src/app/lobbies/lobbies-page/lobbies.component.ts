@@ -116,6 +116,10 @@ export class LobbiesComponent implements OnInit, OnDestroy {
     }
     this.lobbiesObs = fetcherObs.subscribe(r => {
       this.lobbiesJoined = r['data']['lobbies'];
+      this.lobbiesJoined.sort(
+        (a, b) =>
+          new Date(b.createdat).getTime() - new Date(a.createdat).getTime()
+      );
       if (this.publicLobbiesView) {
         this.pages = Math.ceil(
           Number(r['data']['totalCount']) / this.lobbiesPerPage
