@@ -26,6 +26,7 @@ export class CreateLobbyComponent implements OnInit {
     outcome: '',
     code: '',
     tag: '',
+    htmlBefore: null,
     htmlAfter: null,
     public: false,
     language: 'en'
@@ -106,9 +107,10 @@ export class CreateLobbyComponent implements OnInit {
       .createNewLobby({
         ...this.lobbyDetails,
         snapTemplate: snapTemplateXML,
-        instructions: this.lobbyDetails.htmlAfter,
+        instructions: this.lobbyDetails.htmlBefore,
         notes: this.notesService.notes,
-        public: this.lobbyDetails.public
+        public: this.lobbyDetails.public,
+        finishPage: this.lobbyDetails.htmlAfter
       })
       .subscribe(
         r => {
