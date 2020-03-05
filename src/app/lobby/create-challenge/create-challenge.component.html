@@ -1,4 +1,5 @@
 <div class="container">
+  {{ currentMinigame }}
   <div class="row text-center mt-4 mb-2">
     <div class="col-1">
       <i class="fas fa-arrow-circle-left fa-2x" (click)="goBack()"></i>
@@ -98,7 +99,35 @@
             <label for="minigameSelection" class="font-weight-bold"
               ><span [translate]="'edit-team.5'"></span
             ></label>
-            <select
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{
+                  currentMinigameObject?.data == undefined
+                    ? ('edit-team.5' | translate)
+                    : (currentMinigameObject.data.translation | translate)
+                }}
+              </button>
+              <div
+                class="dropdown-menu overflow-auto"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <a
+                  class="dropdown-item"
+                  (click)="changeMinigame(minigame.id)"
+                  *ngFor="let minigame of MiniGames"
+                  [translate]="minigame.translation"
+                ></a>
+              </div>
+            </div>
+
+            <!-- <select
               #minigameDropdown
               id="minigameSelection"
               class="float-right form-control"
@@ -109,9 +138,10 @@
                 value="{{ minigame.id }}"
                 [selected]="currentMinigame == minigame.id"
                 [translate]="minigame.translation"
+                (click)="changeMinigame(minigame.id)"
               >
               </option>
-            </select>
+            </select> -->
             <!-- <button
               class="btn-primary"
               (click)="changeMinigame(minigameDropdown.value)"
