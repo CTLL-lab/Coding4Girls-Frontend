@@ -308,10 +308,15 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         this.router.navigate(['/lobby/' + this.lobbyID]);
       });
     } catch (err) {
-      console.log(err);
-      this.translationService.get('in-code.3').subscribe(k => {
-        this.notifications.showError(k);
-      });
+      if (err instanceof NoQuestionsDefinedError) {
+        this.translationService.get('in-code.27').subscribe(k => {
+          this.notifications.showError(k);
+        });
+      } else {
+        this.translationService.get('in-code.3').subscribe(k => {
+          this.notifications.showError(k);
+        });
+      }
     }
   }
 

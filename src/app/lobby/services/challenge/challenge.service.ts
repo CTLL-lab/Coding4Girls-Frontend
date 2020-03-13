@@ -76,7 +76,7 @@ export class ChallengeService {
       }
       if (minigamevariables['questions']) {
         if (minigamevariables['questions'].length == 0) {
-          return;
+          throw new NoQuestionsDefinedError();
         }
       }
     }
