@@ -8,7 +8,7 @@
     written by Jens Mönig
     jens@moenig.org
 
-    Copyright (C) 2019 by Jens Mönig
+    Copyright (C) 2010-2020 by Jens Mönig
 
     This file is part of Snap!.
 
@@ -760,12 +760,23 @@
     events:
 
     Whenever the user presses a key on the keyboard while a text element
-    is being edited, a
+    is being edited, first a
 
         reactToKeystroke(event)
 
     is escalated up its parent chain, the "event" parameter being the
     original one received by the World.
+
+    Whenever the input changes, by adding or removing one or more characters,
+    an additional
+
+        reactToInput(event)
+
+    is escalated up its parent chain, the "event" parameter again being the
+    original one received by the World or by the IME element.
+
+    Note that the "reactToKeystroke" event gets triggered before the input
+    changes, and thus befgore the "reactToInput" event fires.
 
     Once the user has completed the edit, the following events are
     dispatched:
@@ -1042,7 +1053,7 @@
     canvasses for simple shapes in order to save system resources and
     optimize performance. Examples are costumes and backgrounds in Snap.
     In Morphic you can create new canvas elements using
-    
+
         newCanvas(extentPoint [, nonRetinaFlag])
 
     If retina support is enabled such new canvasses will automatically be
@@ -1083,12 +1094,12 @@
     stepping mechanism.
 
     For an example how to use animations look at how the Morph's methods
-    
+
         glideTo()
         fadeTo()
 
     and
-    
+
         slideBackTo()
 
     are implemented.
@@ -1153,7 +1164,12 @@
     Davide Della Casa contributed performance optimizations for Firefox.
     Jason N (@cyderize) contributed native copy & paste for text editing.
     Bartosz Leper contributed retina display support.
+    Zhenlei Jia and Dariusz Dorożalski pioneered IME text editing.
+    Bernat Romagosa contributed to text editing and to the core design.
+    Michael Ball found and fixed a longstanding scrolling bug.
     Brian Harvey contributed to the design and implementation of submenus.
+    Ken Kahn contributed to Chinese keboard entry and Android support.
+    Brian Broll contributed clickable URLs in text elements.
 
     - Jens Mönig
 */
@@ -1162,7 +1178,7 @@
 
 /*global window, HTMLCanvasElement, FileReader, Audio, FileList, Map*/
 
-var morphicVersion = '2019-February-07';
+var morphicVersion = '2020-January-04';
 var modules = {}; // keep track of additional loaded modules
 var useBlurredShadows = getBlurredShadowSupport(); // check for Chrome-bug
 
@@ -1307,19 +1323,56 @@ function isWordChar(aCharacter) {
     return aCharacter.match(/[A-zÀ-ÿ0-9]/);
 }
 
-function newCanvas(extentPoint, nonRetina) {
+function isURLChar(aCharacter) {
+    return aCharacter.match(/[A-z0-9./:?&_+%-]/);
+}
+
+function isURL(text) {
+    return /^https?:\/\//.test(text);
+}
+
+function newCanvas(extentPoint, nonRetina, recycleMe) {
     // answer a new empty instance of Canvas, don't display anywhere
     // nonRetina - optional Boolean "false"
     // by default retina support is automatic
+    // optional existing canvas to be used again, unless it is marked as
+    // being shared among Morphs (dataset property "morphicShare")
     var canvas, ext;
-    ext = extentPoint || {x: 0, y: 0};
-    canvas = document.createElement('canvas');
-    canvas.width = ext.x;
-    canvas.height = ext.y;
+    nonRetina = nonRetina || false;
+    ext = (extentPoint ||
+            (recycleMe ? new Point(recycleMe.width, recycleMe.height)
+                : new Point(0, 0))).floor();
+    if (recycleMe &&
+            !recycleMe.dataset.morphicShare &&
+            (recycleMe.isRetinaEnabled || false) !== nonRetina &&
+            ext.x === recycleMe.width && ext.y === recycleMe.height
+    ) {
+        canvas = recycleMe;
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        return canvas;
+    } else {
+        canvas = document.createElement('canvas');
+        canvas.width = ext.x;
+        canvas.height = ext.y;
+    }
     if (nonRetina && canvas.isRetinaEnabled) {
         canvas.isRetinaEnabled = false;
     }
     return canvas;
+}
+
+function copyCanvas(aCanvas) {
+    // answer a deep copy of a canvas element respecting its retina status
+    var c;
+    if (aCanvas && aCanvas.width && aCanvas.height) {
+        c = newCanvas(
+            new Point(aCanvas.width, aCanvas.height),
+            !aCanvas.isRetinaEnabled
+        );
+        c.getContext("2d").drawImage(aCanvas, 0, 0);
+        return c;
+    }
+    return aCanvas;
 }
 
 function getMinimumFontHeight() {
@@ -1398,7 +1451,6 @@ function getDocumentPositionOf(aDOMelement) {
 function copy(target) {
     // answer a shallow copy of target
     var value, c, property, keys, l, i;
-
     if (typeof target !== 'object') {
         return target;
     }
@@ -1412,6 +1464,14 @@ function copy(target) {
         keys = Object.keys(target);
         for (l = keys.length, i = 0; i < l; i += 1) {
             property = keys[i];
+            if (target[property] instanceof HTMLCanvasElement) {
+                // tag canvas elements as being shared,
+                // so the next time when rerendering a Morph
+                // instead of recycling the shared canvas a
+                // new unshared one get created
+                // see newCanvas() function
+                target[property].dataset.morphicShare = 'true';
+            }
             c[property] = target[property];
         }
     } else {
@@ -1445,7 +1505,7 @@ function copy(target) {
     canvasses for simple shapes in order to save system resources and
     optimize performance. Examples are costumes and backgrounds in Snap.
     In Morphic you can create new canvas elements using
-    
+
         newCanvas(extentPoint [, nonRetinaFlag])
 
     If retina support is enabled such new canvasses will automatically be
@@ -1479,7 +1539,7 @@ function enableRetinaSupport() {
 
     NOTE: This implementation is not exhaustive; it only implements what is
     needed by the Snap! UI.
-    
+
     [Jens]: like all other retina screen support implementations I've seen
     Bartosz's patch also does not address putImageData() compatibility when
     mixing retina-enabled and non-retina canvasses. If you need to manipulate
@@ -1617,7 +1677,7 @@ function enableRetinaSupport() {
     contextProto.drawImage = function(image) {
         var pixelRatio = getPixelRatio(image),
             sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight;
-        
+
         // Different signatures of drawImage() method have different
         // parameter assignments.
         switch (arguments.length) {
@@ -1809,12 +1869,12 @@ function normalizeCanvas(aCanvas, getCopy) {
     stepping mechanism.
 
     For an example how to use animations look at how the Morph's methods
-    
+
         glideTo()
         fadeTo()
 
     and
-    
+
         slideBackTo()
 
     are implemented.
@@ -1952,6 +2012,24 @@ Color.prototype.eq = function (aColor, observeAlpha) {
         this.r === aColor.r &&
         this.g === aColor.g &&
         this.b === aColor.b &&
+        (observeAlpha ? this.a === aColor.a : true);
+};
+
+Color.prototype.isCloseTo = function (aColor, observeAlpha, tolerance) {
+    // experimental - answer whether a color is "close" to another one by
+    // a given percentage. tolerance is the percentage by which each color
+    // channel may diverge, alpha needs to be the exact same unless ignored
+    var thres = 2.55 * (tolerance || 10);
+
+    function dist(a, b) {
+        var diff = a - b;
+        return diff < 0 ? 255 + diff : diff;
+    }
+
+    return aColor &&
+        dist(this.r, aColor.r) < thres &&
+        dist(this.g, aColor.g) < thres &&
+        dist(this.b, aColor.b) < thres &&
         (observeAlpha ? this.a === aColor.a : true);
 };
 
@@ -3325,7 +3403,7 @@ Morph.prototype.setColor = function (aColor) {
 
 Morph.prototype.drawNew = function () {
     // initialize my surface property
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     var context = this.image.getContext('2d');
     context.fillStyle = this.color.toString();
     context.fillRect(0, 0, this.width(), this.height());
@@ -3894,21 +3972,27 @@ Morph.prototype.slideBackTo = function (
 
 Morph.prototype.glideTo = function (endPoint, msecs, easing, onComplete) {
     var world = this.world(),
-        myself = this;
-    world.animations.push(new Animation(
-        function (x) {myself.setLeft(x); },
-        function () {return myself.left(); },
-        -(this.left() - endPoint.x),
-        msecs || 100,
-        easing,
-        onComplete
-    ));
+        myself = this,
+        horizontal = new Animation(
+            function (x) {myself.setLeft(x); },
+            function () {return myself.left(); },
+            -(this.left() - endPoint.x),
+            msecs || 100,
+            easing
+        );
+    world.animations.push(horizontal);
     world.animations.push(new Animation(
         function (y) {myself.setTop(y); },
         function () {return myself.top(); },
         -(this.top() - endPoint.y),
         msecs || 100,
-        easing
+        easing,
+        function () {
+            horizontal.setter(horizontal.destination);
+            horizontal.isActive = false;
+            onComplete();
+        }
+
     ));
 };
 
@@ -4447,43 +4531,50 @@ Morph.prototype.evaluateString = function (code) {
 // Morph collision detection:
 
 Morph.prototype.isTouching = function (otherMorph) {
-    var oImg = this.overlappingImage(otherMorph),
-        data;
-    if (!oImg.width || !oImg.height) {
-        return false;
+    var data = this.overlappingPixels(otherMorph),
+        len, i;
+
+    if (!data) {return false; }
+    len = data[0].length;
+    for (i = 3; i < len; i += 4) {
+        if (data[0][i] && data[1][i]) {return true; }
     }
-    data = oImg.getContext('2d')
-        .getImageData(1, 1, oImg.width, oImg.height)
-        .data;
-    return detect(
-        data,
-        function (each) {
-            return each !== 0;
-        }
-    ) !== null;
+    return false;
 };
 
-Morph.prototype.overlappingImage = function (otherMorph) {
+Morph.prototype.overlappingPixels = function (otherMorph) {
     var fb = this.fullBounds(),
         otherFb = otherMorph.fullBounds(),
         oRect = fb.intersect(otherFb),
-        oImg = newCanvas(oRect.extent()),
-        ctx = oImg.getContext('2d');
-    if (oRect.width() < 1 || oRect.height() < 1) {
-        return newCanvas(new Point(1, 1));
+        thisImg, thatImg;
+
+    if (oRect.width() < 1 || oRect.height() < 1 ||
+        !this.image || !otherMorph.image ||
+        !this.image.width || !this.image.height ||
+        !otherMorph.image.width || !otherMorph.image.height
+    ) {
+        return false;
     }
-    ctx.drawImage(
-        this.fullImage(),
-        oRect.origin.x - fb.origin.x,
-        oRect.origin.y - fb.origin.y
-    );
-    ctx.globalCompositeOperation = 'source-in';
-    ctx.drawImage(
-        otherMorph.fullImage(),
-        otherFb.origin.x - oRect.origin.x,
-        otherFb.origin.y - oRect.origin.y
-    );
-    return oImg;
+    thisImg = this.fullImage();
+    thatImg = otherMorph.fullImage();
+    if (thisImg.isRetinaEnabled !== thatImg.isRetinaEnabled) {
+        thisImg = normalizeCanvas(thisImg, true);
+        thatImg = normalizeCanvas(thatImg, true);
+    }
+    return [
+        thisImg.getContext("2d").getImageData(
+            oRect.left() - this.left(),
+            oRect.top() - this.top(),
+            oRect.width(),
+            oRect.height()
+        ).data,
+        thatImg.getContext("2d").getImageData(
+            oRect.left() - otherMorph.left(),
+            oRect.top() - otherMorph.top(),
+            oRect.width(),
+            oRect.height()
+        ).data
+    ];
 };
 
 // ShadowMorph /////////////////////////////////////////////////////////
@@ -4547,8 +4638,8 @@ HandleMorph.prototype.init = function (
 // HandleMorph drawing:
 
 HandleMorph.prototype.drawNew = function () {
-    this.normalImage = newCanvas(this.extent());
-    this.highlightImage = newCanvas(this.extent());
+    this.normalImage = newCanvas(this.extent(), false, this.normalImage);
+    this.highlightImage = newCanvas(this.extent(), false, this.highlightImage);
     if (this.type === 'movePivot') {
         this.drawCrosshairsOnCanvas(this.normalImage, 0.6);
         this.drawCrosshairsOnCanvas(this.highlightImage, 0.5);
@@ -4837,9 +4928,11 @@ PenMorph.prototype.changed = function () {
 
 // PenMorph display:
 
-PenMorph.prototype.drawNew = function (facing) {
+PenMorph.prototype.drawNew = function (facing, recycleImage) {
     // my orientation can be overridden with the "facing" parameter to
     // implement Scratch-style rotation styles
+    // if a recycleImage canvas is given, it will be reused
+    // instead of creating a new one
 
     var context, start, dest, left, right, len,
         direction = facing || this.heading;
@@ -4848,7 +4941,8 @@ PenMorph.prototype.drawNew = function (facing) {
         this.wantsRedraw = true;
         return;
     }
-    this.image = newCanvas(this.extent());
+
+    this.image = newCanvas(this.extent(), null, recycleImage);
     context = this.image.getContext('2d');
     len = this.width() / 2;
     start = this.center().subtract(this.bounds.origin);
@@ -5099,7 +5193,7 @@ ColorPaletteMorph.prototype.drawNew = function () {
     var context, ext, x, y, h, l;
 
     ext = this.extent();
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
     this.choice = new Color();
     for (x = 0; x <= ext.x; x += 1) {
@@ -5208,7 +5302,7 @@ GrayPaletteMorph.prototype.drawNew = function () {
     var context, ext, gradient;
 
     ext = this.extent();
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
     this.choice = new Color();
     gradient = context.createLinearGradient(0, 0, ext.x, ext.y);
@@ -5347,7 +5441,11 @@ CursorMorph.prototype.init = function (aStringOrTextMorph) {
     this.originalContents = this.target.text;
     this.originalAlignment = this.target.alignment;
     this.slot = this.target.text.length;
+    this.textarea = null;
+
     CursorMorph.uber.init.call(this);
+
+    // override inherited defaults
     ls = fontHeight(this.target.fontSize);
     this.setExtent(new Point(Math.max(Math.floor(ls / 20), 1), ls));
     this.drawNew();
@@ -5357,73 +5455,205 @@ CursorMorph.prototype.init = function (aStringOrTextMorph) {
         this.target.setAlignmentToLeft();
     }
     this.gotoSlot(this.slot);
-    this.initializeClipboardHandler();
+    this.initializeTextarea();
 };
 
-CursorMorph.prototype.initializeClipboardHandler = function () {
-    // Add hidden text box for copying and pasting
-    var myself = this,
-        wrrld = this.target.world();
+CursorMorph.prototype.initializeTextarea = function () {
+    var myself = this;
 
-    this.clipboardHandler = document.createElement('textarea');
-    this.clipboardHandler.style.position = 'absolute';
-    this.clipboardHandler.style.top = window.outerHeight;
-    this.clipboardHandler.style.right = '101%'; // placed just out of view
+    this.textarea = document.createElement('textarea');
+    this.textarea.style.zIndex = -1;
+    this.textarea.style.position = 'absolute';
+    this.textarea.wrap = "off";
+    this.textarea.style.overflow = "hidden";
+    this.textarea.style.fontSize = this.target.fontSize + 'px';
+    this.textarea.autofocus = true;
+    this.textarea.value = this.target.text;
+    document.body.appendChild(this.textarea);
+    this.updateTextAreaPosition();
+    this.syncTextareaSelectionWith(this.target);
 
-    document.body.appendChild(this.clipboardHandler);
 
-    this.clipboardHandler.value = this.target.selection();
-    this.clipboardHandler.focus();
-    this.clipboardHandler.select();
+    /*
+        There are three cases when the textarea gets inputs:
 
-    this.clipboardHandler.addEventListener(
-        'keypress',
-        function (event) {
-            myself.processKeyPress(event);
-            this.value = myself.target.selection();
-            this.select();
-        },
-        false
-    );
+        1. Inputs that represent special shortcuts of Snap!, so we
+        don't want the textarea to handle it. These events are captured in
+        "keydown" event handler.
 
-    this.clipboardHandler.addEventListener(
-        'keydown',
-        function (event) {
-            myself.processKeyDown(event);
-            if (event.shiftKey) {
-                wrrld.currentKey = 16;
+        2. inputs that change the content of the textarea, we need to update
+        the content of its target morph accordingly. This is handled in
+        the "input" event handler.
+
+        3. input that change the textarea without triggering an "input" event,
+        e.g. selection change, cursor movements. These are handled in the
+        "keyup" event handler.
+
+        Note that some changes in case 2 are not caused by keyboards (for
+        example, select a word by clicking in IME window), so there are overlaps
+        between case 2 and case 3. but no one can replace the other.
+    */
+
+    this.textarea.addEventListener('keydown', function (event) {
+        /* Special shortcuts for Snap! system.
+            - ctrl-d, ctrl-i and ctrl-p: doit, inspect it and print it
+            - tab: goto next text field
+            - esc: discard the editing
+            - enter / shift+enter: accept the editing
+        */
+        var keyName = event.key,
+            shift = event.shiftKey,
+            singleLineText = myself.target instanceof StringMorph;
+
+        // other parts of the world need to know the current key
+        myself.world().currentKey = event.keyCode;
+
+        if (!isNil(myself.target.receiver) &&
+                    (event.ctrlKey || event.metaKey)) {
+            if (keyName === 'd') {
+                myself.target.doIt();
+            } else if (keyName === 'i') {
+                myself.target.inspectIt();
+            } else if (keyName === 'p') {
+                myself.target.showIt();
             }
-            this.value = myself.target.selection();
-            this.select();
-
-            // Make sure tab prevents default
-            if (event.key === 'U+0009' ||
-                    event.key === 'Tab') {
-                myself.processKeyPress(event);
-                event.preventDefault();
+            event.preventDefault();
+        } else if (keyName === 'Tab' || keyName === 'U+0009') {
+            if (shift) {
+                myself.target.backTab(myself.target);
+            } else {
+                myself.target.tab(myself.target);
             }
-        },
-        false
-    );
+            event.preventDefault();
+            myself.target.escalateEvent('reactToEdit', myself.target);
+        } else if (keyName === 'Escape') {
+            myself.cancel();
+        } else if (keyName === "Enter" && (singleLineText || shift)) {
+            myself.accept();
+        } else {
+            myself.target.escalateEvent('reactToKeystroke', event);
+        }
+    });
 
-    this.clipboardHandler.addEventListener(
-        'keyup',
-        function (event) {
-            wrrld.currentKey = null;
-        },
-        false
-    );
+    this.textarea.addEventListener('input', function (event) {
+        // handle content change.
+        var target = myself.target,
+            textarea = myself.textarea,
+            filteredContent,
+            caret;
 
-    this.clipboardHandler.addEventListener(
-        'input',
-        function (event) {
-            if (this.value === '') {
-                myself.gotoSlot(myself.target.selectionStartSlot());
-                myself.target.deleteSelection();
+        myself.world().currentKey = null;
+
+        // filter invalid chars for numeric fields
+        function filterText (content) {
+            var points = 0,
+                result = '',
+                i, ch, valid;
+            for (i = 0; i < content.length; i += 1) {
+                ch = content.charAt(i);
+                valid = (
+                    ('0' <= ch && ch <= '9') || // digits
+                    (i === 0 && ch === '-')  || // leading '-'
+                    (ch === '.' && points === 0) // at most '.'
+                );
+                if (valid) {
+                    result += ch;
+                    if (ch === '.') {
+                        points += 1;
+                    }
+                }
             }
-        },
-        false
-    );
+            return result;
+        }
+
+        if (target.isNumeric) {
+            filteredContent = filterText(textarea.value);
+        } else {
+            filteredContent = textarea.value;
+        }
+
+        if (filteredContent.length < textarea.value.length) {
+            textarea.value = filteredContent;
+            caret = Math.min(textarea.selectionStart, filteredContent.length);
+            textarea.selectionEnd = caret;
+            textarea.selectionStart = caret;
+        }
+        // target morph: copy the content and selection status to the target.
+        target.text = filteredContent;
+
+        if (textarea.selectionStart === textarea.selectionEnd) {
+            target.startMark = null;
+            target.endMark = null;
+        } else {
+            if (textarea.selectionDirection === 'backward') {
+                target.startMark = textarea.selectionEnd;
+                target.endMark = textarea.selectionStart;
+            } else {
+                target.startMark = textarea.selectionStart;
+                target.endMark = textarea.selectionEnd;
+            }
+        }
+        target.changed();
+        target.drawNew();
+        target.changed();
+
+        // cursor morph: copy the caret position to cursor morph.
+        myself.gotoSlot(textarea.selectionStart);
+
+        myself.updateTextAreaPosition();
+
+        // the "reactToInput" event gets triggered AFTER "reactToKeystroke"
+        myself.target.escalateEvent('reactToInput', event);
+
+    });
+
+    this.textarea.addEventListener('keyup', function (event) {
+        // handle selection change and cursor position change.
+        var textarea = myself.textarea,
+            target = myself.target;
+
+        if (textarea.selectionStart === textarea.selectionEnd) {
+            target.startMark = null;
+            target.endMark = null;
+        } else {
+            if (textarea.selectionDirection === 'backward') {
+                target.startMark = textarea.selectionEnd;
+                target.endMark = textarea.selectionStart;
+            } else {
+                target.startMark = textarea.selectionStart;
+                target.endMark = textarea.selectionEnd;
+            }
+        }
+        target.changed();
+        target.drawNew();
+        target.changed();
+        myself.gotoSlot(textarea.selectionEnd);
+    });
+};
+
+CursorMorph.prototype.updateTextAreaPosition = function () {
+    var origin = this.target.bounds.origin;
+
+    function number2px (n) {
+        return Math.ceil(n) + 'px';
+    }
+
+    this.textarea.style.top = number2px(origin.y);
+    this.textarea.style.left = number2px(origin.x);
+};
+
+CursorMorph.prototype.syncTextareaSelectionWith = function (targetMorph) {
+    var start = targetMorph.startMark,
+        end = targetMorph.endMark;
+
+    if (start === end) {
+        this.textarea.setSelectionRange(this.slot, this.slot, 'none');
+    } else if (start < end) {
+        this.textarea.setSelectionRange(start, end, 'forward');
+    } else {
+        this.textarea.setSelectionRange(end, start, 'backward');
+    }
+    this.textarea.focus();
 };
 
 // CursorMorph event processing:
@@ -5796,23 +6026,13 @@ CursorMorph.prototype.destroy = function () {
         this.target.drawNew();
         this.target.changed();
     }
-    this.destroyClipboardHandler();
+    this.destroyTextarea();
     CursorMorph.uber.destroy.call(this);
 };
 
-CursorMorph.prototype.destroyClipboardHandler = function () {
-    var nodes = document.body.children,
-        each,
-        i;
-    if (this.clipboardHandler) {
-        for (i = 0; i < nodes.length; i += 1) {
-            each = nodes[i];
-            if (each === this.clipboardHandler) {
-                document.body.removeChild(this.clipboardHandler);
-                this.clipboardHandler = null;
-            }
-        }
-    }
+CursorMorph.prototype.destroyTextarea = function () {
+    document.body.removeChild(this.textarea);
+    this.textarea = null;
 };
 
 // CursorMorph utilities:
@@ -5827,6 +6047,8 @@ CursorMorph.prototype.inspectKeyEvent = function (event) {
             event.charCode.toString() +
             '\nkeyCode: ' +
             event.keyCode.toString() +
+            '\nkey: ' +
+            event.key.toString() +
             '\nshiftKey: ' +
             event.shiftKey.toString() +
             '\naltKey: ' +
@@ -5868,7 +6090,7 @@ BoxMorph.prototype.init = function (edge, border, borderColor) {
 BoxMorph.prototype.drawNew = function () {
     var context;
 
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
     if ((this.edge === 0) && (this.border === 0)) {
         BoxMorph.uber.drawNew.call(this);
@@ -6430,7 +6652,7 @@ DialMorph.prototype.drawNew = function () {
       	inner = face * 0.85,
        	outer = face * 0.95;
 
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     ctx = this.image.getContext('2d');
 
     // draw a light border:
@@ -6460,7 +6682,7 @@ DialMorph.prototype.drawNew = function () {
     );
     ctx.closePath();
     ctx.fill();
-    
+
     // fill value
     angle = (this.value - this.min) * (Math.PI * 2) / range - Math.PI / 2;
     ctx.fillStyle = (this.fillColor || this.color.darker()).toString();
@@ -6694,7 +6916,7 @@ CircleBoxMorph.prototype.drawNew = function () {
     if (this.autoOrient) {
         this.autoOrientation();
     }
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
 
     if (this.orientation === 'vertical') {
@@ -6811,6 +7033,7 @@ SliderButtonMorph.prototype.drawNew = function () {
     }
     this.normalImage = this.image;
 
+    this.image = null; // make sure not to reuse ther image canvas
     this.color = this.highlightColor.copy();
     SliderButtonMorph.uber.drawNew.call(this);
     if (this.is3D || !MorphicPreferences.isFlat) {
@@ -6818,6 +7041,7 @@ SliderButtonMorph.prototype.drawNew = function () {
     }
     this.highlightImage = this.image;
 
+    this.image = null; // make sure not to reuse ther image canvas
     this.color = this.pressColor.copy();
     SliderButtonMorph.uber.drawNew.call(this);
     if (this.is3D || !MorphicPreferences.isFlat) {
@@ -7983,7 +8207,8 @@ MenuMorph.prototype.addItem = function (
     bold, // bool
     italic, // bool
     doubleClickAction, // optional, when used as list contents
-    shortcut // optional string, icon (Morph or Canvas) or tuple [icon, string]
+    shortcut, // optional string, icon (Morph or Canvas) or tuple [icon, string]
+    verbatim // optional bool, don't translate if true
 ) {
     /*
     labelString is normally a single-line string. But it can also be one
@@ -7994,22 +8219,45 @@ MenuMorph.prototype.addItem = function (
         * a tuple of format: [icon, string]
     */
     this.items.push([
-        localize(labelString || 'close'),
+        verbatim ? labelString || 'close' : localize(labelString || 'close'),
         action || nop,
         hint,
         color,
         bold || false,
         italic || false,
         doubleClickAction,
-        shortcut]);
+        shortcut,
+        verbatim]);
 };
 
-MenuMorph.prototype.addMenu = function (label, aMenu, indicator) {
-    this.addPair(label, aMenu, isNil(indicator) ? '\u25ba' : indicator);
+MenuMorph.prototype.addMenu = function (label, aMenu, indicator, verbatim) {
+    this.addPair(
+        label,
+        aMenu,
+        isNil(indicator) ? '\u25ba' : indicator,
+        null,
+        verbatim // don't translate
+    );
 };
 
-MenuMorph.prototype.addPair = function (label, action, shortcut, hint) {
-    this.addItem(label, action, hint, null, null, null, null, shortcut);
+MenuMorph.prototype.addPair = function (
+    label,
+    action,
+    shortcut,
+    hint,
+    verbatim // don't translate
+) {
+    this.addItem(
+        label,
+        action,
+        hint,
+        null,
+        null,
+        null,
+        null,
+        shortcut,
+        verbatim
+    );
 };
 
 MenuMorph.prototype.addLine = function (width) {
@@ -8438,6 +8686,11 @@ StringMorph.prototype = new Morph();
 StringMorph.prototype.constructor = StringMorph;
 StringMorph.uber = Morph.prototype;
 
+// StringMorph shared properties:
+
+// context for measuring text dimensions, used by StringMorphs and TextMorphs
+StringMorph.prototype.measureCtx = newCanvas().getContext("2d");
+
 // StringMorph instance creation:
 
 function StringMorph(
@@ -8486,6 +8739,7 @@ StringMorph.prototype.init = function (
     this.isBold = bold || false;
     this.isItalic = italic || false;
     this.isEditable = false;
+    this.enableLinks = false; // set to "true" if I can contain clickable URLs
     this.isNumeric = isNumeric || false;
     this.isPassword = false;
     this.shadowOffset = shadowOffset || new Point(0, 0);
@@ -8548,14 +8802,10 @@ StringMorph.prototype.drawNew = function () {
         txt = this.isPassword ?
                 this.password('*', this.text.length) : this.text;
 
-    // initialize my surface property
-    this.image = newCanvas();
-    context = this.image.getContext('2d');
-    context.font = this.font();
-
-    // set my extent
+    // determine my extent
+    this.measureCtx.font = this.font();
     width = Math.max(
-        context.measureText(txt).width + Math.abs(shadowOffset.x),
+        this.measureCtx.measureText(txt).width + Math.abs(shadowOffset.x),
         1
     );
     this.bounds.corner = this.bounds.origin.add(
@@ -8564,8 +8814,10 @@ StringMorph.prototype.drawNew = function () {
             fontHeight(this.fontSize) + Math.abs(shadowOffset.y)
         )
     );
-    this.image.width = width;
-    this.image.height = this.height();
+
+    // initialize my surface property
+    this.image = newCanvas(this.extent(), false, this.image);
+    context = this.image.getContext('2d');
 
     // prepare context for drawing text
     context.font = this.font();
@@ -8729,7 +8981,7 @@ StringMorph.prototype.previousWordFrom = function (aSlot) {
     // answer the slot (index) slots indicating the position of the
     // previous word to the left of aSlot
     var index = aSlot - 1;
-    
+
     // while the current character is non-word one, we skip it, so that
     // if we are in the middle of a non-alphanumeric sequence, we'll get
     // right to the beginning of the previous word
@@ -8748,7 +9000,7 @@ StringMorph.prototype.previousWordFrom = function (aSlot) {
 
 StringMorph.prototype.nextWordFrom = function (aSlot) {
     var index = aSlot;
-    
+
     while (index < this.endOfLine() && !isWordChar(this.text[index])) {
         index += 1;
     }
@@ -8951,10 +9203,11 @@ StringMorph.prototype.selectAll = function () {
     if (this.isEditable) {
         this.startMark = 0;
         cursor = this.root().cursor;
+        this.endMark = this.text.length;
         if (cursor) {
             cursor.gotoSlot(this.text.length);
+            cursor.syncTextareaSelectionWith(this);
         }
-        this.endMark = this.text.length;
         this.drawNew();
         this.changed();
     }
@@ -8979,6 +9232,7 @@ StringMorph.prototype.shiftClick = function (pos) {
         }
         cursor.gotoPos(pos);
         this.endMark = cursor.slot;
+        cursor.syncTextareaSelectionWith(this);
         this.drawNew();
         this.changed();
     }
@@ -8997,6 +9251,33 @@ StringMorph.prototype.mouseClickLeft = function (pos) {
             cursor.gotoPos(pos);
         }
         this.currentlySelecting = true;
+    } else if (this.enableLinks) {
+        var slot = this.slotAt(pos),
+            clickedText,
+            startMark,
+            endMark;
+
+        if (slot === this.text.length) {
+            slot -= 1;
+        }
+
+        startMark = slot;
+        while (startMark > 1 && isURLChar(this.text[startMark-1])) {
+            startMark -= 1;
+        }
+
+        endMark = slot;
+        while (endMark < this.text.length - 1 &&
+                isURLChar(this.text[endMark + 1])) {
+            endMark += 1;
+        }
+
+        clickedText = this.text.substring(startMark, endMark + 1);
+        if (isURL(clickedText)) {
+            window.open(clickedText, '_blank');
+        } else {
+            this.escalateEvent('mouseClickLeft', pos);
+        }
     } else {
         this.escalateEvent('mouseClickLeft', pos);
     }
@@ -9024,6 +9305,7 @@ StringMorph.prototype.mouseDoubleClick = function (pos) {
             // last slot in multi line TextMorphs
             this.selectAll();
         }
+        this.root().cursor.syncTextareaSelectionWith(this);
     } else {
         this.escalateEvent('mouseDoubleClick', pos);
     }
@@ -9076,6 +9358,7 @@ StringMorph.prototype.enableSelecting = function () {
                 this.startMark = this.slotAt(pos);
                 this.endMark = this.startMark;
                 this.currentlySelecting = true;
+                this.root().cursor.syncTextareaSelectionWith(this);
                 if (!already) {this.escalateEvent('mouseDownLeft', pos); }
             }
         }
@@ -9087,6 +9370,7 @@ StringMorph.prototype.enableSelecting = function () {
             var newMark = this.slotAt(pos);
             if (newMark !== this.endMark) {
                 this.endMark = newMark;
+                this.root().cursor.syncTextareaSelectionWith(this);
                 this.drawNew();
                 this.changed();
             }
@@ -9108,6 +9392,11 @@ StringMorph.prototype.disableSelecting = function () {
 TextMorph.prototype = new Morph();
 TextMorph.prototype.constructor = TextMorph;
 TextMorph.uber = Morph.prototype;
+
+// TextMorph shared properties:
+
+// context for measuring text dimensions, shared with StringMorph prototype
+TextMorph.prototype.measureCtx = StringMorph.prototype.measureCtx;
 
 // TextMorph instance creation:
 
@@ -9164,6 +9453,7 @@ TextMorph.prototype.init = function (
     this.maxLineWidth = 0;
     this.backgroundColor = null;
     this.isEditable = false;
+    this.enableLinks = false; // set to "true" if I can contain clickable URLs
 
     //additional properties for ad-hoc evaluation:
     this.receiver = null;
@@ -9195,8 +9485,7 @@ TextMorph.prototype.font = StringMorph.prototype.font;
 TextMorph.prototype.parse = function () {
     var myself = this,
         paragraphs = this.text.split('\n'),
-        canvas = newCanvas(),
-        context = canvas.getContext('2d'),
+        context = this.measureCtx,
         oldline = '',
         newline,
         w,
@@ -9249,9 +9538,6 @@ TextMorph.prototype.drawNew = function () {
     var context, height, i, line, width, shadowHeight, shadowWidth,
         offx, offy, x, y, start, stop, p, c;
 
-    this.image = newCanvas();
-    context = this.image.getContext('2d');
-    context.font = this.font();
     this.parse();
 
     // set my extent
@@ -9267,8 +9553,8 @@ TextMorph.prototype.drawNew = function () {
             new Point(this.maxWidth + shadowWidth, height)
         );
     }
-    this.image.width = this.width();
-    this.image.height = this.height();
+
+    this.image = newCanvas(this.extent(), false, this.image);
 
     // prepare context for drawing text
     context = this.image.getContext('2d');
@@ -9401,11 +9687,13 @@ TextMorph.prototype.slotAt = function (aPoint) {
     // in account how far from the middle of the character it is,
     // so the cursor can be moved accordingly
 
-    var charX = 0,
+    var charX,
         row = 0,
         col = 0,
+        columnLength,
         shadowHeight = Math.abs(this.shadowOffset.y),
-        context = this.image.getContext('2d');
+        context = this.image.getContext('2d'),
+        textWidth;
 
     while (aPoint.y - this.top() >
             ((fontHeight(this.fontSize) + shadowHeight) * row)) {
@@ -9413,7 +9701,16 @@ TextMorph.prototype.slotAt = function (aPoint) {
     }
     row = Math.max(row, 1);
 
-    while (aPoint.x - this.left() > charX) {
+    textWidth = context.measureText(this.lines[row - 1]).width;
+    if (this.alignment === 'right') {
+        charX = this.width() - textWidth;
+    } else if (this.alignment === 'center') {
+        charX = (this.width() - textWidth) / 2;
+    } else { // 'left'
+        charX = 0;
+    }
+    columnLength = this.lines[row - 1].length;
+    while (col < columnLength - 2 && aPoint.x - this.left() > charX) {
         charX += context.measureText(this.lines[row - 1][col]).width;
         col += 1;
     }
@@ -9738,17 +10035,17 @@ TriggerMorph.prototype.createBackgrounds = function () {
     var context,
         ext = this.extent();
 
-    this.normalImage = newCanvas(ext);
+    this.normalImage = newCanvas(ext, false, this.normalImage);
     context = this.normalImage.getContext('2d');
     context.fillStyle = this.color.toString();
     context.fillRect(0, 0, ext.x, ext.y);
 
-    this.highlightImage = newCanvas(ext);
+    this.highlightImage = newCanvas(ext, false, this.highlightImage);
     context = this.highlightImage.getContext('2d');
     context.fillStyle = this.highlightColor.toString();
     context.fillRect(0, 0, ext.x, ext.y);
 
-    this.pressImage = newCanvas(ext);
+    this.pressImage = newCanvas(ext, false, this.pressImage);
     context = this.pressImage.getContext('2d');
     context.fillStyle = this.pressColor.toString();
     context.fillRect(0, 0, ext.x, ext.y);
@@ -10423,8 +10720,7 @@ ScrollFrameMorph.prototype.adjustScrollBars = function () {
         vHeight = this.height() - this.scrollBarSize;
 
     this.changed();
-    if (this.contents.width() > this.width() +
-            MorphicPreferences.scrollBarSize) {
+    if (this.contents.width() > this.width()) {
         this.hBar.show();
         if (this.hBar.width() !== hWidth) {
             this.hBar.setWidth(hWidth);
@@ -10437,7 +10733,7 @@ ScrollFrameMorph.prototype.adjustScrollBars = function () {
             )
         );
         this.hBar.start = 0;
-        this.hBar.stop = this.contents.width() - this.width();
+        this.hBar.stop = this.contents.width() - this.width() + this.scrollBarSize;
         this.hBar.size =
             this.width() / this.contents.width() * this.hBar.stop;
         this.hBar.value = this.left() - this.contents.left();
@@ -10446,8 +10742,7 @@ ScrollFrameMorph.prototype.adjustScrollBars = function () {
         this.hBar.hide();
     }
 
-    if (this.contents.height() > this.height() +
-            this.scrollBarSize) {
+    if (this.contents.height() > this.height()) {
         this.vBar.show();
         if (this.vBar.height() !== vHeight) {
             this.vBar.setHeight(vHeight);
@@ -10460,7 +10755,7 @@ ScrollFrameMorph.prototype.adjustScrollBars = function () {
             )
         );
         this.vBar.start = 0;
-        this.vBar.stop = this.contents.height() - this.height();
+        this.vBar.stop = this.contents.height() - this.height() + this.scrollBarSize;
         this.vBar.size =
             this.height() / this.contents.height() * this.vBar.stop;
         this.vBar.value = this.top() - this.contents.top();
@@ -10512,6 +10807,10 @@ ScrollFrameMorph.prototype.scrollX = function (steps) {
         r = this.right(),
         newX;
 
+    if (this.vBar.isVisible) {
+        r -= this.scrollBarSize;
+    }
+
     newX = cl + steps;
     if (newX + cw < r) {
         newX = r - cw;
@@ -10530,6 +10829,10 @@ ScrollFrameMorph.prototype.scrollY = function (steps) {
         ch = this.contents.height(),
         b = this.bottom(),
         newY;
+
+    if (this.hBar.isVisible) {
+        b -= this.scrollBarSize;
+    }
 
     newY = ct + steps;
     if (newY + ch < b) {
@@ -11616,7 +11919,10 @@ HandMorph.prototype.processDrop = function (event) {
                 readSVG(file);
             } else if (file.type.indexOf("image") === 0) {
                 readImage(file);
-            } else if (file.type.indexOf("audio") === 0) {
+            } else if (file.type.indexOf("audio") === 0 ||
+                    file.type.indexOf("ogg") > -1) {
+                    // check the file-extension because Firefox
+                    // thinks OGGs are videos
                 readAudio(file);
             } else if ((file.type.indexOf("text") === 0) ||
                     contains(['txt', 'csv', 'json'], suffix)) {
@@ -12148,16 +12454,16 @@ WorldMorph.prototype.initEventListeners = function () {
         false
     );
 
-    // window.onbeforeunload = function (evt) {
-    //     var e = evt || window.event,
-    //         msg = "Are you sure you want to leave?";
-    //     // For IE and Firefox
-    //     if (e) {
-    //         e.returnValue = msg;
-    //     }
-    //     // For Safari / chrome
-    //     return msg;
-    // };
+    window.onbeforeunload = function (evt) {
+        var e = evt || window.event,
+            msg = "Are you sure you want to leave?";
+        // For IE and Firefox
+        if (e) {
+            e.returnValue = msg;
+        }
+        // For Safari / chrome
+        return msg;
+    };
 };
 
 WorldMorph.prototype.mouseDownLeft = nop;
@@ -12498,6 +12804,13 @@ WorldMorph.prototype.about = function () {
 };
 
 WorldMorph.prototype.edit = function (aStringOrTextMorph) {
+    if (this.lastEditedText === aStringOrTextMorph) {
+        return;
+    }
+    if (!isNil(this.lastEditedText)) {
+        this.stopEditing();
+    }
+
     var pos = getDocumentPositionOf(this.worldCanvas);
 
     if (!aStringOrTextMorph.isEditable) {

@@ -60,9 +60,9 @@
 Color, Point, WatcherMorph, StringMorph, SpriteMorph, ScrollFrameMorph,
 CellMorph, ArrowMorph, MenuMorph, snapEquals, Morph, isNil, localize, isString,
 MorphicPreferences, TableDialogMorph, SpriteBubbleMorph, SpeechBubbleMorph,
-TableFrameMorph, TableMorph, Variable, isSnapObject*/
+TableFrameMorph, TableMorph, Variable, isSnapObject, Costume, contains*/
 
-modules.lists = '2019-February-07';
+modules.lists = '2019-December-08';
 
 var List;
 var ListWatcherMorph;
@@ -95,6 +95,7 @@ var ListWatcherMorph;
     length()                - number of slots
     at(index)               - element present in specified slot
     contains(element)       - <bool>
+    isEmpty(element)        - <bool>
 
     conversion:
     -----------
@@ -245,6 +246,13 @@ List.prototype.contains = function (element) {
     });
 };
 
+List.prototype.isEmpty = function () {
+    if (this.isLinked) {
+        return isNil(this.first);
+    }
+    return !this.contents.length;
+};
+
 // List table (2D) accessing (for table morph widget):
 
 List.prototype.isTable = function () {
@@ -306,14 +314,20 @@ List.prototype.columnNames = function () {
     return [];
 };
 
-List.prototype.version = function (startRow, rows) {
+List.prototype.version = function (startRow, rows, startCol, cols) {
     var l = Math.min(startRow + rows, this.length()),
         v = this.lastChanged,
         r,
         i;
     for (i = startRow; i <= l; i += 1) {
         r = this.at(i);
-        v = Math.max(v, r.lastChanged ? r.lastChanged : 0);
+        if (r instanceof Costume) {
+            v = Math.max(v, r.version);
+        } else if (r instanceof List) {
+            v = Math.max(v, r.version(startCol, cols));
+        } else {
+            v = Math.max(v, r.lastChanged ? r.lastChanged : 0);
+        }
     }
     return v;
 };
@@ -411,7 +425,7 @@ List.prototype.asCSV = function () {
         rows = [];
     
     function encodeCell(atomicValue) {
-        var string = atomicValue.toString(),
+        var string = isNil(atomicValue) ? '' : atomicValue.toString(),
             cell;
         if (string.indexOf('\"') ===  -1 &&
                 (string.indexOf('\n') === -1) &&
@@ -586,12 +600,13 @@ function ListWatcherMorph(list, parentCell) {
 }
 
 ListWatcherMorph.prototype.init = function (list, parentCell) {
-    var myself = this;
+    var myself = this,
+        readOnly;
 
     this.list = list || new List();
     this.start = 1;
     this.range = 100;
-    this.lastUpdated = Date.now();
+    this.lastUpdated = 0;
     this.lastCell = null;
     this.parentCell = parentCell || null; // for circularity detection
 
@@ -632,16 +647,21 @@ ListWatcherMorph.prototype.init = function (list, parentCell) {
     this.arrow.setBottom(this.handle.top());
     this.handle.add(this.arrow);
 
-    this.plusButton = new PushButtonMorph(
-        this.list,
-        'add',
-        '+'
-    );
-    this.plusButton.padding = 0;
-    this.plusButton.edge = 0;
-    this.plusButton.outlineColor = this.color;
-    this.plusButton.drawNew();
-    this.plusButton.fixLayout();
+    readOnly = this.list.type && !contains(['text', 'number'], this.list.type);
+    if (readOnly) {
+        this.plusButton = null;
+    } else {
+        this.plusButton = new PushButtonMorph(
+            this.list,
+            'add',
+            '+'
+        );
+        this.plusButton.padding = 0;
+        this.plusButton.edge = 0;
+        this.plusButton.outlineColor = this.color;
+        this.plusButton.drawNew();
+        this.plusButton.fixLayout();
+    }
 
     ListWatcherMorph.uber.init.call(
         this,
@@ -657,7 +677,9 @@ ListWatcherMorph.prototype.init = function (list, parentCell) {
     ));
     this.add(this.label);
     this.add(this.frame);
-    this.add(this.plusButton);
+    if (!readOnly) {
+        this.add(this.plusButton);
+    }
     this.add(this.handle);
     this.handle.drawNew();
     this.update();
@@ -669,12 +691,12 @@ ListWatcherMorph.prototype.init = function (list, parentCell) {
 ListWatcherMorph.prototype.update = function (anyway) {
     var i, idx, ceil, morphs, cell, cnts, label, button, max,
         starttime, maxtime = 1000;
-
     this.frame.contents.children.forEach(function (m) {
         if (m instanceof CellMorph) {
             if (m.contentsMorph instanceof ListWatcherMorph) {
                 m.contentsMorph.update();
-            } else if (isSnapObject(m.contents)) {
+            } else if (isSnapObject(m.contents) ||
+                    (m.contents instanceof Costume)) {
                 m.update();
             }
         }
@@ -858,9 +880,10 @@ ListWatcherMorph.prototype.fixLayout = function () {
 
     this.label.setCenter(this.center());
     this.label.setBottom(this.bottom() - 3);
-    this.plusButton.setLeft(this.left() + 3);
-    this.plusButton.setBottom(this.bottom() - 3);
-
+    if (this.plusButton) {
+        this.plusButton.setLeft(this.left() + 3);
+        this.plusButton.setBottom(this.bottom() - 3);
+    }
     Morph.prototype.trackChanges = true;
     this.changed();
 

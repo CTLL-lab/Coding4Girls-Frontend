@@ -7,7 +7,7 @@
     written by Jens Mönig
     jens@moenig.org
 
-    Copyright (C) 2016 by Jens Mönig
+    Copyright (C) 2020 by Jens Mönig
 
     This file is part of Snap!.
 
@@ -64,13 +64,13 @@
 
 // Global settings /////////////////////////////////////////////////////
 
-/*global modules, Point, newCanvas, Morph, fontHeight, SliderMorph, List,
-MorphicPreferences, FrameMorph, HandleMorph, DialogBoxMorph, isString,
-SpriteMorph, Context, Costume, ArgMorph, BlockEditorMorph, SymbolMorph,
+/*global modules, Point, newCanvas, Morph, fontHeight, SliderMorph, isString,
+MorphicPreferences, FrameMorph, HandleMorph, DialogBoxMorph, StringMorph,
+SpriteMorph, Context, Costume, ArgMorph, BlockEditorMorph, SymbolMorph, List,
 SyntaxElementMorph, MenuMorph, SpriteBubbleMorph, SpeechBubbleMorph, Sound,
 CellMorph, ListWatcherMorph, isNil, BoxMorph, Variable, isSnapObject*/
 
-modules.tables = '2019-February-07';
+modules.tables = '2020-January-03';
 
 var Table;
 var TableCellMorph;
@@ -312,7 +312,7 @@ TableCellMorph.prototype.getData = function () {
 };
 
 TableCellMorph.prototype.drawNew = function () {
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     this.drawData();
 };
 
@@ -634,7 +634,7 @@ TableMorph.prototype.updateScrollBars = function () {
 
 TableMorph.prototype.drawNew = function () {
     var context, w, i;
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
     context.fillStyle = 'rgb(220, 220, 220)';
     BoxMorph.prototype.outlinePath.call(
@@ -794,8 +794,12 @@ TableMorph.prototype.step = function () {
 TableMorph.prototype.update = function () {
     var oldCols, oldRows,
         version = this.table instanceof List ?
-            this.table.version(this.startRow, this.rows)
-                    : this.table.lastChanged;
+            this.table.version(
+                this.startRow,
+                this.rows,
+                this.startCol,
+                this.columns.length
+            ) : this.table.lastChanged;
     if (this.tableVersion === version && !this.wantsUpdate) {
         return;
     }
@@ -820,7 +824,7 @@ TableMorph.prototype.update = function () {
 // TableMorph layout helpers (all private):
 
 TableMorph.prototype.rowLabelsWidth = function () {
-    var ctx = newCanvas().getContext('2d');
+    var ctx = StringMorph.prototype.measureCtx;
     ctx.font = 'italic ' + SyntaxElementMorph.prototype.fontSize +
         'px Helvetica, Arial, sans-serif';
     return Math.max(

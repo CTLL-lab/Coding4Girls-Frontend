@@ -7,7 +7,7 @@
     written by Jens Mönig
     jens@moenig.org
 
-    Copyright (C) 2018 by Jens Mönig
+    Copyright (C) 2020 by Jens Mönig
 
     This file is part of Snap!.
 
@@ -85,7 +85,7 @@ HTMLCanvasElement, fontHeight, SymbolMorph, localize, SpeechBubbleMorph,
 ArrowMorph, MenuMorph, isString, isNil, SliderMorph, MorphicPreferences,
 ScrollFrameMorph, MenuItemMorph, Note*/
 
-modules.widgets = '2018-February-08';
+modules.widgets = '2020-January-03';
 
 var PushButtonMorph;
 var ToggleButtonMorph;
@@ -415,7 +415,7 @@ PushButtonMorph.prototype.createBackgrounds = function () {
         return null;
     }
 
-    this.normalImage = newCanvas(ext);
+    this.normalImage = newCanvas(ext, false, this.normalImage);
     context = this.normalImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.color);
@@ -426,7 +426,7 @@ PushButtonMorph.prototype.createBackgrounds = function () {
         this.color.darker(this.contrast)
     );
 
-    this.highlightImage = newCanvas(ext);
+    this.highlightImage = newCanvas(ext, false, this.highlightImage);
     context = this.highlightImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.highlightColor);
@@ -437,7 +437,7 @@ PushButtonMorph.prototype.createBackgrounds = function () {
         this.highlightColor.darker(this.contrast)
     );
 
-    this.pressImage = newCanvas(ext);
+    this.pressImage = newCanvas(ext, false, this.pressImage);
     context = this.pressImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.pressColor);
@@ -720,7 +720,7 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
         return null;
     }
 
-    this.normalImage = newCanvas(ext);
+    this.normalImage = newCanvas(ext, false, this.normalImage);
     context = this.normalImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.color);
@@ -731,7 +731,7 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
         this.color.darker(this.contrast)
     );
 
-    this.highlightImage = newCanvas(ext);
+    this.highlightImage = newCanvas(ext, false, this.highlightImage);
     context = this.highlightImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.highlightColor);
@@ -744,7 +744,7 @@ ToggleButtonMorph.prototype.createBackgrounds = function () {
 
     // note: don't invert the 3D-ish edges for pressedImage, because
     // it will stay that way, and should not look inverted (or should it?)
-    this.pressImage = newCanvas(ext);
+    this.pressImage = newCanvas(ext, false, this.pressImage);
     context = this.pressImage.getContext('2d');
     this.drawOutline(context);
     this.drawBackground(context, this.pressColor);
@@ -1565,6 +1565,7 @@ DialogBoxMorph.prototype.inform = function (
         this.key = 'inform' + title + textString;
     }
 
+    txt.enableLinks = true; // let the user click on URLs to open in new tab
     this.labelString = title;
     this.createLabel();
     if (pic) {this.setPicture(pic); }
@@ -2668,7 +2669,7 @@ DialogBoxMorph.prototype.drawNew = function () {
 
     // this.alpha = isFlat ? 0.9 : 1;
 
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
 
     // title bar
@@ -2940,7 +2941,7 @@ AlignmentMorph.prototype.init = function (orientation, padding) {
 // AlignmentMorph displaying and layout
 
 AlignmentMorph.prototype.drawNew = function () {
-    this.image = newCanvas(new Point(1, 1));
+    this.image = newCanvas(new Point(1, 1), false, this.image);
     this.fixLayout();
 };
 
@@ -3232,7 +3233,7 @@ InputFieldMorph.prototype.drawNew = function () {
     this.fixLayout();
 
     // initialize my surface property
-    this.image = newCanvas(this.extent());
+    this.image = newCanvas(this.extent(), false, this.image);
     context = this.image.getContext('2d');
     if (this.parent) {
         if (this.parent.color.eq(new Color(255, 255, 255))) {
@@ -3708,14 +3709,14 @@ PianoKeyMorph.prototype.mouseEnter = function () {
     this.note.play(soundType);
     setTimeout(
         function () {
-            myself.note.stop();
+            myself.note.stop(true);
         },
         400
     );
 };
 
 PianoKeyMorph.prototype.mouseLeave = function () {
-    this.note.stop();
+    this.note.stop(true);
     this.label.children[0].show();
     this.image = this.normalImage;
     this.changed();

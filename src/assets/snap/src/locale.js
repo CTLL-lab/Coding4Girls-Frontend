@@ -6,7 +6,7 @@
 
     written by Jens Mönig
 
-    Copyright (C) 2019 by Jens Mönig
+    Copyright (C) 2020 by Jens Mönig
 
     This file is part of Snap!.
 
@@ -42,7 +42,7 @@
 
 /*global modules, contains*/
 
-modules.locale = '2019-January-28';
+modules.locale = '2020-January-28';
 
 // Global stuff
 
@@ -123,7 +123,11 @@ SnapTranslator.dict.en = {
     'translator_e-mail':
         'jens@moenig.org',
     'last_changed':
-        '2015-12-22',
+        '2019-10-21',
+
+    // symbols in dropdowns
+    '__shout__go__':
+        'green flag clicked',
 
     // rewordings in English avoiding having to adjust all other translations
     'any':
@@ -160,7 +164,7 @@ SnapTranslator.dict.de = {
     'translator_e-mail':
         'jens@moenig.org, jadga.huegle@sap.com',
     'last_changed':
-        '2019-01-28'
+        '2020-01-28'
 };
 
 SnapTranslator.dict.it = {
@@ -215,7 +219,7 @@ SnapTranslator.dict.pt = {
     'translator_e-mail':
         'mmsequeira@gmail.com',
     'last_changed':
-        '2018-05-20'
+        '2019-06-25'
 };
 
 SnapTranslator.dict.cs = {
@@ -237,7 +241,7 @@ SnapTranslator.dict.zh_CN = {
     'translator_e-mail':
         'ubertao@qq.com/djh@rhjxx.cn',
     'last_changed':
-        '2019-01-11'
+        '2019-08-06'
 };
 
 SnapTranslator.dict.eo = {
@@ -259,7 +263,7 @@ SnapTranslator.dict.fr = {
     'translator_e-mail':
         'i.scool@mac.com',
     'last_changed':
-        '2016-10-27'
+        '2019-06-25'
 };
 
 SnapTranslator.dict.si = {
@@ -292,7 +296,7 @@ SnapTranslator.dict.es = {
     'translator_e-mail':
         'victor.muratalla@yahoo.com / rizzi.cristian@gmail.com',
     'last_changed':
-        '2018-02-19'
+        '2019-06-25'
 };
 
 SnapTranslator.dict.nl = {
@@ -369,7 +373,7 @@ SnapTranslator.dict.ca = {
     'translator_e-mail':
         'bernat@snap4arduino.rocks, jguille2@xtec.cat',
     'last_changed':
-        '2018-06-16'
+        '2020-01-03'
 };
 
 SnapTranslator.dict.ca_VA = {
@@ -574,11 +578,11 @@ SnapTranslator.dict.gl = {
     'language_name':
         'Galego',
     'language_translator':
-        'tecnoloxia',
+        'tecnoloxia <2016>,Miguel A. Bouzada <2019>',
     'translator_e-mail':
-        '',
+        'mbouzada@gmail.com',
     'last_changed':
-        '2016-11-09'
+        '2019-07-29'
 };
 
 SnapTranslator.dict.eu = {
@@ -600,5 +604,16 @@ SnapTranslator.dict.ua = {
     'translator_e-mail':
         'kseryj@gmail.com',
     'last_changed':
-        '2018-10-14'
+        '2018-08-21'
+};
+
+SnapTranslator.dict.sk = {
+    'language_name':
+        'Sloven\u010Dina',
+    'language_translator':
+        'Peter Luka\u010Dovi\u010D',
+    'translator_e-mail':
+        'peter_lukacovic@outlook.com',
+    'last_changed':
+        '2019-12-10'
 };
