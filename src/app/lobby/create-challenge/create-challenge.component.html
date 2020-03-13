@@ -414,6 +414,7 @@
       <button
         class="btn btn-success"
         (click)="saveSnapForCurrentLevel(); this.closeAllModals()"
+        *ngIf="canSaveAndDelete"
       >
         {{ 'edit-team.10' | translate }}
       </button>
