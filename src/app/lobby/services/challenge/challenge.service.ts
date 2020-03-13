@@ -6,6 +6,16 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Level } from 'src/app/teamModel';
 
+export class NoQuestionsDefinedError implements Error {
+  name: string;
+  message: string;
+  stack?: string;
+  constructor() {
+    this.name = 'NoQuestionsDefinedError';
+    this.message = 'You did not define any questions when you must';
+  }
+}
+
 @Injectable()
 export class ChallengeService {
   constructor(private http: HttpClient, private userService: UserService) {}
@@ -27,7 +37,7 @@ export class ChallengeService {
     }
     if (minigamevariables['questions']) {
       if (minigamevariables['questions'].length == 0) {
-        return;
+        throw new NoQuestionsDefinedError();
       }
     }
     if (tag == 'None') {

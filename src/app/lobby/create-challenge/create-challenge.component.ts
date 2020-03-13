@@ -1,7 +1,10 @@
 import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/authentication/services/user/user.service';
-import { ChallengeService } from '../services/challenge/challenge.service';
+import {
+  ChallengeService,
+  NoQuestionsDefinedError
+} from '../services/challenge/challenge.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationsToasterService } from 'src/app/shared/services/toaster/notifications-toaster.service';
 import Quill from 'quill';
@@ -254,6 +257,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     if (this.currentMinigameForm) {
       this.currentMinigameForm.updateValueAndValidity();
       if (!this.currentMinigameForm.valid) {
+        console.log(this.currentMinigameForm);
         this.notifications.showError('');
         return;
       }
@@ -351,9 +355,15 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           }
         });
     } catch (err) {
-      this.translationService.get('in-code.3').subscribe(k => {
-        this.notifications.showError(k);
-      });
+      if (err instanceof NoQuestionsDefinedError) {
+        this.translationService.get('in-code.27').subscribe(k => {
+          this.notifications.showError(k);
+        });
+      } else {
+        this.translationService.get('in-code.3').subscribe(k => {
+          this.notifications.showError(k);
+        });
+      }
     }
   }
   storePreferences() {

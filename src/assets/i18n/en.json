@@ -61,7 +61,8 @@
     "23": "Delete",
     "24": "Are you sure?",
     "25": "Yes",
-    "26": "No"
+    "26": "No",
+    "27": "You must create at least one question"
   },
   "lobbies": {
     "1": "Created courses",
