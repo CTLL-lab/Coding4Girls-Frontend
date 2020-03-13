@@ -44,10 +44,16 @@ export class LobbyPageComponent implements OnInit {
 
   public currentDraggingBox = -1;
 
+  public isOwner: boolean = false;
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.lobbyService.getLobbyDetails(this.id).subscribe(r => {
       this.lobbyDetails = r['data']['lobby'];
+      // check if user is owner or fully priviledged to show members list
+      this.isOwner =
+        this.lobbyDetails.createdby == this.userService.GetUserID() ||
+        this.userService.IsUserFullyPriviledged();
       this.languageImage = languages_available.find(
         x => x.code == this.lobbyDetails.language
       ).imagePath;
