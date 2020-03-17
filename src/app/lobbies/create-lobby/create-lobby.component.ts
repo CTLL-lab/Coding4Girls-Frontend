@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import Quill from 'quill';
 import ImageResize from 'quill-image-resize-module';
 import { NotesProviderService } from 'src/app/shared/canvas/notes/services/notes/notes-provider.service';
+import { SpinnerService } from 'src/app/shared/services/spinner/spinner.service';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -67,7 +68,8 @@ export class CreateLobbyComponent implements OnInit {
     private router: Router,
     private notifications: NotificationsToasterService,
     private translationService: TranslateService,
-    private notesService: NotesProviderService
+    private notesService: NotesProviderService,
+    private spinner: SpinnerService
   ) {
     window['world'] = this.world;
     for (let lang of languages_available) {
@@ -102,7 +104,7 @@ export class CreateLobbyComponent implements OnInit {
         world.children[0].stage
       );
     }
-
+    this.spinner.show();
     this.lobbyService
       .createNewLobby({
         ...this.lobbyDetails,
@@ -114,6 +116,7 @@ export class CreateLobbyComponent implements OnInit {
       })
       .subscribe(
         r => {
+          this.spinner.hide();
           if (r.status == 201) {
             this.translationService.get('in-code.1').subscribe(k => {
               this.notifications.showSuccess(k);
@@ -122,6 +125,8 @@ export class CreateLobbyComponent implements OnInit {
           }
         },
         err => {
+          this.spinner.hide();
+
           console.log(err);
           if (err.status == 422) {
             this.translationService

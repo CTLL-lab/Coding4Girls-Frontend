@@ -9,6 +9,7 @@ import { BehaviorSubject, Subscription, forkJoin } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap';
 import { fully_priviledged_roles } from '../../config';
 import { SnapService } from 'src/app/shared/snap/snap.service';
+import { SpinnerService } from 'src/app/shared/services/spinner/spinner.service';
 @Component({
   selector: 'app-lobby-settings',
   templateUrl: './lobby-settings.component.html',
@@ -65,7 +66,8 @@ export class LobbySettingsComponent implements OnInit {
     public notifications: NotificationsToasterService,
     private translationService: TranslateService,
     private modalService: BsModalService,
-    private snapService: SnapService
+    private snapService: SnapService,
+    private spinner: SpinnerService
   ) {
     for (let lang of languages_available) {
       this.languageImages[lang.code] = lang.imagePath;
@@ -102,7 +104,7 @@ export class LobbySettingsComponent implements OnInit {
   }
   saveChanges() {
     const snapTemplateXML = this.snapService.GetCurrentSnapData();
-
+    this.spinner.show();
     forkJoin([
       this.lobbyService.saveLobbySettings(this.lobbyDetails),
       this.lobbyService.EditLobbySnapTemplate(this.id, snapTemplateXML),
@@ -113,12 +115,14 @@ export class LobbySettingsComponent implements OnInit {
       )
     ]).subscribe(
       r => {
+        this.spinner.hide();
         this.translationService.get('in-code.9').subscribe(k => {
           this.notifications.showSuccess(k);
         });
         this.goBack();
       },
       err => {
+        this.spinner.hide();
         this.translationService.get('in-code.3').subscribe(k => {
           this.notifications.showError(k);
         });

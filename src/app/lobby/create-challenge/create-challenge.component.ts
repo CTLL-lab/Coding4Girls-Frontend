@@ -18,6 +18,7 @@ import { LobbyService } from 'src/app/shared/services/lobby/lobby.service';
 import { fully_priviledged_roles } from 'src/app/config';
 import { SnapService } from 'src/app/shared/snap/snap.service';
 import { QuillService } from 'src/app/shared/quill/quill.service';
+import { SpinnerService } from 'src/app/shared/services/spinner/spinner.service';
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -104,7 +105,8 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
     private lobbyService: LobbyService,
     private snapService: SnapService,
     public quillService: QuillService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private spinnerService: SpinnerService
   ) {
     this.worldBehaviorSubject = window['world'];
     this.MiniGameTags = this.minigamesService.MiniGameTags;
@@ -301,13 +303,15 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log(observables);
+      this.spinnerService.show();
       forkJoin(observables).subscribe(x => {
         this.storePreferences();
+        this.spinnerService.hide();
         this.notifications.showSuccess('');
         this.router.navigate(['/lobby/' + this.lobbyID]);
       });
     } catch (err) {
+      this.spinnerService.hide();
       if (err instanceof NoQuestionsDefinedError) {
         this.translationService.get('in-code.27').subscribe(k => {
           this.notifications.showError(k);
@@ -322,6 +326,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
 
   createTeam() {
     try {
+      this.spinnerService.show();
       this.challengeService
         .createNewTeam(
           this.name,
@@ -337,6 +342,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           this.tag
         )
         .subscribe(r => {
+          this.spinnerService.hide();
           if (r.status == 201) {
             const observables = [];
 
@@ -360,6 +366,7 @@ export class CreateChallengeComponent implements OnInit, OnDestroy {
           }
         });
     } catch (err) {
+      this.spinnerService.hide();
       if (err instanceof NoQuestionsDefinedError) {
         this.translationService.get('in-code.27').subscribe(k => {
           this.notifications.showError(k);
