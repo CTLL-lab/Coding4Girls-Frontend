@@ -125,27 +125,6 @@
                 ></a>
               </div>
             </div>
-
-            <!-- <select
-              #minigameDropdown
-              id="minigameSelection"
-              class="float-right form-control"
-              name="MiniGame"
-            >
-              <option
-                *ngFor="let minigame of MiniGames"
-                value="{{ minigame.id }}"
-                [selected]="currentMinigame == minigame.id"
-                [translate]="minigame.translation"
-                (click)="changeMinigame(minigame.id)"
-              >
-              </option>
-            </select> -->
-            <!-- <button
-              class="btn-primary"
-              (click)="changeMinigame(minigameDropdown.value)"
-              [translate]="'register.8'"
-            ></button> -->
           </div>
         </div>
         <app-minigame-vars
@@ -416,7 +395,7 @@
         (click)="saveSnapForCurrentLevel(); this.closeAllModals()"
         *ngIf="canSaveAndDelete"
       >
-        {{ 'edit-team.10' | translate }}
+        {{ 'in-code.28' | translate }}
       </button>
     </div>
   </div>

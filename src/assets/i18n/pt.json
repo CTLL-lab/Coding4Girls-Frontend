@@ -1,95 +1,96 @@
 {
-	"canvas": {
-		"11": "Acrescentar nova nota",
-		"12": "Aplicar Modelo",
-		"13": "Nenhum ",
-		"17": "Recarregar",
-		"18": ""
-	},
-	"create-lobby": {
-		"1": "Nome",
-		"2": "Código",
-		"3": "Descrição",
-		"4": "Objetivos de aprendizagem e resultados esperados",
-		"9": "Guardar",
-		"10": "Cancelar"
-	},
-	"create-team": {
-		"1": "Criar novo desafio",
-		"11": "Cancelar"
-	},
-	"edit-team": {
-		"2": "Nome:",
-		"3": "Challenge Description:",
-		"10": "Guardar"
-	},
-	"in-code": {
-		"1": "Novo lobby criado!",
-		"2": "Desafio criado!",
-		"3": "Ocorreu um erro",
-		"6": "Adesão ao Lobby!",
-		"7": "Falha em aderir ao lobby!",
-		"8": "Saída de lobby",
-		"9": "Alterações guardadas",
-		"10": "Autenticado",
-		"11": "Password errada!",
-		"12": "Erro em carregar modelo",
-		"13": "Modelo guardado!",
-		"14": "Um erro ocorreu. Por favor, tente novamente.",
-		"15": "Nome de utilizador não pode estar em branco",
-		"16": "Passwords não coincidem",
-		"17": "Registado com sucesso",
-		"18": "Registo não efetuado"
-	},
-	"lobbies": {
-		"1": "Meus lobbies",
-		"3": "Criar novo lobby",
-		"4": "Aderir por código",
-		"5": "Participar"
-	},
-	"lobby-page": {
-		"1": "Criado por:",
-		"2": "Definições de lobby ",
-		"3": "Criar novo desafio",
-		"6": "Desafios",
-		"7": "Descrição do desafio:",
-		"14": "Membros:"
-	},
-	"lobby-settings": {
-		"1": "Definições de lobby ",
-		"2": "Nome:",
-		"3": "Descrição:",
-		"4": "Objetivos de aprendizagem e resultados esperados:",
-		"9": "Ok",
-		"10": "Guardar",
-		"11": "Cancelar"
-	},
-	"login": {
-		"1": "Entrar ",
-		"2": "Nome de utilizador ou E-mail",
-		"3": "Palavra-passe",
-		"4": "Entrar ",
-		"5": "Remember me"
-	},
-	"navbar": {
-		"2": "Lobbies",
-		"3": "Rever",
-		"4": "Verificar",
-		"6": "Feedback",
-		"7": "Sair",
-		"8": "Entrar ",
-		"9": "Registar ",
-		"10": "Socorro",
-		"11": "Reuniões"
-	},
-	"register": {
-		"1": "Registar ",
-		"2": "Nome de utilizador",
-		"3": "Palavra-passe",
-		"4": "Verificar palavra passe",
-		"5": "E-mail",
-		"6": "Primeiro nome",
-		"7": "Último nome",
-		"8": "Submeter "
-	}
+  "canvas": {
+    "11": "Acrescentar nova nota",
+    "12": "Aplicar Modelo",
+    "13": "Nenhum ",
+    "17": "Recarregar",
+    "18": ""
+  },
+  "create-lobby": {
+    "1": "Nome",
+    "2": "Código",
+    "3": "Descrição",
+    "4": "Objetivos de aprendizagem e resultados esperados",
+    "9": "Guardar",
+    "10": "Cancelar"
+  },
+  "create-team": {
+    "1": "Criar novo desafio",
+    "11": "Cancelar"
+  },
+  "edit-team": {
+    "2": "Nome:",
+    "3": "Challenge Description:",
+    "10": "Guardar"
+  },
+  "in-code": {
+    "1": "Novo lobby criado!",
+    "2": "Desafio criado!",
+    "3": "Ocorreu um erro",
+    "6": "Adesão ao Lobby!",
+    "7": "Falha em aderir ao lobby!",
+    "8": "Saída de lobby",
+    "9": "Alterações guardadas",
+    "10": "Autenticado",
+    "11": "Password errada!",
+    "12": "Erro em carregar modelo",
+    "13": "Modelo guardado!",
+    "14": "Um erro ocorreu. Por favor, tente novamente.",
+    "15": "Nome de utilizador não pode estar em branco",
+    "16": "Passwords não coincidem",
+    "17": "Registado com sucesso",
+    "18": "Registo não efetuado",
+    "28": "Aplicar"
+  },
+  "lobbies": {
+    "1": "Meus lobbies",
+    "3": "Criar novo lobby",
+    "4": "Aderir por código",
+    "5": "Participar"
+  },
+  "lobby-page": {
+    "1": "Criado por:",
+    "2": "Definições de lobby ",
+    "3": "Criar novo desafio",
+    "6": "Desafios",
+    "7": "Descrição do desafio:",
+    "14": "Membros:"
+  },
+  "lobby-settings": {
+    "1": "Definições de lobby ",
+    "2": "Nome:",
+    "3": "Descrição:",
+    "4": "Objetivos de aprendizagem e resultados esperados:",
+    "9": "Ok",
+    "10": "Guardar",
+    "11": "Cancelar"
+  },
+  "login": {
+    "1": "Entrar ",
+    "2": "Nome de utilizador ou E-mail",
+    "3": "Palavra-passe",
+    "4": "Entrar ",
+    "5": "Remember me"
+  },
+  "navbar": {
+    "2": "Lobbies",
+    "3": "Rever",
+    "4": "Verificar",
+    "6": "Feedback",
+    "7": "Sair",
+    "8": "Entrar ",
+    "9": "Registar ",
+    "10": "Socorro",
+    "11": "Reuniões"
+  },
+  "register": {
+    "1": "Registar ",
+    "2": "Nome de utilizador",
+    "3": "Palavra-passe",
+    "4": "Verificar palavra passe",
+    "5": "E-mail",
+    "6": "Primeiro nome",
+    "7": "Último nome",
+    "8": "Submeter "
+  }
 }

@@ -62,7 +62,8 @@
     "24": "Are you sure?",
     "25": "Yes",
     "26": "No",
-    "27": "You must create at least one question"
+    "27": "You must create at least one question",
+    "28": "Apply"
   },
   "lobbies": {
     "1": "Created courses",
