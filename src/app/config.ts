@@ -1,50 +1,49 @@
 import { environment } from 'src/environments/environment';
 
-// export const apiURL = 'http://localhost:5000';
 export const apiURL = environment.apiURL;
-// export const apiURL = 'https://api.coding4girls.e-ce.uth.gr';
 export const imgurAPI = environment.imgurAPI;
+
 export const priviledged_roles = ['admin', 'teacher', 'sysadmin'];
 export const fully_priviledged_roles = ['admin', 'sysadmin'];
 export const languages_available = [
   {
     name: 'English',
     imagePath: 'assets/FlagIcons/flag_united_kingdom.png',
-    code: 'en'
+    code: 'en',
   },
   {
     name: 'Greek',
     imagePath: 'assets/FlagIcons/flag_greece.png',
-    code: 'el'
+    code: 'el',
   },
   {
     name: 'Turkish',
     imagePath: 'assets/FlagIcons/flag_turkey.png',
-    code: 'tr'
+    code: 'tr',
   },
   {
     name: 'Bulgarian',
     imagePath: 'assets/FlagIcons/flag_bulgaria.png',
-    code: 'bg'
+    code: 'bg',
   },
   {
     name: 'Croatian',
     imagePath: 'assets/FlagIcons/flag_croatia.png',
-    code: 'hr'
+    code: 'hr',
   },
   {
     name: 'Italian',
     imagePath: 'assets/FlagIcons/flag_italy.png',
-    code: 'it'
+    code: 'it',
   },
   {
     name: 'Slovenian',
     imagePath: 'assets/FlagIcons/flag_slovenia.png',
-    code: 'sl'
+    code: 'sl',
   },
   {
     name: 'Portugese',
     imagePath: 'assets/FlagIcons/flag_portugal.png',
-    code: 'pt'
-  }
+    code: 'pt',
+  },
 ];
